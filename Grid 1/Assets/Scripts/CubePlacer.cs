@@ -31,12 +31,12 @@ public class CubePlacer : MonoBehaviour
                 selectedTile = hit.transform.GetComponent<Hex>();
                 if(selectedTile != null)
                 {
-                    tileState = selectedTile.GetStructure();
+                    tileState = selectedTile.Structure;
                     if(tileState == 0)
                     {
                         structure.transform.position = hit.transform.position;
                         //structure.transform.parent = hit.transform;
-                        //selectedTile.SetStructure(1);
+                        //selectedTile.Structure = 1;
                     }
                 }
             }
@@ -44,7 +44,8 @@ public class CubePlacer : MonoBehaviour
             {
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                 structure.transform.parent = hit.transform;
-                selectedTile.SetStructure(1);
+                Debug.Log("Shaz");
+                selectedTile.Structure = 1;
                 currentCommand = 'E';
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -71,7 +72,7 @@ public class CubePlacer : MonoBehaviour
                 selectedTile = hit.transform.GetComponent<Hex>();
                 if(selectedTile != null)
                 {
-                    tileState = selectedTile.GetStructure();
+                    tileState = selectedTile.Structure;
                 }
             }
             if (Input.GetMouseButtonDown(0))
@@ -79,7 +80,7 @@ public class CubePlacer : MonoBehaviour
                 if(tileState == 1)
                 {
                     Destroy(hit.transform.GetChild(0).gameObject);
-                    selectedTile.SetStructure(0);
+                    selectedTile.Structure = 0;
                 }
                 currentCommand = 'E';
             }

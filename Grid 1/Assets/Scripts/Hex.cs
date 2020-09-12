@@ -4,27 +4,27 @@ using UnityEngine;
 
 public class Hex : MonoBehaviour
 {
-    public int structure;
+    public int Structure { get; set; } = 0;
+    public int Edge1 { get; set; } = 0;
+    public int Edge2 { get; set; } = 0;
+    public int Edge3 { get; set; } = 0;
+    public int Edge4 { get; set; } = 0;
+    public int Edge5 { get; set; } = 0;
+    public int Edge6 { get; set; } = 0;
     
     // Start is called before the first frame update
     void Start()
     {
-        structure = 0;
+
     }
 
-    // Update is called once per frame
-    void Update()
+    public class Platform : Hex
     {
-        
-    }
-
-    public void SetStructure(int newType)
-    {
-        structure = newType;
-    }
-
-    public int GetStructure()
-    {
-        return structure;
+        public Platform()
+        {
+            this.Edge1 = 1;
+            this.Edge3 = 1;
+            this.Edge5 = 1;
+        }
     }
 }
