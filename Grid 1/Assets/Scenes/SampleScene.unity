@@ -152,6 +152,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   structurePrefab: {fileID: 7570017432717230080, guid: e3c12c838cf82e6459aa84f1e4e8be96,
     type: 3}
+  bridgePrefab: {fileID: 7570017432717230080, guid: 1d02123a740cce1c6be2c33f2c4ced33,
+    type: 3}
+  caster: {fileID: 963194230}
 --- !u!4 &697179095
 Transform:
   m_ObjectHideFlags: 0
@@ -375,12 +378,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 963194225}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 6e207eecf1df490488e1c650d4aff678, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  internalObject: 
+  selectedObject: {fileID: 0}
 --- !u!1 &1652462441
 GameObject:
   m_ObjectHideFlags: 0

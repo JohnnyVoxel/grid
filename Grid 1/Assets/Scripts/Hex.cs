@@ -23,29 +23,13 @@ public class Hex : MonoBehaviour
         int[] status = new int[] {this.Edge0, this.Edge1, this.Edge2, this.Edge3, this.Edge4, this.Edge5, this.Structure};
         return status;
     }
-
-    public class Platform : Hex
+    public void SetEdge(int[] status)
     {
-        public Platform()
-        {
-            this.Edge0 = 1;
-            this.Edge1 = 1;
-            this.Edge2 = 1;
-            this.Edge3 = 1;
-            this.Edge4 = 1;
-            this.Edge5 = 1;
-        }
-    }
-    public class Bridge : Hex
-    {
-        public Bridge()
-        {
-            this.Edge0 = 2;
-            this.Edge1 = 1;
-            this.Edge2 = 2;
-            this.Edge3 = 2;
-            this.Edge4 = 1;
-            this.Edge5 = 2;
-        }
+        this.Edge0 = status[0];
+        this.Edge1 = status[1];
+        this.Edge2 = status[2];
+        this.Edge3 = status[3];
+        this.Edge4 = status[4];
+        this.Edge5 = status[5];
     }
 }
