@@ -28,6 +28,8 @@ public class CubePlacer : MonoBehaviour
             if(selectedTile != null)
             {
                 selectedHex = selectedTile.GetComponent<Hex>();
+                int[] availability = selectedHex.GetAvailability();//////////////////////////////////////
+                Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
                 tileState = selectedHex.Structure;
                 if(tileState == 0)
                 {
@@ -81,6 +83,7 @@ public class CubePlacer : MonoBehaviour
                 structure.transform.parent = hit.transform;
                 //Debug.Log("Shaz");
                 selectedTile.Structure = 1;
+                structure.GetComponent<Structure>().SetEdge();
                 currentCommand = 'E';
             }
             if (Input.GetKeyDown(KeyCode.Escape))

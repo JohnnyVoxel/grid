@@ -5,10 +5,14 @@ using UnityEngine;
 public class Structure : MonoBehaviour
 {
     public int health = 100;
-    public int[] edge = new int[] {1,1,1,1,1,1};
-
-    public int[] SetEdge()
+    public static int[] edge = new int[] {1,1,1,1,1,1};
+    /*private void Start() 
     {
-        return edge;
+        SetEdge();
+    }*/
+    public void SetEdge()
+    {
+        this.transform.parent.gameObject.GetComponent<Hex>().SetAllEdge(edge);
+        //this.transform.parent.GetComponent<Hex>().TestRef();
     }
 }

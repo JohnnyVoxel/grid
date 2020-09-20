@@ -108,7 +108,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e9aea04e87db64d8f0d386a5dbd68c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structure: 0
+  board: {fileID: 1665513479596425915, guid: 78046490e23cd9f4a94dce53ebf62c5c, type: 3}
 --- !u!114 &-7660354208632985356
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -121,5 +121,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7f9022a06f2f9594b8fab1eae92d413e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  selectedObject: {fileID: 0}
-  lookingAtObject: 0
