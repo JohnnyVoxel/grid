@@ -42,6 +42,10 @@ public class CubePlacer : MonoBehaviour
                     }
                 }
             }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                structure.GetComponent<Structure>().Rotate();
+            }
             if (Input.GetMouseButtonDown(0) && tileState == 0)
             {
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
@@ -57,7 +61,7 @@ public class CubePlacer : MonoBehaviour
             }
             oldSelectedTile = selectedTile;
         }
-        /////////// BUILD ///////////////
+        /////////// Platform ///////////////
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'E')
         {
             currentCommand = 'B';
@@ -74,13 +78,17 @@ public class CubePlacer : MonoBehaviour
                 {
                     selectedHex = selectedTile.GetComponent<Hex>();
                     int[] availability = selectedHex.GetAvailability();
-                    //Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
+                    Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
                     tileState = selectedHex.Structure;
                     if(tileState == 0)
                     {
                         structure.transform.position = selectedTile.position;
                     }
                 }
+            }
+            if (Input.GetKeyDown(KeyCode.G))
+            {
+                structure.GetComponent<Structure>().Rotate();
             }
             if (Input.GetMouseButtonDown(0) && tileState == 0)
             {
