@@ -139,4 +139,38 @@ public class BoardController : MonoBehaviour
             return null;
         }
     }
+
+    public bool GetAvailability(int[] edges, GameObject tile)
+    {
+        int[] adjacent = GetAdjacent(tile);
+        int requirement = 0;
+        int satisfied = 0;
+        for (int i=0; i<6; i++)
+        {
+            if(edges[i]==2)
+            {
+                requirement++;
+                if((adjacent[i]==3)||(adjacent[i]==9))
+                {
+                    return false;
+                }
+                if((adjacent[i]==1)||(adjacent[i]==2))
+                {
+                    satisfied++;
+                }
+            }
+            if(edges[i]==3)
+            {
+                if(adjacent[i]==2)
+                {
+                    return false;
+                }
+            }
+        }
+        if ((requirement > 0)&&(satisfied==0))
+        {
+            return false;
+        }
+        return true;
+    }
 }

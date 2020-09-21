@@ -8,10 +8,10 @@ public class Bridge : Structure
     void Start()
     {
         edge[0] = 0;
-        edge[1] = 1;
+        edge[1] = 2;
         edge[2] = 0;
         edge[3] = 0;
-        edge[4] = 1;
+        edge[4] = 2;
         edge[5] = 0;
     }
 }

@@ -4,15 +4,23 @@ public class CubePlacer : MonoBehaviour
 {
     [SerializeField] private GameObject structurePrefab;
     [SerializeField] private GameObject bridgePrefab;
+    public static BoardController board;
     public CastingToObject caster;
     public char currentCommand = 'E';
     private Vector3 spawnPonit = new Vector3 (0.0f, -20.0f, 0.0f);
     private GameObject structure;
     private Transform oldSelectedTile = null;
     private Hex selectedHex = null;
+    bool available = false;
+
+    private void Start() 
+    {
+        BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
+    }
 
     private void Update()
     {
+        BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
         int layerMask = 1 << 8;
         int tileState = 0;
         /////////// BRIDGE //////////////
@@ -32,6 +40,8 @@ public class CubePlacer : MonoBehaviour
                 if(selectedTile != null)
                 {
                     selectedHex = selectedTile.GetComponent<Hex>();
+                    available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
+                    Debug.Log(available);
                     int[] availability = selectedHex.GetAvailability();
                     //Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
                     //Debug.Log(selectedTile);
@@ -45,8 +55,9 @@ public class CubePlacer : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.G))
             {
                 structure.GetComponent<Structure>().Rotate();
+                available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
             }
-            if (Input.GetMouseButtonDown(0) && tileState == 0)
+            if (Input.GetMouseButtonDown(0) && tileState == 0 && available != false)
             {
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                 structure.transform.parent = selectedTile;
