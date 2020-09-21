@@ -5,9 +5,11 @@ public class CubePlacer : MonoBehaviour
     [SerializeField] private GameObject structurePrefab;
     [SerializeField] private GameObject bridgePrefab;
     public CastingToObject caster;
-    private char currentCommand = 'E';
+    public char currentCommand = 'E';
     private Vector3 spawnPonit = new Vector3 (0.0f, -20.0f, 0.0f);
     private GameObject structure;
+    private Transform oldSelectedTile = null;
+    private Hex selectedHex = null;
 
     private void Update()
     {
@@ -24,23 +26,28 @@ public class CubePlacer : MonoBehaviour
         if (currentCommand == 'N')
         {
             Transform selectedTile = caster.SelectedTile();
-            Hex selectedHex = null;
-            if(selectedTile != null)
+            if((selectedTile != oldSelectedTile)||(selectedTile == null))
             {
-                selectedHex = selectedTile.GetComponent<Hex>();
-                int[] availability = selectedHex.GetAvailability();//////////////////////////////////////
-                Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
-                tileState = selectedHex.Structure;
-                if(tileState == 0)
+                
+                if(selectedTile != null)
                 {
-                    structure.transform.position = selectedTile.position;
+                    selectedHex = selectedTile.GetComponent<Hex>();
+                    int[] availability = selectedHex.GetAvailability();
+                    //Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
+                    //Debug.Log(selectedTile);
+                    tileState = selectedHex.Structure;
+                    if(tileState == 0)
+                    {
+                        structure.transform.position = selectedTile.position;
+                    }
                 }
             }
             if (Input.GetMouseButtonDown(0) && tileState == 0)
             {
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                 structure.transform.parent = selectedTile;
-                selectedHex.Structure = 1;
+                structure.GetComponent<Structure>().SetEdges();
+                //selectedHex.Structure = 1;
                 currentCommand = 'E';
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -48,6 +55,7 @@ public class CubePlacer : MonoBehaviour
                 Destroy(structure);
                 currentCommand = 'E';
             }
+            oldSelectedTile = selectedTile;
         }
         /////////// BUILD ///////////////
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'E')
@@ -59,31 +67,27 @@ public class CubePlacer : MonoBehaviour
         }
         if (currentCommand == 'B')
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Hex selectedTile = null;
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
-                selectedTile = hit.transform.GetComponent<Hex>();
+            Transform selectedTile = caster.SelectedTile();
+            if((selectedTile != oldSelectedTile)||(selectedTile == null))
+            {  
                 if(selectedTile != null)
                 {
-                    tileState = selectedTile.Structure;
+                    selectedHex = selectedTile.GetComponent<Hex>();
+                    int[] availability = selectedHex.GetAvailability();
+                    //Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
+                    tileState = selectedHex.Structure;
                     if(tileState == 0)
                     {
-                        structure.transform.position = hit.transform.position;
-                        //structure.transform.parent = hit.transform;
-                        //selectedTile.Structure = 1;
+                        structure.transform.position = selectedTile.position;
                     }
                 }
             }
             if (Input.GetMouseButtonDown(0) && tileState == 0)
             {
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
-                structure.transform.parent = hit.transform;
-                //Debug.Log("Shaz");
-                selectedTile.Structure = 1;
-                structure.GetComponent<Structure>().SetEdge();
+                structure.transform.parent = selectedTile;
+                structure.GetComponent<Structure>().SetEdges();
+                //selectedHex.Structure = 1;
                 currentCommand = 'E';
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -91,6 +95,7 @@ public class CubePlacer : MonoBehaviour
                 Destroy(structure);
                 currentCommand = 'E';
             }
+            oldSelectedTile = selectedTile;
         }
         /////////// DESTROY ///////////////
         if (Input.GetKeyDown(KeyCode.V) && currentCommand == 'E')
@@ -99,25 +104,23 @@ public class CubePlacer : MonoBehaviour
         }
         if (currentCommand == 'V')
         {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-            Hex selectedTile = null;
-            tileState = 0;
-
-            if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
-            {
-                selectedTile = hit.transform.GetComponent<Hex>();
+            Transform selectedTile = caster.SelectedTile();
+            if((selectedTile != oldSelectedTile)||(selectedTile == null))
+            {  
                 if(selectedTile != null)
                 {
-                    tileState = selectedTile.Structure;
+                    selectedHex = selectedTile.GetComponent<Hex>();
+                    tileState = selectedHex.Structure;
                 }
             }
             if (Input.GetMouseButtonDown(0))
             {
+                tileState = selectedHex.Structure;
                 if(tileState == 1)
                 {
-                    Destroy(hit.transform.GetChild(0).gameObject);
-                    selectedTile.Structure = 0;
+                    //Destroy(hit.transform.GetChild(0).gameObject);
+                    Destroy(selectedTile.GetChild(0).gameObject);
+                    selectedHex.ResetHex();
                 }
                 currentCommand = 'E';
             }
@@ -125,6 +128,7 @@ public class CubePlacer : MonoBehaviour
             {
                 currentCommand = 'E';
             }
+            oldSelectedTile = selectedTile;
         }
     }
 }

@@ -19,7 +19,6 @@ public class CastingToObject : MonoBehaviour
         {
             selectedObject = null;
         }
-        //Debug.Log(selectedObject);
         return selectedObject;
     }
 }

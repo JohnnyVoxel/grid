@@ -6,18 +6,34 @@ public class Hex : MonoBehaviour
 {
     public static BoardController board;
     public int Structure { get; set; } = 0;
+    public int struc = 0;
     public int Edge0 { get; set; } = 0;
+    public int e0 = 0;
     public int Edge1 { get; set; } = 0;
+    public int e1 = 0;
     public int Edge2 { get; set; } = 0;
+    public int e2 = 0;
     public int Edge3 { get; set; } = 0;
+    public int e3 = 0;
     public int Edge4 { get; set; } = 0;
+    public int e4 = 0;
     public int Edge5 { get; set; } = 0;
+    public int e5 = 0;
 
     private void Start() 
     {
         BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
-        //Debug.Log(board);
+    }
 
+    private void Update() 
+    {
+        this.e0 = this.Edge0;
+        this.e1 = this.Edge1;
+        this.e2 = this.Edge2;
+        this.e3 = this.Edge3;
+        this.e4 = this.Edge4;
+        this.e5 = this.Edge5;
+        this.struc = this.Structure;
     }
 
     public int[] GetAllEdge()
@@ -34,7 +50,18 @@ public class Hex : MonoBehaviour
         this.Edge3 = status[3];
         this.Edge4 = status[4];
         this.Edge5 = status[5];
-        //Debug.Log(this.parent.)
+        this.Structure = 1;
+    }
+
+    public void ResetHex()
+    {
+        this.Edge0 = 0;
+        this.Edge1 = 0;
+        this.Edge2 = 0;
+        this.Edge3 = 0;
+        this.Edge4 = 0;
+        this.Edge5 = 0;
+        this.Structure = 0;
     }
 
     public int GetEdge(int edge)
@@ -88,11 +115,6 @@ public class Hex : MonoBehaviour
                 this.Edge5 = status;
                 break;
         }
-    }
-
-    public void TestRef()
-    {
-        Debug.Log("Test");
     }
 
     public int[] GetAvailability()
