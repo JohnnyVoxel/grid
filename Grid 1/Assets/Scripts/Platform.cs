@@ -8,10 +8,10 @@ public class Platform : Structure
     void Start()
     {
         edge[0] = 1;
-        edge[1] = 1;
+        edge[1] = 3;
         edge[2] = 1;
-        edge[3] = 1;
+        edge[3] = 3;
         edge[4] = 1;
-        edge[5] = 1;
+        edge[5] = 3;
     }
 }
