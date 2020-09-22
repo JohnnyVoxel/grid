@@ -4,6 +4,8 @@ public class CubePlacer : MonoBehaviour
 {
     [SerializeField] private GameObject structurePrefab;
     [SerializeField] private GameObject bridgePrefab;
+    [SerializeField] private GameObject stairsPrefab;
+
     public static BoardController board;
     public CastingToObject caster;
     public char currentCommand = 'E';
@@ -41,10 +43,7 @@ public class CubePlacer : MonoBehaviour
                 {
                     selectedHex = selectedTile.GetComponent<Hex>();
                     available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
-                    Debug.Log(available);
-                    int[] availability = selectedHex.GetAvailability();
-                    //Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
-                    //Debug.Log(selectedTile);
+                    //int[] availability = selectedHex.GetAvailability();
                     tileState = selectedHex.Structure;
                     if(tileState == 0)
                     {
@@ -52,7 +51,7 @@ public class CubePlacer : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetMouseButtonDown(1))
             {
                 structure.GetComponent<Structure>().Rotate();
                 available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
@@ -62,7 +61,53 @@ public class CubePlacer : MonoBehaviour
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                 structure.transform.parent = selectedTile;
                 structure.GetComponent<Structure>().SetEdges();
-                //selectedHex.Structure = 1;
+                currentCommand = 'E';
+            }
+            if (Input.GetKeyDown(KeyCode.Escape))
+            {
+                Destroy(structure);
+                currentCommand = 'E';
+            }
+            oldSelectedTile = selectedTile;
+        }
+        /////////// STAIRS //////////////
+        if (Input.GetKeyDown(KeyCode.M) && currentCommand == 'E')
+        {
+            currentCommand = 'M';
+            structure = Instantiate(stairsPrefab, spawnPonit, Quaternion.identity);
+            structure.name = "structure";
+            structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.cyan;
+            int[] test = structure.GetComponent<Structure>().GetEdges();
+            Debug.Log(test[0] + " " + test[1] + " " + test[2] + " " + test[3] + " " + test[4] + " " + test[5]);
+        }
+        if (currentCommand == 'M')
+        {
+            Transform selectedTile = caster.SelectedTile();
+            if((selectedTile != oldSelectedTile)||(selectedTile == null))
+            {
+                
+                if(selectedTile != null)
+                {
+                    selectedHex = selectedTile.GetComponent<Hex>();
+                    available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
+                    
+                    tileState = selectedHex.Structure;
+                    if(tileState == 0)
+                    {
+                        structure.transform.position = selectedTile.position;
+                    }
+                }
+            }
+            if (Input.GetMouseButtonDown(1))
+            {
+                structure.GetComponent<Structure>().Rotate();
+                available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
+            }
+            if (Input.GetMouseButtonDown(0) && tileState == 0 && available != false)
+            {
+                structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
+                structure.transform.parent = selectedTile;
+                structure.GetComponent<Structure>().SetEdges();
                 currentCommand = 'E';
             }
             if (Input.GetKeyDown(KeyCode.Escape))
@@ -88,8 +133,8 @@ public class CubePlacer : MonoBehaviour
                 if(selectedTile != null)
                 {
                     selectedHex = selectedTile.GetComponent<Hex>();
-                    int[] availability = selectedHex.GetAvailability();
-                    Debug.Log(availability[0] + " " + availability[1] + " " + availability[2] + " " + availability[3] + " " + availability[4] + " " + availability[5]);
+                    available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
+                    //int[] availability = selectedHex.GetAvailability();
                     tileState = selectedHex.Structure;
                     if(tileState == 0)
                     {
@@ -97,11 +142,12 @@ public class CubePlacer : MonoBehaviour
                     }
                 }
             }
-            if (Input.GetKeyDown(KeyCode.G))
+            if (Input.GetMouseButtonDown(1))
             {
+                available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges() ,selectedTile.gameObject);
                 structure.GetComponent<Structure>().Rotate();
             }
-            if (Input.GetMouseButtonDown(0) && tileState == 0)
+            if (Input.GetMouseButtonDown(0) && tileState == 0 && available != false)
             {
                 structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
                 structure.transform.parent = selectedTile;

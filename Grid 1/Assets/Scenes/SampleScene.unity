@@ -150,11 +150,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7a0e10363366cf243b6c75dac15f98b4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  structurePrefab: {fileID: 7570017432717230080, guid: e3c12c838cf82e6459aa84f1e4e8be96,
+  structurePrefab: {fileID: 1085261678142693768, guid: 270a6d680814dd646881ba4f902ee391,
     type: 3}
-  bridgePrefab: {fileID: 7570017432717230080, guid: 1d02123a740cce1c6be2c33f2c4ced33,
+  bridgePrefab: {fileID: 6976820985121278116, guid: ac0d072b9e4f72b4db8948d4fa30cd6f,
+    type: 3}
+  stairsPrefab: {fileID: 4994357914528168837, guid: 79cd65a428e66554abe4a85655fadf5c,
     type: 3}
   caster: {fileID: 963194230}
+  currentCommand: 69
 --- !u!4 &697179095
 Transform:
   m_ObjectHideFlags: 0
@@ -370,7 +373,7 @@ MonoBehaviour:
   _moveDown: 0
   _enableSpeedAcceleration: 0
   _speedAccelerationFactor: 1.5
-  _initPositonButton: 114
+  _initPositonButton: 0
 --- !u!114 &963194230
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -413,8 +416,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2afad9bab814a0342a8a2edf859cfdeb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  size: 0.6
-  tilePrefab: {fileID: 1027144338041134, guid: 0da91a910bdc1db4dae83e74a7133f3a, type: 3}
+  tilePrefab: {fileID: 1328986990472984, guid: cc3f13525b4316d4496eb40fac0e2ef5, type: 3}
+  tilePrefab2: {fileID: 1027144338041134, guid: 0da91a910bdc1db4dae83e74a7133f3a,
+    type: 3}
 --- !u!4 &1652462443
 Transform:
   m_ObjectHideFlags: 0

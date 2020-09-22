@@ -4,9 +4,10 @@ using UnityEngine;
 
 public class BoardController : MonoBehaviour
 {
-    public float size = .6f;
+    private float size = .577f;
     
     [SerializeField] private GameObject tilePrefab;
+    [SerializeField] private GameObject tilePrefab2;
 
     //private int[,]  map = {{0,0,0,2,2,2,2},{0,0,2,2,1,1,2},{0,2,2,1,1,1,1},{2,1,1,3,1,1,1},{2,1,1,1,1,1,0},{2,2,1,1,1,0,0},{2,2,2,2,0,0,0}};
     //private int[,]  map = {{0,0,0,0,1,1,1},{0,0,2,2,1,0,0},{1,1,1,0,0,0,0}};
@@ -40,10 +41,21 @@ public class BoardController : MonoBehaviour
                     var x = size * (Mathf.Sqrt(3) * q + Mathf.Sqrt(3)/2 * r);
                     var z = size * (3f/2 * r);
                     var point = new Vector3(x, 0f, z);
-                    GameObject tileInstance = Instantiate(tilePrefab, point, Quaternion.identity);
-                    tileInstance.layer = 8;
-                    tileInstance.name = q + "-" + r;
-                    tileMap[q,r] = tileInstance;
+                    if(map[q,r]==1)
+                    {
+                        GameObject tileInstance = Instantiate(tilePrefab, point, Quaternion.identity);
+                        tileInstance.layer = 8;
+                        tileInstance.name = q + "-" + r;
+                        tileMap[q,r] = tileInstance;
+                    }
+                    else
+                    {
+                        GameObject tileInstance = Instantiate(tilePrefab2, point, Quaternion.identity);
+                        tileInstance.layer = 8;
+                        tileInstance.name = q + "-" + r;
+                        tileMap[q,r] = tileInstance;
+                    }
+                    
                 }
                 else
                 {
@@ -147,6 +159,13 @@ public class BoardController : MonoBehaviour
         int satisfied = 0;
         for (int i=0; i<6; i++)
         {
+            if(edges[i]==1)
+            {
+                if(adjacent[i]==3)
+                {
+                    return false;
+                }
+            }
             if(edges[i]==2)
             {
                 requirement++;
@@ -161,7 +180,7 @@ public class BoardController : MonoBehaviour
             }
             if(edges[i]==3)
             {
-                if(adjacent[i]==2)
+                if((adjacent[i]==2)||(adjacent[i]==1))
                 {
                     return false;
                 }

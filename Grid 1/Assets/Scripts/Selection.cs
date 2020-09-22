@@ -7,7 +7,7 @@ public class Selection : MonoBehaviour
     //public Color selectColor = Color.red;
     void OnMouseEnter()
     {
-        transform.gameObject.GetComponent<Renderer>().material.color = Color.red;
+        transform.gameObject.GetComponent<Renderer>().material.color = Color.cyan;
     }
     void OnMouseExit()
     {
