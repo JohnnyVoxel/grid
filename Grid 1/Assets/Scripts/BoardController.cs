@@ -6,8 +6,8 @@ public class BoardController : MonoBehaviour
 {
     private float size = .577f;
     
-    [SerializeField] private GameObject tilePrefab;
-    [SerializeField] private GameObject tilePrefab2;
+    public GameObject tilePrefab;
+    public GameObject tilePrefab2;
     public GameObject structurePrefab;
 
     //private int[,]  map = {{0,0,0,2,2,2,2},{0,0,2,2,1,1,2},{0,2,2,1,1,1,1},{2,1,1,3,1,1,1},{2,1,1,1,1,1,0},{2,2,1,1,1,0,0},{2,2,2,2,0,0,0}};
@@ -111,7 +111,6 @@ public class BoardController : MonoBehaviour
         int[] tileNeighbor = tilePosition;
         tileNeighbor[0]+=1;
         tileNeighbor[1]-=1;
-        //Debug.Log(tileNeighbor[0] + "-" + tileNeighbor[1]);
         GameObject tile0 = GetTile(tileNeighbor);
         if(tile0)
         {
@@ -154,7 +153,6 @@ public class BoardController : MonoBehaviour
         {
             adjacent[5] = tile5.GetComponent<Hex>().GetEdge(2);
         }
-        //Debug.Log(tile0 + " " + tile1 + " " + tile2 + " " + tile3 + " " + tile4 + " " + tile5);
         return adjacent;
     }
 
@@ -169,7 +167,6 @@ public class BoardController : MonoBehaviour
                 {
                     position[0]=q;
                     position[1]=r;
-                    //Debug.Log(q + "-" + r);
                     return position;
                 }
             }

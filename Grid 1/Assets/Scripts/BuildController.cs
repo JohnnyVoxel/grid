@@ -22,6 +22,7 @@ public class BuildController : MonoBehaviour
     private Transform selectedTile = null;  // The tile transform that was returned from the caster during the current loop
     private Transform previousTile = null;  // The tile transform that was returned from the caster during the prior loop
     private Hex selectedHex = null;         // The Hex component of the currently selected tile
+    private Hex previousHex = null;         // The Hex component that was selected prior to selectedHex
     private bool available = false;         // Holder for the availability of the tile returned from the board controller
     private bool newTile = false;           // Indicates that a new tile has been selected by the caster
 
@@ -43,7 +44,6 @@ public class BuildController : MonoBehaviour
         }
         
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
-            Debug.Log("Key Down");
             currentCommand = 'B';
         }
         if (Input.GetKeyDown(KeyCode.X) && currentCommand == 'I'){
@@ -51,21 +51,19 @@ public class BuildController : MonoBehaviour
         }
 
         if (currentCommand == 'B'){
-            Debug.Log("Before");
             BuildMenu();
-            Debug.Log("After");
         }
         if (currentCommand == 'D'){
             DestroyRoutine();
         }
         previousTile = selectedTile;
+        previousHex = selectedHex;
         newTile = false;
     }
 
     private void BuildMenu()
     {
-        Debug.Log(structureType);
-        if ((Input.GetKeyDown(KeyCode.Escape))&&(structureType==0)){
+        if ((Input.GetKeyDown(KeyCode.Q))&&(structureType==0)){
             currentCommand = 'I';
             structureType = 0;
             return;
@@ -158,7 +156,7 @@ public class BuildController : MonoBehaviour
                 currentCommand = 'I';
             }
             //Escape
-            if (Input.GetKeyDown(KeyCode.Escape))
+            if (Input.GetKeyDown(KeyCode.Q))
             {
                 Destroy(structure.gameObject);
                 structureType = 0;
@@ -169,7 +167,16 @@ public class BuildController : MonoBehaviour
 
     private void DestroyRoutine()
     {
-        // Color selected structure
+        /////////// Color initially selected structure ////////////////////
+        if (selectedHex != previousHex)
+        {
+            if(selectedHex.Structure != 0) {
+                selectedHex.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+            }
+            if(previousHex.Structure != 0) {
+                previousHex.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
+            }
+        }
 
         if (Input.GetMouseButtonDown(0) && (selectedHex.Structure == 1))
         {
@@ -177,8 +184,9 @@ public class BuildController : MonoBehaviour
             selectedHex.ResetHex();
             currentCommand = 'I';
         }
-        if (Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Q))
         {
+            selectedHex.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
             currentCommand = 'I';
         }
     }
