@@ -6,6 +6,8 @@ public class BuildController : MonoBehaviour
 {
     // Prefabs for different structures
     public GameObject platform1Prefab;
+    public GameObject platform2Prefab;
+    public GameObject platform3Prefab;
     public GameObject bridge1Prefab;
     public GameObject stairs1Prefab;
     private GameObject selectedPrefab;      // Reference to the prefab passed to the build routine
@@ -41,6 +43,7 @@ public class BuildController : MonoBehaviour
         }
         
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
+            Debug.Log("Key Down");
             currentCommand = 'B';
         }
         if (Input.GetKeyDown(KeyCode.X) && currentCommand == 'I'){
@@ -48,19 +51,21 @@ public class BuildController : MonoBehaviour
         }
 
         if (currentCommand == 'B'){
+            Debug.Log("Before");
             BuildMenu();
+            Debug.Log("After");
         }
         if (currentCommand == 'D'){
             DestroyRoutine();
         }
-
         previousTile = selectedTile;
         newTile = false;
     }
 
     private void BuildMenu()
     {
-        if (Input.GetKeyDown(KeyCode.Escape)){
+        Debug.Log(structureType);
+        if ((Input.GetKeyDown(KeyCode.Escape))&&(structureType==0)){
             currentCommand = 'I';
             structureType = 0;
             return;
@@ -71,10 +76,18 @@ public class BuildController : MonoBehaviour
         }
         if ((Input.GetKeyDown(KeyCode.Alpha2))&&(structureType==0)){
             structureType = 2;
-            selectedPrefab = bridge1Prefab;
+            selectedPrefab = platform2Prefab;
         }
         if ((Input.GetKeyDown(KeyCode.Alpha3))&&(structureType==0)){
             structureType = 3;
+            selectedPrefab = platform3Prefab;
+        }
+        if ((Input.GetKeyDown(KeyCode.Alpha4))&&(structureType==0)){
+            structureType = 4;
+            selectedPrefab = bridge1Prefab;
+        }
+        if ((Input.GetKeyDown(KeyCode.Alpha5))&&(structureType==0)){
+            structureType = 5;
             selectedPrefab = stairs1Prefab;
         }
         if (structureType!=0){
@@ -147,7 +160,7 @@ public class BuildController : MonoBehaviour
             //Escape
             if (Input.GetKeyDown(KeyCode.Escape))
             {
-                Destroy(structure);
+                Destroy(structure.gameObject);
                 structureType = 0;
                 currentCommand = 'I';
             } 

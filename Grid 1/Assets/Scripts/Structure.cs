@@ -25,7 +25,5 @@ public class Structure : MonoBehaviour
         edge[3] = edge[4];
         edge[4] = edge[5];
         edge[5] = park;
-        //edge = newEdge;
-        //this.transform.parent.gameObject.GetComponent<Hex>().SetAllEdge(newEdge);
     }
 }
