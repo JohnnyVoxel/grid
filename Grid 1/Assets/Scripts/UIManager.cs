@@ -19,7 +19,7 @@ public class UIManager : MonoBehaviour
         {
             if(build.structureType == 0)
             {
-                menu.text = "BUILD MENU:\n 1) Open Platform\n 2) Tri-Platform\n 3) Half-Platform\n 4) Bridge\n 5) Stairs\n Q) Back";
+                menu.text = "BUILD MENU:\n 1) Open Platform\n 2) Tri-Platform\n 3) Half-Platform\n 4) Bridge\n 5) Stairs\n 6) Monkeybars\n Q) Back";
             }
             else
             {

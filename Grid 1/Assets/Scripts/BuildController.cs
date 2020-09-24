@@ -9,6 +9,7 @@ public class BuildController : MonoBehaviour
     public GameObject platform2Prefab;
     public GameObject platform3Prefab;
     public GameObject bridge1Prefab;
+    public GameObject bridge2Prefab;
     public GameObject stairs1Prefab;
     private GameObject selectedPrefab;      // Reference to the prefab passed to the build routine
 
@@ -47,6 +48,7 @@ public class BuildController : MonoBehaviour
             currentCommand = 'B';
         }
         if (Input.GetKeyDown(KeyCode.X) && currentCommand == 'I'){
+            previousHex = null; // Hacky way of making the Destroy routine actually evaluate the hex that is selected when the function is called
             currentCommand = 'D';
         }
         if (Input.GetKeyDown(KeyCode.Escape) && currentCommand == 'I'){
@@ -94,6 +96,10 @@ public class BuildController : MonoBehaviour
             structureType = 5;
             selectedPrefab = stairs1Prefab;
         }
+        if ((Input.GetKeyDown(KeyCode.Alpha6))&&(structureType==0)){
+            structureType = 6;
+            selectedPrefab = bridge2Prefab;
+        }
         if (structureType!=0){
             BuildStructure(selectedPrefab);
         }
@@ -113,10 +119,10 @@ public class BuildController : MonoBehaviour
             if (selectedTile){
                 available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                 if (available){
-                    structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.cyan;
+                    SetHighlight(structure.transform, Color.cyan);
                 }
                 else {
-                    structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    SetHighlight(structure.transform, Color.red);
                 }
             }
         }
@@ -125,17 +131,17 @@ public class BuildController : MonoBehaviour
             if (selectedTile && (newTile || (structure.transform.position == spawnPoint))) {
                 // If selected hex does not already have a structure on it move the new structure to that tile
                 if(selectedHex.Structure != 0) {
-                    structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    SetHighlight(structure.transform, Color.red);
                     available = false;
                 }
                 else {
                     structure.transform.position = selectedTile.position;
                     available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                     if (available){
-                        structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.cyan;
+                        SetHighlight(structure.transform, Color.cyan);
                     }
                     else {
-                        structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                        SetHighlight(structure.transform, Color.red);
                     }
                 }
             }
@@ -145,16 +151,16 @@ public class BuildController : MonoBehaviour
                 structure.GetComponent<Structure>().Rotate();
                 available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                 if (available){
-                    structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.cyan;
+                    SetHighlight(structure.transform, Color.cyan);
                 }
                 else {
-                    structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+                    SetHighlight(structure.transform, Color.red);
                 }
             }
             //Apply
             if (Input.GetMouseButtonDown(0) && selectedHex.Structure == 0 && available)
             {
-                structure.transform.GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
+                SetHighlight(structure.transform, Color.white);
                 structure.transform.parent = selectedTile;
                 structure.GetComponent<Structure>().SetEdges();
                 structure = null;
@@ -176,11 +182,16 @@ public class BuildController : MonoBehaviour
         /////////// Color initially selected structure ////////////////////
         if (selectedHex != previousHex)
         {
-            if(selectedHex.Structure != 0) {
-                selectedHex.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.red;
+            if(selectedHex){
+
+                if(selectedHex.Structure != 0) {
+                    SetHighlight(selectedHex.transform.GetChild(0).transform, Color.red);
+                }
             }
-            if(previousHex.Structure != 0) {
-                previousHex.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
+            if(previousHex){
+                if(previousHex.Structure != 0) {
+                    SetHighlight(previousHex.transform.GetChild(0).transform, Color.white);
+                }
             }
         }
 
@@ -192,8 +203,18 @@ public class BuildController : MonoBehaviour
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
-            selectedHex.transform.GetChild(0).GetChild(0).gameObject.GetComponent<Renderer>().material.color = Color.white;
+            if(selectedHex.Structure != 0) {
+                SetHighlight(selectedHex.transform.GetChild(0).transform, Color.white);
+            }
             currentCommand = 'I';
+        }
+    }
+
+    private void SetHighlight(Transform newTransform, Color newColor)
+    {
+        foreach (Transform child in newTransform)
+        {
+            child.gameObject.GetComponent<Renderer>().material.color = newColor;
         }
     }
 }
