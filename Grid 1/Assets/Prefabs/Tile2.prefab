@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 23057092651682868}
   - component: {fileID: 64734788724731850}
   - component: {fileID: 5525552372539490817}
-  - component: {fileID: -7660354208632985356}
   m_Layer: 0
   m_Name: Tile2
   m_TagString: Untagged
@@ -108,16 +107,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 61e9aea04e87db64d8f0d386a5dbd68c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  board: {fileID: 1665513479596425915, guid: 78046490e23cd9f4a94dce53ebf62c5c, type: 3}
---- !u!114 &-7660354208632985356
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1027144338041134}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7f9022a06f2f9594b8fab1eae92d413e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
+  struc: 0
+  e0: 0
+  e1: 0
+  e2: 0
+  e3: 0
+  e4: 0
+  e5: 0

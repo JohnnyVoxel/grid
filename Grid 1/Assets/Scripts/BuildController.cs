@@ -49,12 +49,18 @@ public class BuildController : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.X) && currentCommand == 'I'){
             currentCommand = 'D';
         }
+        if (Input.GetKeyDown(KeyCode.Escape) && currentCommand == 'I'){
+            currentCommand = 'Q';
+        }
 
         if (currentCommand == 'B'){
             BuildMenu();
         }
         if (currentCommand == 'D'){
             DestroyRoutine();
+        }
+        if (currentCommand == 'Q'){
+            Application.Quit();
         }
         previousTile = selectedTile;
         previousHex = selectedHex;
