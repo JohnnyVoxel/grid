@@ -165,6 +165,7 @@ public class BuildController : MonoBehaviour
                 structure.GetComponent<Structure>().SetEdges();
                 structure = null;
                 structureType = 0;
+                board.RebuildNavMesh();
                 currentCommand = 'I';
             }
             //Escape
@@ -199,6 +200,7 @@ public class BuildController : MonoBehaviour
         {
             Destroy(selectedTile.GetChild(0).gameObject);
             selectedHex.ResetHex();
+            board.RebuildNavMesh();
             currentCommand = 'I';
         }
         if (Input.GetKeyDown(KeyCode.Q))

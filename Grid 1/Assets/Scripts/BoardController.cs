@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class BoardController : MonoBehaviour
 {
@@ -72,6 +73,7 @@ public class BoardController : MonoBehaviour
                         GameObject tileInstance = Instantiate(tilePrefab, point, Quaternion.identity);
                         tileInstance.layer = 8;
                         tileInstance.name = q + "-" + r;
+                        tileInstance.transform.parent = this.transform;
                         tileMap[q,r] = tileInstance;
                     }
                     else if(map[q,r]==3)
@@ -79,6 +81,7 @@ public class BoardController : MonoBehaviour
                         GameObject tileInstance = Instantiate(tilePrefab, point, Quaternion.identity);
                         tileInstance.layer = 8;
                         tileInstance.name = q + "-" + r;
+                        tileInstance.transform.parent = this.transform;
                         tileMap[q,r] = tileInstance;
                         GameObject structure = Instantiate(structurePrefab, point, Quaternion.identity);
                         structure.name = "structure";
@@ -91,6 +94,7 @@ public class BoardController : MonoBehaviour
                         GameObject tileInstance = Instantiate(tilePrefab2, point, Quaternion.identity);
                         tileInstance.layer = 8;
                         tileInstance.name = q + "-" + r;
+                        tileInstance.transform.parent = this.transform;
                         tileMap[q,r] = tileInstance;
                     }
                     
@@ -101,6 +105,7 @@ public class BoardController : MonoBehaviour
                 }
             }
         }
+        RebuildNavMesh();
     }
     public int[] GetAdjacent(GameObject tile)
     {
@@ -226,5 +231,10 @@ public class BoardController : MonoBehaviour
             return false;
         }
         return true;
+    }
+
+    public void RebuildNavMesh()
+    {
+        this.gameObject.GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 }
