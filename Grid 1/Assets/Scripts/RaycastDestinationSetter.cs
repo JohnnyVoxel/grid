@@ -14,6 +14,7 @@ public class RaycastDestinationSetter : MonoBehaviour {
     //private LineRenderer laserLine;                                     // Reference to the LineRenderer component which will display our laserline
     private float nextFire;                                             // Float to store the time the player will be allowed to fire again, after firing
 
+    //public GameObject sphere;
 
     void Start () 
     {
@@ -31,7 +32,7 @@ public class RaycastDestinationSetter : MonoBehaviour {
     void Update () 
     {
         // Check if the player has pressed the fire button and if enough time has elapsed since they last fired
-        if (Input.GetButtonDown("Fire1") && Time.time > nextFire) 
+        if (Input.GetMouseButtonDown(1) && Time.time > nextFire) 
         {
             // Update the time when our player can fire next
             nextFire = Time.time + fireRate;
@@ -54,6 +55,7 @@ public class RaycastDestinationSetter : MonoBehaviour {
             {
                 // Set the end position for our laser line 
                 //laserLine.SetPosition (1, hit.point);
+                //GameObject target = Instantiate(sphere, hit.point, Quaternion.identity);
                 directedAgent.MoveToLocation (hit.point);
                 Debug.Log(hit.point);
             }
