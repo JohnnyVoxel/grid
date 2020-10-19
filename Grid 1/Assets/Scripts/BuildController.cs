@@ -14,7 +14,7 @@ public class BuildController : MonoBehaviour
     private GameObject selectedPrefab;      // Reference to the prefab passed to the build routine
 
     private static BoardController board;   // Reference to the board controller for determining hex availability
-    public CastingToObject caster;         // Reference to the caster for determining currently selected hex
+    public CameraCaster caster;             // Reference to the caster for determining currently selected hex
     public char currentCommand = 'I';       // Stores user input for top level commands ((B)uild/(D)estroy/(I)dle/(U)pgrade)
     public int structureType = 0;           // Stores user input for which type of structure to build
 
@@ -180,6 +180,10 @@ public class BuildController : MonoBehaviour
 
     private void DestroyRoutine()
     {
+        /////// This should not have to be declared again. Figure out why it does not work globally.
+        BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
+        /////////////////////////////////////////////////////////////////////////////////////////////
+        
         /////////// Color initially selected structure ////////////////////
         if (selectedHex != previousHex)
         {
@@ -198,10 +202,12 @@ public class BuildController : MonoBehaviour
 
         if (Input.GetMouseButtonDown(0) && (selectedHex.Structure == 1))
         {
+            selectedTile.GetChild(0).gameObject.transform.position = spawnPoint;
             Destroy(selectedTile.GetChild(0).gameObject);
             selectedHex.ResetHex();
-            board.RebuildNavMesh();
             currentCommand = 'I';
+            Debug.Log("Rebuild");
+            board.RebuildNavMesh();
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
