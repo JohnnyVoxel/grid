@@ -71,25 +71,25 @@ public class CharacterController : MonoBehaviour
             cameraJump = false;
         }
 
-        if  (Input.GetKeyDown(KeyCode.Alpha1)){
+        if  (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)){
             rtscamera.SetTarget(character01.transform);
             selectedCharacter = character01;
             directedAgent = character01.GetComponent<DirectedAgent>();
             cameraJump = true;
         }
-        if  (Input.GetKeyDown(KeyCode.Alpha2)){
+        if  (Input.GetKeyDown(KeyCode.Alpha2)||Input.GetKeyDown(KeyCode.Keypad2)){
             rtscamera.SetTarget(character02.transform);
             selectedCharacter = character02;
             directedAgent = character02.GetComponent<DirectedAgent>();
             cameraJump = true;
         }
-        if  (Input.GetKeyDown(KeyCode.Alpha3)){
+        if  (Input.GetKeyDown(KeyCode.Alpha3)||Input.GetKeyDown(KeyCode.Keypad3)){
             rtscamera.SetTarget(character03.transform);
             selectedCharacter = character03;
             directedAgent = character03.GetComponent<DirectedAgent>();
             cameraJump = true;
         }
-        if  (Input.GetKeyDown(KeyCode.Alpha4)){
+        if  (Input.GetKeyDown(KeyCode.Alpha4)||Input.GetKeyDown(KeyCode.Keypad4)){
             rtscamera.SetTarget(character04.transform);
             selectedCharacter = character04;
             directedAgent = character04.GetComponent<DirectedAgent>();
