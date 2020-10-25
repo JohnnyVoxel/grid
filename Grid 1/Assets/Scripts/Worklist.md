@@ -10,7 +10,7 @@ player supplies
 building cost
 destroy recoup cost
 structure upgrades
-
+movement cancelling
 
 Bugs:
 
