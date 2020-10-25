@@ -15,8 +15,9 @@ public class BuildController : MonoBehaviour
 
     private static BoardController board;   // Reference to the board controller for determining hex availability
     public CameraCaster caster;             // Reference to the caster for determining currently selected hex
-    public char currentCommand = 'I';       // Stores user input for top level commands ((B)uild/(D)estroy/(I)dle/(U)pgrade)
+    //public char currentCommand = 'I';       // Stores user input for top level commands ((B)uild/(D)estroy/(I)dle/(U)pgrade)
     public int structureType = 0;           // Stores user input for which type of structure to build
+    public GameController game;             // Stores reference to game controller. Do this programmatically in the future.
 
     private Vector3 spawnPoint = new Vector3 (0.0f, -20.0f, 0.0f);  // Point to spawn new instantiations until a legal target location is determined
     private GameObject structure = null;           // Reference to the currently selected structure
@@ -33,8 +34,13 @@ public class BuildController : MonoBehaviour
         BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
     }
 
+    void OnEnable() {
+        structureType = 0;
+        Debug.Log("Build");
+    }
+
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         selectedTile = caster.SelectedTile();
         if (selectedTile != previousTile){
@@ -43,66 +49,51 @@ public class BuildController : MonoBehaviour
         if(selectedTile){
             selectedHex = selectedTile.GetComponent<Hex>();
         }
-        
-        if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
-            currentCommand = 'B';
+        if (Input.GetKeyDown(KeyCode.Q)){
+                game.Play();
         }
-        if (Input.GetKeyDown(KeyCode.X) && currentCommand == 'I'){
-            previousHex = null; // Hacky way of making the Destroy routine actually evaluate the hex that is selected when the function is called
-            currentCommand = 'D';
+        if (structureType==0)
+        {
+            if (Input.GetKeyDown(KeyCode.X)){
+                previousHex = null; // Hacky way of making the Destroy routine actually evaluate the hex that is selected when the function is called
+                structureType = -1;
+                Debug.Log("Destroy");
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha1)){
+                structureType = 1;
+                selectedPrefab = platform1Prefab;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha2)){
+                structureType = 2;
+                selectedPrefab = platform2Prefab;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha3)){
+                structureType = 3;
+                selectedPrefab = platform3Prefab;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha4)){
+                structureType = 4;
+                selectedPrefab = bridge1Prefab;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha5)){
+                structureType = 5;
+                selectedPrefab = stairs1Prefab;
+            }
+            if (Input.GetKeyDown(KeyCode.Alpha6)){
+                structureType = 6;
+                selectedPrefab = bridge2Prefab;
+            }
         }
-        if (Input.GetKeyDown(KeyCode.Escape) && currentCommand == 'I'){
-            currentCommand = 'Q';
+        if (structureType>0){
+            BuildStructure(selectedPrefab);
         }
-
-        if (currentCommand == 'B'){
-            BuildMenu();
-        }
-        if (currentCommand == 'D'){
+        if (structureType==-1){
             DestroyRoutine();
         }
-        if (currentCommand == 'Q'){
-            Application.Quit();
-        }
+
         previousTile = selectedTile;
         previousHex = selectedHex;
         newTile = false;
-    }
-
-    private void BuildMenu()
-    {
-        if ((Input.GetKeyDown(KeyCode.Q))&&(structureType==0)){
-            currentCommand = 'I';
-            structureType = 0;
-            return;
-        }
-        if ((Input.GetKeyDown(KeyCode.Alpha1))&&(structureType==0)){
-            structureType = 1;
-            selectedPrefab = platform1Prefab;
-        }
-        if ((Input.GetKeyDown(KeyCode.Alpha2))&&(structureType==0)){
-            structureType = 2;
-            selectedPrefab = platform2Prefab;
-        }
-        if ((Input.GetKeyDown(KeyCode.Alpha3))&&(structureType==0)){
-            structureType = 3;
-            selectedPrefab = platform3Prefab;
-        }
-        if ((Input.GetKeyDown(KeyCode.Alpha4))&&(structureType==0)){
-            structureType = 4;
-            selectedPrefab = bridge1Prefab;
-        }
-        if ((Input.GetKeyDown(KeyCode.Alpha5))&&(structureType==0)){
-            structureType = 5;
-            selectedPrefab = stairs1Prefab;
-        }
-        if ((Input.GetKeyDown(KeyCode.Alpha6))&&(structureType==0)){
-            structureType = 6;
-            selectedPrefab = bridge2Prefab;
-        }
-        if (structureType!=0){
-            BuildStructure(selectedPrefab);
-        }
     }
 
     private void BuildStructure(GameObject structurePrefab)
@@ -166,14 +157,16 @@ public class BuildController : MonoBehaviour
                 structure = null;
                 structureType = 0;
                 board.RebuildNavMesh();
-                currentCommand = 'I';
+                //currentCommand = 'I';
+                game.Return();
             }
             //Escape
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 Destroy(structure.gameObject);
                 structureType = 0;
-                currentCommand = 'I';
+                //currentCommand = 'I';
+                game.Return();
             } 
         }
     }
@@ -205,16 +198,19 @@ public class BuildController : MonoBehaviour
             selectedTile.GetChild(0).gameObject.transform.position = spawnPoint;
             Destroy(selectedTile.GetChild(0).gameObject);
             selectedHex.ResetHex();
-            currentCommand = 'I';
+            //currentCommand = 'I';
+            structureType = 0;
             Debug.Log("Rebuild");
             board.RebuildNavMesh();
+            game.Play();
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if(selectedHex.Structure != 0) {
                 SetHighlight(selectedHex.transform.GetChild(0).transform, Color.white);
             }
-            currentCommand = 'I';
+            //currentCommand = 'I';
+            structureType = 0;
         }
     }
 

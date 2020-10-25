@@ -6,29 +6,35 @@ using UnityEngine.UI;
 public class UIManager : MonoBehaviour
 {
     public Text menu;
-    private BuildController build;
+    public BuildController build;
+    public CharacterController character;
+    public GameController game;
+    void Start()
+    {
+        //BuildController build = GameObject.Find("Selection").GetComponent<BuildController>();
+    }
     
     void Update()
     {
-        BuildController build = GameObject.Find("Selection").GetComponent<BuildController>();
-        if(build.currentCommand == 'I')
-        {
-            menu.text = "MAIN MENU:\n B) Build\n X) Destroy\n Esc) Quit";
-        }
-        if(build.currentCommand == 'B')
+        //Debug.Log(game.currentMode);
+        if(game.currentMode == build.gameObject)
         {
             if(build.structureType == 0)
             {
-                menu.text = "BUILD MENU:\n 1) Open Platform\n 2) Tri-Platform\n 3) Half-Platform\n 4) Bridge\n 5) Stairs\n 6) Monkeybars\n Q) Back";
+                menu.text = "BUILD MENU:\n 1) Open Platform\n 2) Tri-Platform\n 3) Half-Platform\n 4) Bridge\n 5) Stairs\n 6) Monkeybars\n X) Destroy\n Q) Exit";
             }
-            else
+            else if(build.structureType > 0)
             {
                 menu.text = "BUILD MENU:\n L-click) Place\n R-click) Rotate\n Q) Back";
             }
+            else if(build.structureType == -1)
+            {
+                menu.text = "DESTROY MENU:\n L-click) Destroy\n Q) Back";
+            }
         }
-        if(build.currentCommand == 'D')
+        if(game.currentMode == character.gameObject)
         {
-            menu.text = "DESTROY MENU:\n L-click) Destroy\n Q) Back";
+            menu.text = "PLAY:\n R-click) Move\n B) Build\n Q) Quit\n Space) Center camera";
         }
     }
 }

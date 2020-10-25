@@ -30,7 +30,7 @@ public class CameraCaster : MonoBehaviour
         return selectedObject;
     }
 
-    public Vector3? SelectedDestination()
+    public Vector3? SelectedDestination()  // Return a nullable Vector3
     {
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;

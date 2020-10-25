@@ -56,7 +56,7 @@ public class BoardController : MonoBehaviour
     public static GameObject[,] tileMap = new GameObject[1,1];
 
     // Start is called before the first frame update
-    public void Start()
+    public void Awake()
     {
         tileMap = new GameObject[map.GetLength(0),map.GetLength(1)];
         for (int q = 0; q < map.GetLength(0); q++)
