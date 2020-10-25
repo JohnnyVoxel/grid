@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
         }
         if(game.currentMode == character.gameObject)
         {
-            menu.text = "PLAY:\n R-click) Move\n B) Build\n Q) Quit\n Space) Center camera";
+            menu.text = "PLAY:\n R-click) Move\n 1-4) Switch character\n B) Build\n Q) Quit\n Space) Camera follow";
         }
     }
 }

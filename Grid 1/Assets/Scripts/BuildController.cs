@@ -36,7 +36,6 @@ public class BuildController : MonoBehaviour
 
     void OnEnable() {
         structureType = 0;
-        Debug.Log("Build");
     }
 
     // Update is called once per frame
