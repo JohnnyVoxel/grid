@@ -19,9 +19,9 @@ public class EnemyController : MonoBehaviour
     
     IEnumerator EnemySpawner()
     {
-        for(int i = 0; i < 10; i++)
+        for(int i = 0; i < 1; i++)
         {
-            for(int j = 0; j < 5; j++)
+            for(int j = 0; j < 3; j++)
             {
                 SpawnWave();
                 yield return new WaitForSeconds(2);
@@ -35,7 +35,8 @@ public class EnemyController : MonoBehaviour
         foreach (Vector3 point in spawns)
         {
             GameObject enemy = Instantiate(enemyPrefab, point, Quaternion.identity);
-            enemy.GetComponent<EnemyAgent>().MoveToLocation(target);
+            enemy.GetComponent<EnemyAgent>().BasePos = target;
+            enemy.GetComponent<EnemyAgent>().MoveToLocation();
         }
 
     }
