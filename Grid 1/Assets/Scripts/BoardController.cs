@@ -9,6 +9,7 @@ public class BoardController : MonoBehaviour
     
     public GameObject tilePrefab;
     public GameObject tilePrefab2;
+    public GameObject tilePrefab3;
     public GameObject structurePrefab;
 
     //private int[,]  map = {{0,0,0,2,2,2,2},{0,0,2,2,1,1,2},{0,2,2,1,1,1,1},{2,1,1,3,1,1,1},{2,1,1,1,1,1,0},{2,2,1,1,1,0,0},{2,2,2,2,0,0,0}};
@@ -30,12 +31,12 @@ public class BoardController : MonoBehaviour
     };*/
     private int[,] map = {
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,0,0,0,0},
+        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,4,2,2,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,2,2,2,2,2,2,2,0,0,0,0},
         {0,0,0,0,0,0,0,2,2,2,2,0,2,2,2,2,2,2,0,2,2,2,2},
         {0,0,0,0,0,0,2,2,2,2,2,0,2,2,2,2,2,0,2,2,2,2,2},
-        {0,0,0,0,0,2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2},
+        {0,0,0,0,0,2,4,2,2,2,2,1,1,1,1,1,1,2,2,2,2,4,2},
         {0,0,0,0,2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2},
         {0,0,0,0,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,0},
         {0,0,0,0,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,0,0},
@@ -45,12 +46,12 @@ public class BoardController : MonoBehaviour
         {0,0,2,2,2,2,1,1,1,1,1,1,1,1,1,2,2,2,2,0,0,0,0},
         {0,2,2,2,2,2,1,1,1,1,1,1,1,1,2,2,2,2,2,0,0,0,0},
         {2,2,2,2,2,2,1,1,1,1,1,1,1,2,2,2,2,2,2,0,0,0,0},
-        {2,2,2,2,2,2,1,1,1,1,1,1,2,2,2,2,2,2,0,0,0,0,0},
+        {2,4,2,2,2,2,1,1,1,1,1,1,2,2,2,2,4,2,0,0,0,0,0},
         {2,2,2,2,2,0,2,2,2,2,2,0,2,2,2,2,2,0,0,0,0,0,0},
         {2,2,2,2,0,2,2,2,2,2,2,0,2,2,2,2,0,0,0,0,0,0,0},
         {0,0,0,0,2,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,2,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,2,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {0,0,0,0,2,2,4,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     };
     public static GameObject[,] tileMap = new GameObject[1,1];
@@ -88,6 +89,14 @@ public class BoardController : MonoBehaviour
                         structure.transform.parent = tileInstance.transform;
                         int[] platform = {1,1,1,1,1,1};
                         tileInstance.GetComponent<Hex>().SetAllEdge(platform);
+                    }
+                    else if(map[q,r]==4)
+                    {
+                        GameObject tileInstance = Instantiate(tilePrefab3, point, Quaternion.identity);
+                        tileInstance.layer = 8;
+                        tileInstance.name = q + "-" + r;
+                        tileInstance.transform.parent = this.transform;
+                        tileMap[q,r] = tileInstance;
                     }
                     else
                     {
@@ -236,5 +245,42 @@ public class BoardController : MonoBehaviour
     public void RebuildNavMesh()
     {
         this.gameObject.GetComponent<NavMeshSurface>().BuildNavMesh();
+    }
+
+    // Find and return the worldspace position of the starting base.
+    public Vector3 GetBasePosition()
+    {
+        Vector3 position = new Vector3 (0f, 0f, 0f); // Possibly make nullable to catch errors
+        for (int q = 0; q < map.GetLength(0); q++)
+        {
+            for (int r = 0; r < map.GetLength(1); r++)
+            {
+                if(map[q,r]==3)
+                {
+                    float x = size * (Mathf.Sqrt(3) * q + Mathf.Sqrt(3)/2 * r);
+                    float z = size * (3f/2 * r);
+                    position = new Vector3(x, 0f, z);
+                }
+            }
+        }
+        return position;
+    }
+
+    public List <Vector3> GetEnemySpawnPoints()
+    {
+        List <Vector3> spawns = new List <Vector3>(); 
+        for (int q = 0; q < map.GetLength(0); q++)
+        {
+            for (int r = 0; r < map.GetLength(1); r++)
+            {
+                if(map[q,r]==4)
+                {
+                    float x = size * (Mathf.Sqrt(3) * q + Mathf.Sqrt(3)/2 * r);
+                    float z = size * (3f/2 * r);
+                    spawns.Add(new Vector3(x, 0f, z));
+                }
+            }
+        }
+        return spawns;
     }
 }
