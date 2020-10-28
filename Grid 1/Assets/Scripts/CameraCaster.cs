@@ -9,7 +9,20 @@ public class CameraCaster : MonoBehaviour
     private int layerMask = 1 << 8;
     private Camera rtsCamera;
 
-     void Start() 
+    static CameraCaster _instance;
+    public static CameraCaster Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<CameraCaster>();
+            }
+            return _instance;
+        }
+    }
+
+    void Start() 
     {
         rtsCamera = GetComponentInParent<Camera>();    
     }

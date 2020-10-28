@@ -9,6 +9,18 @@ public class GameController : MonoBehaviour
     public GameObject currentMode;
     public GameObject previousMode;
 
+    static GameController _instance;
+    public static GameController Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<GameController>();
+            }
+            return _instance;
+        }
+    }
     void Awake()
     {
         currentMode = playerController;

@@ -6,11 +6,9 @@ using RTS_Cam;
 public class CharacterController : MonoBehaviour
 {
     public GameObject characterPrefab;
-    public DirectedAgent directedAgent;
-    public CameraCaster caster;
+    private DirectedAgent directedAgent;
     public Vector3 destination;
     public char currentCommand = 'I';
-    public GameController game;
     private RTS_Camera rtscamera;
     private GameObject character01;
     private GameObject character02;
@@ -47,8 +45,8 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButton(1)) {
-            if (caster.SelectedDestination() != null) {
-                directedAgent.MoveToLocation((Vector3)caster.SelectedDestination());
+            if (CameraCaster.Instance.SelectedDestination() != null) {
+                directedAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
@@ -58,19 +56,17 @@ public class CharacterController : MonoBehaviour
             Application.Quit();
         }
 
+
         if (currentCommand == 'B') {
-            game.Build();
+            GameController.Instance.Build();
         }
-        if (Input.GetKeyDown(KeyCode.Space))
-        {
+        if (Input.GetKeyDown(KeyCode.Space)){
             rtscamera.SetTarget(selectedCharacter.transform);
         }
-        if (Input.GetKeyUp(KeyCode.Space)||(cameraJump))
-        {
+        if (Input.GetKeyUp(KeyCode.Space)||(cameraJump)){
             rtscamera.ResetTarget();
             cameraJump = false;
         }
-
         if  (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)){
             rtscamera.SetTarget(character01.transform);
             selectedCharacter = character01;

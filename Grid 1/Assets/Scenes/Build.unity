@@ -304,9 +304,7 @@ MonoBehaviour:
     type: 3}
   stairs1Prefab: {fileID: 4994357914528168837, guid: 79cd65a428e66554abe4a85655fadf5c,
     type: 3}
-  caster: {fileID: 2029455407}
   structureType: 0
-  game: {fileID: 154312602}
 --- !u!4 &697179095
 Transform:
   m_ObjectHideFlags: 0
@@ -637,7 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a0907a3d3dfb142818af5bcdbeb392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 631607590774997145, guid: afe97000caf679e4db93bb0e73df1b39,
+  enemyPrefab: {fileID: 2953154089769462373, guid: afe97000caf679e4db93bb0e73df1b39,
     type: 3}
 --- !u!1001 &1028231556
 PrefabInstance:
@@ -885,6 +883,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1328986990472984, guid: cc3f13525b4316d4496eb40fac0e2ef5, type: 3}
   tilePrefab2: {fileID: 1027144338041134, guid: 0da91a910bdc1db4dae83e74a7133f3a,
+    type: 3}
+  tilePrefab3: {fileID: 1794535936301100, guid: bec1c057765b3e54197b483b84245bbe,
     type: 3}
   structurePrefab: {fileID: 1085261678142693768, guid: 4bcadc6d47c83474cad5946ab5a5854c,
     type: 3}
@@ -1156,11 +1156,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   characterPrefab: {fileID: 3461756604606798125, guid: 44fd4d1885832c745b25d81ce4a697b8,
     type: 3}
-  directedAgent: {fileID: 0}
-  caster: {fileID: 2029455407}
   destination: {x: 0, y: 0, z: 0}
   currentCommand: 73
-  game: {fileID: 154312602}
 --- !u!4 &2050409885
 Transform:
   m_ObjectHideFlags: 0

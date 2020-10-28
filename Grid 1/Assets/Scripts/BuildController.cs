@@ -13,11 +13,7 @@ public class BuildController : MonoBehaviour
     public GameObject stairs1Prefab;
     private GameObject selectedPrefab;      // Reference to the prefab passed to the build routine
 
-    private static BoardController board;   // Reference to the board controller for determining hex availability
-    public CameraCaster caster;             // Reference to the caster for determining currently selected hex
-    //public char currentCommand = 'I';       // Stores user input for top level commands ((B)uild/(D)estroy/(I)dle/(U)pgrade)
     public int structureType = 0;           // Stores user input for which type of structure to build
-    public GameController game;             // Stores reference to game controller. Do this programmatically in the future.
 
     private Vector3 spawnPoint = new Vector3 (0.0f, -20.0f, 0.0f);  // Point to spawn new instantiations until a legal target location is determined
     private GameObject structure = null;           // Reference to the currently selected structure
@@ -28,12 +24,6 @@ public class BuildController : MonoBehaviour
     private bool available = false;         // Holder for the availability of the tile returned from the board controller
     private bool newTile = false;           // Indicates that a new tile has been selected by the caster
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
-    }
-
     void OnEnable() {
         structureType = 0;
     }
@@ -41,7 +31,7 @@ public class BuildController : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
-        selectedTile = caster.SelectedTile();
+        selectedTile = CameraCaster.Instance.SelectedTile();
         if (selectedTile != previousTile){
             newTile = true;
         }
@@ -49,14 +39,13 @@ public class BuildController : MonoBehaviour
             selectedHex = selectedTile.GetComponent<Hex>();
         }
         if (Input.GetKeyDown(KeyCode.Q)){
-                game.Play();
+                GameController.Instance.Play();
         }
         if (structureType==0)
         {
             if (Input.GetKeyDown(KeyCode.X)){
                 previousHex = null; // Hacky way of making the Destroy routine actually evaluate the hex that is selected when the function is called
                 structureType = -1;
-                Debug.Log("Destroy");
             }
             if (Input.GetKeyDown(KeyCode.Alpha1)){
                 structureType = 1;
@@ -97,17 +86,13 @@ public class BuildController : MonoBehaviour
 
     private void BuildStructure(GameObject structurePrefab)
     {
-        /////// This should not have to be declared again. Figure out why it does not work globally.
-        BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        
         // If the structure has not been instantiated yet, do it. Should only run on first loop.
         if (!structure){
             structure = Instantiate(structurePrefab, spawnPoint, Quaternion.identity);
             structure.name = "structure";
             // If a tile is selected, check the availability against the structure type, color as appropriate
             if (selectedTile){
-                available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
+                available = BoardController.Instance.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                 if (available){
                     SetHighlight(structure.transform, Color.cyan);
                 }
@@ -126,7 +111,7 @@ public class BuildController : MonoBehaviour
                 }
                 else {
                     structure.transform.position = selectedTile.position;
-                    available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
+                    available = BoardController.Instance.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                     if (available){
                         SetHighlight(structure.transform, Color.cyan);
                     }
@@ -139,7 +124,7 @@ public class BuildController : MonoBehaviour
             if (Input.GetMouseButtonDown(1))
             {
                 structure.GetComponent<Structure>().Rotate();
-                available = board.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
+                available = BoardController.Instance.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                 if (available){
                     SetHighlight(structure.transform, Color.cyan);
                 }
@@ -155,28 +140,22 @@ public class BuildController : MonoBehaviour
                 structure.GetComponent<Structure>().SetEdges();
                 structure = null;
                 structureType = 0;
-                board.RebuildNavMesh();
-                //currentCommand = 'I';
-                game.Return();
+                BoardController.Instance.RebuildNavMesh();
+                GameController.Instance.Return();
             }
             //Escape
             if (Input.GetKeyDown(KeyCode.Q))
             {
                 Destroy(structure.gameObject);
                 structureType = 0;
-                //currentCommand = 'I';
-                game.Return();
+                GameController.Instance.Return();
             } 
         }
     }
 
     private void DestroyRoutine()
     {
-        /////// This should not have to be declared again. Figure out why it does not work globally.
-        BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
-        /////////////////////////////////////////////////////////////////////////////////////////////
-        
-        /////////// Color initially selected structure ////////////////////
+        // Color initially selected structure
         if (selectedHex != previousHex)
         {
             if(selectedHex){
@@ -197,18 +176,15 @@ public class BuildController : MonoBehaviour
             selectedTile.GetChild(0).gameObject.transform.position = spawnPoint;
             Destroy(selectedTile.GetChild(0).gameObject);
             selectedHex.ResetHex();
-            //currentCommand = 'I';
             structureType = 0;
-            Debug.Log("Rebuild");
-            board.RebuildNavMesh();
-            game.Play();
+            BoardController.Instance.RebuildNavMesh();
+            GameController.Instance.Play();
         }
         if (Input.GetKeyDown(KeyCode.Q))
         {
             if(selectedHex.Structure != 0) {
                 SetHighlight(selectedHex.transform.GetChild(0).transform, Color.white);
             }
-            //currentCommand = 'I';
             structureType = 0;
         }
     }

@@ -55,7 +55,18 @@ public class BoardController : MonoBehaviour
         {0,0,0,0,2,2,2,2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
     };
     public static GameObject[,] tileMap = new GameObject[1,1];
-
+    static BoardController _instance;
+    public static BoardController Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<BoardController>();
+            }
+            return _instance;
+        }
+    }
     // Start is called before the first frame update
     public void Awake()
     {
