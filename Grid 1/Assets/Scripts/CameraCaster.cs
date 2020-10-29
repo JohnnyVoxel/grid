@@ -6,7 +6,8 @@ public class CameraCaster : MonoBehaviour
 {
     public Transform selectedObject;
     public RaycastHit hit;
-    private int layerMask = 1 << 8;
+    private int layerMaskBoard = 1 << 8;
+    private int layerMaskBoardDefault = 257;
     private Camera rtsCamera;
 
     static CameraCaster _instance;
@@ -32,7 +33,7 @@ public class CameraCaster : MonoBehaviour
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMask))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMaskBoard))
         {
             selectedObject = hit.transform;
         }
@@ -48,7 +49,7 @@ public class CameraCaster : MonoBehaviour
         Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
         RaycastHit hit;
 
-        if (Physics.Raycast(ray, out hit, Mathf.Infinity))
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMaskBoardDefault))
         {
             return hit.point;
         }
