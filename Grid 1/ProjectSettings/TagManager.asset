@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Board
   - Enemy
+  - Structure
   layers:
   - Default
   - TransparentFX

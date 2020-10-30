@@ -16,8 +16,6 @@ public class EnemyAgent : MonoBehaviour
         set {basePos = value;}
     }
 
-
-    // Use this for initialization
     void Awake () 
     {
         agent = GetComponent<NavMeshAgent> ();    
@@ -27,7 +25,14 @@ public class EnemyAgent : MonoBehaviour
     {
         if(aggroRangeList.Count > 0)
         {
-            MoveToLocation(aggroRangeList[0].transform.position);
+            if(aggroRangeList[0])
+            {
+                MoveToLocation(aggroRangeList[0].transform.position);
+            }
+            else
+            {
+                aggroRangeList.RemoveAt(0);
+            }
         }
         else if(aggroAttackTarget)
         {
@@ -49,6 +54,9 @@ public class EnemyAgent : MonoBehaviour
         agent.destination = basePos;
         agent.isStopped = false;
     }
+
+
+    //// Aggro Logic ////
 
     public void AddRangeAggro(GameObject target)
     {
@@ -82,6 +90,11 @@ public class EnemyAgent : MonoBehaviour
             }
             
         }
+        else if(aggroRangeList.IndexOf(target) > 0)
+        {
+            aggroRangeList.Remove(target);
+            aggroRangeList.Insert(0, target);
+        }
     }
 
     IEnumerator AggroForget()
@@ -89,4 +102,6 @@ public class EnemyAgent : MonoBehaviour
         yield return new WaitForSeconds(4);
         aggroAttackTarget = null;
     }
+
+    //// Attack Logic ////
 }

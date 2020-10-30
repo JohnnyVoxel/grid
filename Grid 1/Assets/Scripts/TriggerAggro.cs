@@ -8,7 +8,7 @@ public class TriggerAggro : MonoBehaviour
     // Start is called before the first frame update
     void OnTriggerEnter(Collider other) {
         var parent = transform.parent.gameObject.GetComponent<EnemyAgent>();
-        if (other.gameObject.tag == "Player")
+        if ((other.gameObject.tag == "Player")||(other.gameObject.tag == "Structure"))
         {
             currentTarget = other.gameObject;
             parent.AddRangeAggro(other.gameObject);
@@ -17,7 +17,7 @@ public class TriggerAggro : MonoBehaviour
     }
     void OnTriggerExit(Collider other){
         var parent = transform.parent.gameObject.GetComponent<EnemyAgent>();
-        if (other.gameObject.tag == "Player")
+        if ((other.gameObject.tag == "Player")||(other.gameObject.tag == "Structure"))
         {
             parent.RemoveRangeAggro(other.gameObject);
         }
