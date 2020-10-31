@@ -28,10 +28,10 @@ public class CharacterController : MonoBehaviour
         character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
         character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
         character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
-        character01.GetComponent<Renderer>().material.color = Color.cyan;
-        character02.GetComponent<Renderer>().material.color = Color.green;
-        character03.GetComponent<Renderer>().material.color = Color.magenta;
-        character04.GetComponent<Renderer>().material.color = Color.yellow;
+        //character01.GetComponent<Renderer>().material.color = Color.cyan;
+        //character02.GetComponent<Renderer>().material.color = Color.green;
+        //character03.GetComponent<Renderer>().material.color = Color.magenta;
+        //character04.GetComponent<Renderer>().material.color = Color.yellow;
         selectedCharacter = character01;
         directedAgent = character01.GetComponent<DirectedAgent>();
         rtscamera = Camera.main.GetComponent<RTS_Camera>();

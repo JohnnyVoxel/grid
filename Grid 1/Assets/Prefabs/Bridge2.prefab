@@ -526,6 +526,10 @@ PrefabInstance:
       propertyPath: m_Layer
       value: 9
       objectReference: {fileID: 0}
+    - target: {fileID: 100000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
+      propertyPath: m_TagString
+      value: Structure
+      objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -584,6 +588,14 @@ PrefabInstance:
       objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     - target: {fileID: 2300000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
       propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
+      propertyPath: m_Convex
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6400000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
+      propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
