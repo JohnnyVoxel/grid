@@ -635,7 +635,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 93a0907a3d3dfb142818af5bcdbeb392, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  enemyPrefab: {fileID: 9039328533248836337, guid: 387c806f6a0ab8740b5f9c48e7760db3,
+  enemyPrefab: {fileID: 1391888216552696, guid: deb6e7f11431286409fd6af2212eb83b,
     type: 3}
 --- !u!1001 &1028231556
 PrefabInstance:
@@ -1309,7 +1309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 562bc8ff98682be4cbe0c8c4cb23a80d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  characterPrefab: {fileID: 3461756604606798125, guid: 44fd4d1885832c745b25d81ce4a697b8,
+  characterPrefab: {fileID: 1968476592218994, guid: c310be88d7ba6264a8ce1ce94ff29020,
     type: 3}
   destination: {x: 0, y: 0, z: 0}
   currentCommand: 73

@@ -9,7 +9,7 @@ public class EnemyAgent : MonoBehaviour
     private Vector3 basePos;
     private List<GameObject> aggroRangeList = new List<GameObject>();
     private GameObject aggroAttackTarget;
-    public float rotSpeed = 20f;
+    public float rotSpeed = 0.1f;
     
     public Vector3 BasePos
     {
@@ -44,7 +44,7 @@ public class EnemyAgent : MonoBehaviour
         {
             MoveToLocation();
         }
-        InstantlyTurn(agent.destination);
+        InstantlyTurn(agent.steeringTarget);
     }
 
     public void MoveToLocation(Vector3 targetPoint)

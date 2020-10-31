@@ -7,7 +7,7 @@ using UnityEngine.AI;
 public class DirectedAgent : MonoBehaviour {
 
     private NavMeshAgent agent;
-    public float rotSpeed = 20f;
+    public float rotSpeed = 0.1f;
 
     // Use this for initialization
     void Awake () 
@@ -17,7 +17,7 @@ public class DirectedAgent : MonoBehaviour {
     }
 
     void Update() {
-        InstantlyTurn(agent.destination);
+        InstantlyTurn(agent.steeringTarget);
     }
 
     public void MoveToLocation(Vector3 targetPoint)

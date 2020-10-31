@@ -35,7 +35,9 @@ public class EnemyController : MonoBehaviour
     {
         foreach (Vector3 point in spawns)
         {
-            GameObject enemy = Instantiate(enemyPrefab, point, Quaternion.identity);
+            Vector3 shiftedPoint = point;
+            shiftedPoint.y += 0.2f; // Make sure the enemies spawn on the board
+            GameObject enemy = Instantiate(enemyPrefab, shiftedPoint, Quaternion.identity);
             enemy.GetComponent<EnemyAgent>().BasePos = target;
             enemy.GetComponent<EnemyAgent>().MoveToLocation();
         }
