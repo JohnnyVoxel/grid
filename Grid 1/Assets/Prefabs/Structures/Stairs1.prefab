@@ -10,9 +10,11 @@ GameObject:
   m_Component:
   - component: {fileID: 1290439539558314587}
   - component: {fileID: -3707501926101016030}
+  - component: {fileID: 587432242318911256}
+  - component: {fileID: 1629878417630850867}
   m_Layer: 0
   m_Name: Stairs1
-  m_TagString: Structure
+  m_TagString: PreStructure
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -45,6 +47,35 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
+--- !u!65 &587432242318911256
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4994357914528168837}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.7, y: 1, z: 0.5}
+  m_Center: {x: -0.2, y: 0, z: 0}
+--- !u!54 &1629878417630850867
+Rigidbody:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4994357914528168837}
+  serializedVersion: 2
+  m_Mass: 1
+  m_Drag: 0
+  m_AngularDrag: 0.05
+  m_UseGravity: 0
+  m_IsKinematic: 1
+  m_Interpolate: 0
+  m_Constraints: 0
+  m_CollisionDetection: 0
 --- !u!1001 &986171046542462070
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -124,7 +155,8 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 6400000, guid: 08258afcf0b38f34a93780d9aac149f8, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 08258afcf0b38f34a93780d9aac149f8, type: 3}
 --- !u!4 &986171046542857974 stripped
 Transform:

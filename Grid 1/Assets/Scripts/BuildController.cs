@@ -120,6 +120,7 @@ public class BuildController : MonoBehaviour
                     }
                 }
             }
+
             //Rotate
             if (Input.GetMouseButtonDown(1))
             {
@@ -138,6 +139,7 @@ public class BuildController : MonoBehaviour
                 SetHighlight(structure.transform, Color.white);
                 structure.transform.parent = selectedTile;
                 structure.GetComponent<Structure>().SetEdges();
+                structure.tag = "Structure";
                 structure = null;
                 structureType = 0;
                 BoardController.Instance.RebuildNavMesh();
