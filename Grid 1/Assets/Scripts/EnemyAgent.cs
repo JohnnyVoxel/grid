@@ -7,8 +7,8 @@ public class EnemyAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Vector3 basePos;
-    private List<GameObject> aggroRangeList = new List<GameObject>();
-    private GameObject aggroAttackTarget;
+    public List<GameObject> aggroRangeList = new List<GameObject>();
+    public GameObject aggroAttackTarget;
     public float rotSpeed = 0.1f;
     
     public Vector3 BasePos

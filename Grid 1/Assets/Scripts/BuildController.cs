@@ -140,6 +140,14 @@ public class BuildController : MonoBehaviour
                 structure.transform.parent = selectedTile;
                 structure.GetComponent<Structure>().SetEdges();
                 structure.tag = "Structure";
+                int numberChildren = structure.transform.childCount;
+                if (numberChildren > 0)
+                {
+                    for (int n=0;n<numberChildren; n++)
+                    {
+                        structure.transform.GetChild(n).tag = "Structure";
+                    }
+                }
                 structure = null;
                 structureType = 0;
                 BoardController.Instance.RebuildNavMesh();

@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5467108096593791755}
   - component: {fileID: -8413339600688849300}
-  - component: {fileID: 7976854417250759649}
   - component: {fileID: 9165825070727390486}
   m_Layer: 0
   m_Name: Bridge1
@@ -47,19 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
---- !u!65 &7976854417250759649
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6976820985121278116}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 1, y: 1, z: 0.6}
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &9165825070727390486
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -89,7 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
       propertyPath: m_TagString
-      value: Structure
+      value: PreStructure
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
       propertyPath: m_LocalPosition.x
@@ -143,8 +129,7 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6400000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 59cf13e76e0892d44bb7dd88dbe456fc, type: 3}
 --- !u!4 &1218071872856777047 stripped
 Transform:

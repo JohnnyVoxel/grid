@@ -9,6 +9,7 @@ public class CameraCaster : MonoBehaviour
     private int layerMaskBoard = 1 << 8;
     private int layerMaskBoardDefault = 257;
     private Camera rtsCamera;
+    public GameObject sphere;
 
     static CameraCaster _instance;
     public static CameraCaster Instance
@@ -51,6 +52,7 @@ public class CameraCaster : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMaskBoardDefault))
         {
+            Instantiate(sphere, hit.point, Quaternion.identity);
             return hit.point;
         }
         else

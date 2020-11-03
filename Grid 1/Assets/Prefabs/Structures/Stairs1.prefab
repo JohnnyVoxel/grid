@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1290439539558314587}
   - component: {fileID: -3707501926101016030}
-  - component: {fileID: 587432242318911256}
   - component: {fileID: 1629878417630850867}
   m_Layer: 0
   m_Name: Stairs1
@@ -47,19 +46,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
---- !u!65 &587432242318911256
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4994357914528168837}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Size: {x: 0.7, y: 1, z: 0.5}
-  m_Center: {x: -0.2, y: 0, z: 0}
 --- !u!54 &1629878417630850867
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -89,7 +75,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 08258afcf0b38f34a93780d9aac149f8, type: 3}
       propertyPath: m_TagString
-      value: Structure
+      value: PreStructure
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 08258afcf0b38f34a93780d9aac149f8, type: 3}
       propertyPath: m_LocalPosition.x
@@ -155,8 +141,7 @@ PrefabInstance:
       propertyPath: m_IsTrigger
       value: 1
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6400000, guid: 08258afcf0b38f34a93780d9aac149f8, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08258afcf0b38f34a93780d9aac149f8, type: 3}
 --- !u!4 &986171046542857974 stripped
 Transform:

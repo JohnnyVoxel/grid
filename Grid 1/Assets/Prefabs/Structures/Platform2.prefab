@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 4138404359741836052}
   - component: {fileID: 1024097262556291732}
-  - component: {fileID: 7046861271355853853}
   - component: {fileID: -367837932927562685}
   m_Layer: 0
   m_Name: Platform2
@@ -50,20 +49,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   health: 100
---- !u!136 &7046861271355853853
-CapsuleCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1085261678142693768}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  m_Radius: 0.6
-  m_Height: 2
-  m_Direction: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &-367837932927562685
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -80,6 +65,20 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!64 &7151632824870163606
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3799260622647921397}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4300000, guid: 66a66b512f78d3d4f81ed74fd8e3963a, type: 3}
 --- !u!1001 &1178249002643388959
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -166,6 +165,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PTK_Wall_Small_1 (2)
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d4a8a8e95edb6ed41a91d5a250f53b09,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d4a8a8e95edb6ed41a91d5a250f53b09,
+        type: 3}
+      propertyPath: m_TagString
+      value: PreStructure
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4a8a8e95edb6ed41a91d5a250f53b09, type: 3}
@@ -262,6 +271,16 @@ PrefabInstance:
       propertyPath: m_Name
       value: PTK_Wall_Small_1 (1)
       objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d4a8a8e95edb6ed41a91d5a250f53b09,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d4a8a8e95edb6ed41a91d5a250f53b09,
+        type: 3}
+      propertyPath: m_TagString
+      value: PreStructure
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4a8a8e95edb6ed41a91d5a250f53b09, type: 3}
 --- !u!4 &3176922806634706812 stripped
@@ -283,7 +302,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 100000, guid: 66a66b512f78d3d4f81ed74fd8e3963a, type: 3}
       propertyPath: m_TagString
-      value: Structure
+      value: PreStructure
       objectReference: {fileID: 0}
     - target: {fileID: 400000, guid: 66a66b512f78d3d4f81ed74fd8e3963a, type: 3}
       propertyPath: m_LocalPosition.x
@@ -339,6 +358,12 @@ PrefabInstance:
       objectReference: {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 66a66b512f78d3d4f81ed74fd8e3963a, type: 3}
+--- !u!1 &3799260622647921397 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 100000, guid: 66a66b512f78d3d4f81ed74fd8e3963a,
+    type: 3}
+  m_PrefabInstance: {fileID: 3799260622647888981}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &3799260622647498453 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 400000, guid: 66a66b512f78d3d4f81ed74fd8e3963a,
@@ -431,6 +456,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PTK_Wall_Small_1
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d4a8a8e95edb6ed41a91d5a250f53b09,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 919132149155446097, guid: d4a8a8e95edb6ed41a91d5a250f53b09,
+        type: 3}
+      propertyPath: m_TagString
+      value: PreStructure
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d4a8a8e95edb6ed41a91d5a250f53b09, type: 3}
