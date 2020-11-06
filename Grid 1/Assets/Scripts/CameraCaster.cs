@@ -52,7 +52,7 @@ public class CameraCaster : MonoBehaviour
 
         if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMaskBoardDefault))
         {
-            Instantiate(sphere, hit.point, Quaternion.identity);
+            //Instantiate(sphere, hit.point, Quaternion.identity); ////////// Debugging for destination target hits.
             return hit.point;
         }
         else

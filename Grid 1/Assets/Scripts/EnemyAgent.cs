@@ -6,7 +6,11 @@ using UnityEngine.AI;
 public class EnemyAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
+    private Animator animator;
+    private int animationState = 0;
     private Vector3 basePos;
+    public Vector3 currentTarget;
+    public Vector3 lastTarget;
     public List<GameObject> aggroRangeList = new List<GameObject>();
     public GameObject aggroAttackTarget;
     public float rotSpeed = 0.1f;
@@ -15,6 +19,11 @@ public class EnemyAgent : MonoBehaviour
     {
         get {return basePos;}
         set {basePos = value;}
+    }
+    void Start()
+    {
+        animator = GetComponent<Animator>();
+        animator.SetInteger("state", animationState);
     }
 
     void Awake () 
@@ -29,7 +38,7 @@ public class EnemyAgent : MonoBehaviour
         {
             if(aggroRangeList[0])
             {
-                MoveToLocation(aggroRangeList[0].transform.position);
+                currentTarget = aggroRangeList[0].transform.position;
             }
             else
             {
@@ -38,22 +47,47 @@ public class EnemyAgent : MonoBehaviour
         }
         else if(aggroAttackTarget)
         {
-            MoveToLocation(aggroAttackTarget.transform.position);
+            currentTarget = aggroAttackTarget.transform.position;
         }
         else
         {
-            MoveToLocation();
+            currentTarget = basePos;
+        }
+    
+        if(currentTarget!=lastTarget)
+        {
+            MoveToLocation(currentTarget);
+            lastTarget = currentTarget;
+        }
+
+        // Check if we've reached the destination
+        if (!agent.pathPending)
+        {
+            if (agent.remainingDistance <= agent.stoppingDistance)
+            {
+                if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
+                {
+                    animationState = 0;
+                    animator.SetInteger("state", animationState);
+                }
+            }
         }
         InstantlyTurn(agent.steeringTarget);
     }
 
     public void MoveToLocation(Vector3 targetPoint)
     {
+        animationState = 1;
+        animator = GetComponent<Animator>();
+        animator.SetInteger("state", animationState);
         agent.destination = targetPoint;
         agent.isStopped = false;
     }
     public void MoveToLocation()
     {
+        animationState = 1;
+        animator = GetComponent<Animator>();
+        animator.SetInteger("state", animationState);
         agent.destination = basePos;
         agent.isStopped = false;
     }

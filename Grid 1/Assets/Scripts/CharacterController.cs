@@ -10,6 +10,8 @@ public class CharacterController : MonoBehaviour
     public Vector3 destination;
     public char currentCommand = 'I';
     private RTS_Camera rtscamera;
+    private Animator animator;
+    private int animationState = 0;
     private GameObject character01;
     private GameObject character02;
     private GameObject character03;
@@ -28,10 +30,6 @@ public class CharacterController : MonoBehaviour
         character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
         character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
         character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
-        //character01.GetComponent<Renderer>().material.color = Color.cyan;
-        //character02.GetComponent<Renderer>().material.color = Color.green;
-        //character03.GetComponent<Renderer>().material.color = Color.magenta;
-        //character04.GetComponent<Renderer>().material.color = Color.yellow;
         selectedCharacter = character01;
         directedAgent = character01.GetComponent<DirectedAgent>();
         rtscamera = Camera.main.GetComponent<RTS_Camera>();

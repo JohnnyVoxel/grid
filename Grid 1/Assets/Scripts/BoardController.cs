@@ -261,7 +261,6 @@ public class BoardController : MonoBehaviour
         {
             surface.BuildNavMesh();
         }
-        //this.gameObject.GetComponent<NavMeshSurface>().BuildNavMesh();
     }
 
     // Find and return the worldspace position of the starting base.

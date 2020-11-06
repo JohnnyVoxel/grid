@@ -341,7 +341,7 @@ Animator:
   m_GameObject: {fileID: 1391888216552696}
   m_Enabled: 1
   m_Avatar: {fileID: 9000000, guid: 8c53cffd52097cf4582f0a090c9a833e, type: 3}
-  m_Controller: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: eae36f2ac0b67fd48b436b80803e447d, type: 2}
   m_CullingMode: 1
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -359,11 +359,11 @@ NavMeshAgent:
   m_GameObject: {fileID: 1391888216552696}
   m_Enabled: 1
   m_AgentTypeID: -1372625422
-  m_Radius: 0.2
+  m_Radius: 0.3
   m_Speed: 0.3
-  m_Acceleration: 999
+  m_Acceleration: 10
   avoidancePriority: 50
-  m_AngularSpeed: 999
+  m_AngularSpeed: 10
   m_StoppingDistance: 0
   m_AutoTraverseOffMeshLink: 1
   m_AutoBraking: 1
@@ -384,7 +384,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3a7bfb153924403468b1de1fd4fd9d62, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rotSpeed: 20
+  currentTarget: {x: 0, y: 0, z: 0}
+  lastTarget: {x: 0, y: 0, z: 0}
+  aggroRangeList: []
+  aggroAttackTarget: {fileID: 0}
+  rotSpeed: 5
 --- !u!1 &1412685104993132
 GameObject:
   m_ObjectHideFlags: 0
