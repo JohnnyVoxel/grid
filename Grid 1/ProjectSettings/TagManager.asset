@@ -22,8 +22,8 @@ TagManager:
   - NonNav
   - Enemy
   - Minimap
-  - 
-  - 
+  - Player
+  - Collision
   - 
   - 
   - 

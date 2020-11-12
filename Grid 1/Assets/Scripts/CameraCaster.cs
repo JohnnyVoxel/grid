@@ -8,6 +8,7 @@ public class CameraCaster : MonoBehaviour
     public RaycastHit hit;
     private int layerMaskBoard = 1 << 8;
     private int layerMaskBoardDefault = 257;
+    private int layerMaskEnemy = 2048;
     private Camera rtsCamera;
     public GameObject sphere;
 
@@ -54,6 +55,30 @@ public class CameraCaster : MonoBehaviour
         {
             //Instantiate(sphere, hit.point, Quaternion.identity); ////////// Debugging for destination target hits.
             return hit.point;
+        }
+        else
+        {
+            return null;
+        }
+    }
+
+    public GameObject SelectedTarget()
+    {
+        Ray ray = rtsCamera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, Mathf.Infinity, layerMaskEnemy))
+        {
+            //Debug.Log("Target");
+            if (hit.rigidbody.CompareTag("Enemy"))
+            {
+                //Debug.Log(hit.transform.gameObject);
+                return hit.transform.gameObject;
+            }
+            else
+            {
+                return null;
+            }
         }
         else
         {

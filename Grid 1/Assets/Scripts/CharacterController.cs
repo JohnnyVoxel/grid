@@ -10,8 +10,6 @@ public class CharacterController : MonoBehaviour
     public Vector3 destination;
     public char currentCommand = 'I';
     private RTS_Camera rtscamera;
-    private Animator animator;
-    private int animationState = 0;
     private GameObject character01;
     private GameObject character02;
     private GameObject character03;
@@ -27,9 +25,9 @@ public class CharacterController : MonoBehaviour
         Vector3 spawnPoint03 = new Vector3 (16.0f,0.4f,8.8f);
         Vector3 spawnPoint04 = new Vector3 (16.9f,0.4f,8.8f);
         character01 = Instantiate(characterPrefab, spawnPoint01, Quaternion.identity);
-        character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
-        character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
-        character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
+        //character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
+        //character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
+        //character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
         selectedCharacter = character01;
         directedAgent = character01.GetComponent<DirectedAgent>();
         rtscamera = Camera.main.GetComponent<RTS_Camera>();
@@ -43,7 +41,10 @@ public class CharacterController : MonoBehaviour
     void Update()
     {
         if (Input.GetMouseButton(1)) {
-            if (CameraCaster.Instance.SelectedDestination() != null) {
+            if (CameraCaster.Instance.SelectedTarget() != null) {
+                directedAgent.SetAttackTarget(CameraCaster.Instance.SelectedTarget());
+            }
+            else if (CameraCaster.Instance.SelectedDestination() != null) {
                 directedAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }

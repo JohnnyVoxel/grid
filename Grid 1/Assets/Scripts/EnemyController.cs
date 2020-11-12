@@ -22,7 +22,7 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(1);
         for(int i = 0; i < 1; i++)
         {
-            for(int j = 0; j < 3; j++)
+            for(int j = 0; j < 1; j++)
             {
                 SpawnWave();
                 yield return new WaitForSeconds(2);
