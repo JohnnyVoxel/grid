@@ -12,9 +12,9 @@ public class DirectedAgent : MonoBehaviour {
     public float rotSpeed = 0.1f;
 
     public List<GameObject> rangeList = new List<GameObject>();
+    public List<GameObject> bufferList = new List<GameObject>();
     public GameObject attackTarget = null;
     public bool destination = false;
-    public bool idle = true;
     public bool attacking = false;
     private bool autoAttack = true;
 
@@ -32,32 +32,37 @@ public class DirectedAgent : MonoBehaviour {
 
     void Update() 
     {
-        // Target is selected. Move to or attack target
+        // Target is selected. Move to or attack target.
         if (attackTarget)
         {
+            // Target is in attacking range
             if (rangeList.Contains(attackTarget))
             {
-                //// Attack routine ////
+                //// Directed attack ////
                 if(!attacking)
                 {
-                    //Debug.Log("Target in range");
-                    //attackTarget = rangeList[0];
                     StopCoroutine(methodName: "Attack");
                     StartCoroutine(methodName: "Attack",value: attackTarget);
                 }
             }
-            else
+            // Target has left the buffer or the attack has ended
+            else if ((!bufferList.Contains(attackTarget)) || (!attacking))
             {
-                // Move to attackTarget
+                //// Move to attackTarget ////
+                if(attacking)
+                {
+                    StopCoroutine(methodName: "Attack");
+                    attacking = false;
+                }
                 MoveToLocation(attackTarget.transform.position);
             }
-            idle = false;
         }
         
         // Target is not selected, but destinon is set.
-        // Check if we've reached the destination
         else if (destination)
         {
+            // Check if destination is reached.
+            //// Idle ////
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
                 if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
@@ -66,45 +71,58 @@ public class DirectedAgent : MonoBehaviour {
                     animationState = 0;
                     animator.SetInteger("state", animationState);
                     destination = false;
-                    idle = true;
                 }
             }
+            //// Moving ////
             else if(animationState != 1)
             {
                 // A destination is set and agent is moving. Set animation to running.
                 animationState = 1;
                 animator.SetInteger("state", animationState);
-                idle = false;
             }
         }
 
-        // Agent has reached its destination, there are enemies in attack range, and AA is enabled
-        else if((!destination) && (rangeList.Count>0) && (autoAttack))
-        {
-            //Debug.Log("Idle with AA");
-            if(rangeList[0])
-            {
-                attackTarget = rangeList[0];
-            }
-            else
-            {
-                rangeList.RemoveAt(0);
-            }
-        }
+        // There is no attackTarget or destination set
         else
         {
-            idle = true;
+            //// Auto Attack ////
+            if((rangeList.Count>0) && (autoAttack))
+            {
+                if(rangeList[0])
+                {
+                    attackTarget = rangeList[0];
+                }
+                else
+                {
+                    rangeList.RemoveAt(0);
+                }
+            }
+            //// Idle ////
+            else
+            {
+                if(animationState != 0)
+                {
+                    // Not attacking or moving. Set animation to idle.
+                    animationState = 0;
+                    animator.SetInteger("state", animationState);
+                }
+            }
         }
         InstantlyTurn(agent.steeringTarget);
     }
 
-    //// Public Commands ////
+    //// Control Commands ////
 
     public void MoveToLocation(Vector3 targetPoint)
     {
         if(attacking)
         {
             CancelAttack();
+        }
+        if(animationState != 1)
+        {
+            animationState=1;
+            animator.SetInteger("state", animationState);
         }
         agent.destination = targetPoint;
         agent.isStopped = false;
@@ -116,27 +134,26 @@ public class DirectedAgent : MonoBehaviour {
         StopCoroutine(methodName: "Attack");
         attackTarget = null;
         attacking = false;
-        animationState=0;
-        animator.SetInteger("state", animationState);
+        //animationState=0;
+        //animator.SetInteger("state", animationState);
         //Debug.Log("Attack Cancelled");
     }
 
     IEnumerator Attack(GameObject target)
     {
+        attacking = true;
         // Stop navigating
         agent.ResetPath();
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
         transform.rotation = Quaternion.LookRotation(targetDirection);
-
-        attacking = true;
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(2.2f);
-        //Debug.Log("Attacked " + target.name);
-        attacking = false;
+        Debug.Log("Attacked " + target.name);
         animationState=0;
         animator.SetInteger("state", animationState);
+        attacking = false;
 
     }
 
@@ -167,6 +184,22 @@ public class DirectedAgent : MonoBehaviour {
         if(rangeList.Contains(target))
         {
             rangeList.Remove(target);
+        }
+    }
+
+    public void AddRangeBuffer(GameObject target)
+    {
+        if(!bufferList.Contains(target))
+        {
+            bufferList.Add(target);
+        }
+    }
+
+    public void RemoveRangeBuffer(GameObject target)
+    {
+        if(bufferList.Contains(target))
+        {
+            bufferList.Remove(target);
         }
     }
 

@@ -45,6 +45,7 @@ public class CharacterController : MonoBehaviour
                 directedAgent.SetAttackTarget(CameraCaster.Instance.SelectedTarget());
             }
             else if (CameraCaster.Instance.SelectedDestination() != null) {
+                directedAgent.CancelAttack();
                 directedAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }
