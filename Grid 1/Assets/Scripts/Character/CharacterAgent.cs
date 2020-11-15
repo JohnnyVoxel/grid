@@ -157,7 +157,7 @@ public class CharacterAgent : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(targetDirection);
         animationState=2;
         animator.SetInteger("state", animationState);
-        yield return new WaitForSeconds(2.2f);
+        yield return new WaitForSeconds(0.87f);
         if(target)
         {
             if(bufferList.Contains(target))

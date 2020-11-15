@@ -189,13 +189,14 @@ public class EnemyAgent : MonoBehaviour
         agent.ResetPath();
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(targetDirection);
+        //transform.rotation = Quaternion.LookRotation(targetDirection);
         animationState=2;
         animator.SetInteger("state", animationState);
-        yield return new WaitForSeconds(1.2f);
+        yield return new WaitForSeconds(1.75f);
         Debug.Log("Attacked " + target.name);
         animationState=0;
         animator.SetInteger("state", animationState);
+        yield return new WaitForSeconds(1.0f);
         attacking = false;
     }
 
