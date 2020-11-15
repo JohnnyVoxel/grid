@@ -150,11 +150,10 @@ public class DirectedAgent : MonoBehaviour {
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(2.2f);
-        Debug.Log("Attacked " + target.name);
+        //Debug.Log("Attacked " + target.name);
         animationState=0;
         animator.SetInteger("state", animationState);
         attacking = false;
-
     }
 
     //// Rotation ////

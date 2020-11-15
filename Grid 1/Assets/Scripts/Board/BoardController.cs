@@ -98,6 +98,17 @@ public class BoardController : MonoBehaviour
                         GameObject structure = Instantiate(structurePrefab, point, Quaternion.identity);
                         structure.name = "structure";
                         structure.transform.parent = tileInstance.transform;
+                        //// Set appropriate tag for structure
+                        structure.tag = "Structure";
+                        int numberChildren = structure.transform.childCount;
+                        if (numberChildren > 0)
+                        {
+                            for (int n=0;n<numberChildren; n++)
+                            {
+                                structure.transform.GetChild(n).tag = "Structure";
+                            }
+                        }
+                        ////
                         int[] platform = {1,1,1,1,1,1};
                         tileInstance.GetComponent<Hex>().SetAllEdge(platform);
                     }

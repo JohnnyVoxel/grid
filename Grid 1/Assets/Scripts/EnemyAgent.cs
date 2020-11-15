@@ -7,13 +7,16 @@ public class EnemyAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Animator animator;
-    private int animationState = 0;
+    public int animationState = 0;
     private Vector3 basePos;
-    public Vector3 currentTarget;
-    public Vector3 lastTarget;
+    public GameObject currentTarget;
+    public Vector3 lastTargetPosition;
     public List<GameObject> aggroRangeList = new List<GameObject>();
+    public List<GameObject> rangeList = new List<GameObject>();
+    public List<GameObject> bufferList = new List<GameObject>();
     public GameObject aggroAttackTarget;
     public float rotSpeed = 0.1f;
+    public bool attacking = false;
     
     public Vector3 BasePos
     {
@@ -33,12 +36,43 @@ public class EnemyAgent : MonoBehaviour
     }
 
     void Update()
-    {
-        if(aggroRangeList.Count > 0)
+    {        
+        if(currentTarget)
+        {
+            if(aggroRangeList.Contains(currentTarget))
+            {
+                if(rangeList.Contains(currentTarget))
+                {
+                    if(!attacking)
+                    {
+                        StopCoroutine(methodName: "Attack");
+                        StartCoroutine(methodName: "Attack",value: currentTarget);
+                    }
+                }
+                else if ((!bufferList.Contains(currentTarget)) || (!attacking))
+                {
+                    if(attacking)
+                    {
+                        StopCoroutine(methodName: "Attack");
+                        attacking = false;
+                    }
+                    else if(currentTarget.transform.position != lastTargetPosition)
+                    {
+                        MoveToLocation(currentTarget.transform.position);
+                        lastTargetPosition = currentTarget.transform.position;
+                    }
+                }
+            }
+            else
+            {
+                currentTarget = null;
+            }
+        }
+        else if(aggroRangeList.Count > 0)
         {
             if(aggroRangeList[0])
             {
-                currentTarget = aggroRangeList[0].transform.position;
+                currentTarget = aggroRangeList[0];
             }
             else
             {
@@ -47,21 +81,18 @@ public class EnemyAgent : MonoBehaviour
         }
         else if(aggroAttackTarget)
         {
-            currentTarget = aggroAttackTarget.transform.position;
+            if(currentTarget != aggroAttackTarget)
+            {
+                MoveToLocation(aggroAttackTarget.transform.position);
+                lastTargetPosition = aggroAttackTarget.transform.position;
+            }
         }
-        else
+        else if(basePos != lastTargetPosition)
         {
-            currentTarget = basePos;
+            MoveToLocation();
+            lastTargetPosition = basePos;
         }
-    
-        if(currentTarget!=lastTarget)
-        {
-            MoveToLocation(currentTarget);
-            lastTarget = currentTarget;
-        }
-
-        // Check if we've reached the destination
-        if (!agent.pathPending)
+        else if ((!agent.pathPending)&&(!attacking))
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
@@ -151,5 +182,55 @@ public class EnemyAgent : MonoBehaviour
         aggroAttackTarget = null;
     }
 
+    IEnumerator Attack(GameObject target)
+    {
+        attacking = true;
+        // Stop navigating
+        agent.ResetPath();
+        // Turn towards target
+        Vector3 targetDirection = target.transform.position - transform.position;
+        transform.rotation = Quaternion.LookRotation(targetDirection);
+        animationState=2;
+        animator.SetInteger("state", animationState);
+        yield return new WaitForSeconds(1.2f);
+        Debug.Log("Attacked " + target.name);
+        animationState=0;
+        animator.SetInteger("state", animationState);
+        attacking = false;
+    }
+
     //// Attack Logic ////
+
+    public void AddRangeTarget(GameObject target)
+    {
+        if(!rangeList.Contains(target))
+        {
+            rangeList.Add(target);
+        }
+    }
+
+    public void RemoveRangeTarget(GameObject target)
+    {
+        if(rangeList.Contains(target))
+        {
+            rangeList.Remove(target);
+        }
+    }
+
+    public void AddRangeBuffer(GameObject target)
+    {
+        if(!bufferList.Contains(target))
+        {
+            bufferList.Add(target);
+        }
+    }
+
+    public void RemoveRangeBuffer(GameObject target)
+    {
+        if(bufferList.Contains(target))
+        {
+            bufferList.Remove(target);
+        }
+    }
+
 }

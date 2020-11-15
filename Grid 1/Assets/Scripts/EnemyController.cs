@@ -22,12 +22,12 @@ public class EnemyController : MonoBehaviour
         yield return new WaitForSeconds(1);
         for(int i = 0; i < 1; i++)
         {
-            for(int j = 0; j < 1; j++)
+            for(int j = 0; j < 3; j++)
             {
                 SpawnWave();
-                yield return new WaitForSeconds(2);
+                yield return new WaitForSeconds(4);
             }
-            yield return new WaitForSeconds(30);
+            yield return new WaitForSeconds(60);
         }
     }
 
@@ -40,6 +40,7 @@ public class EnemyController : MonoBehaviour
             GameObject enemy = Instantiate(enemyPrefab, shiftedPoint, Quaternion.identity);
             enemy.GetComponent<EnemyAgent>().BasePos = target;
             enemy.GetComponent<EnemyAgent>().MoveToLocation();
+            //return; //////////// DEBUG /////////////
         }
 
     }

@@ -25,9 +25,13 @@ public class CharacterController : MonoBehaviour
         Vector3 spawnPoint03 = new Vector3 (16.0f,0.4f,8.8f);
         Vector3 spawnPoint04 = new Vector3 (16.9f,0.4f,8.8f);
         character01 = Instantiate(characterPrefab, spawnPoint01, Quaternion.identity);
-        //character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
-        //character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
+        character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
+        character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
         //character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
+        character01.name = "Player 1";
+        character02.name = "Player 2";
+        character03.name = "Player 3";
+        //character04.name = "Player 4";
         selectedCharacter = character01;
         directedAgent = character01.GetComponent<DirectedAgent>();
         rtscamera = Camera.main.GetComponent<RTS_Camera>();
