@@ -7,7 +7,7 @@ Material:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: common_female_2_body
+  m_Name: common_female_1_head
   m_Shader: {fileID: 4800000, guid: 9fdeea121635b70418837edc5c17056d, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
@@ -44,7 +44,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 2800000, guid: 8a94cb65addcadf479be61548c33681c, type: 3}
+        m_Texture: {fileID: 2800000, guid: 726fa4e62359bfb4eba699a86b70099c, type: 3}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MetallicGlossMap:

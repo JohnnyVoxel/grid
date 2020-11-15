@@ -1415,6 +1415,8 @@ MonoBehaviour:
   characterPrefab: {fileID: 1968476592218994, guid: c310be88d7ba6264a8ce1ce94ff29020,
     type: 3}
   characterPrefab2: {fileID: 164898, guid: 1cc6cff5a2cdb1141b7b57841b48a2cb, type: 3}
+  characterPrefab3: {fileID: 149574, guid: bdbaa5a1b0c14bf459908a848c73658c, type: 3}
+  characterPrefab4: {fileID: 196482, guid: 9ae80e1acecc23946bd5be13ef34685e, type: 3}
   destination: {x: 0, y: 0, z: 0}
   currentCommand: 73
 --- !u!4 &2050409885

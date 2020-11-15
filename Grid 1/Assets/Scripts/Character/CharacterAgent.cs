@@ -154,7 +154,7 @@ public class CharacterAgent : MonoBehaviour {
         agent.ResetPath();
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
-        transform.rotation = Quaternion.LookRotation(targetDirection);
+        //transform.rotation = Quaternion.LookRotation(targetDirection);
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(0.87f);
