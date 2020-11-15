@@ -4,7 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 
 
-public class DirectedAgent : MonoBehaviour {
+public class CharacterAgent : MonoBehaviour {
 
     private NavMeshAgent agent;
     private Animator animator;
@@ -96,6 +96,14 @@ public class DirectedAgent : MonoBehaviour {
                 {
                     rangeList.RemoveAt(0);
                 }
+
+                if(bufferList.Count>0)
+                {
+                    if(!bufferList[0])
+                    {
+                        bufferList.RemoveAt(0);
+                    }
+                }
             }
             //// Idle ////
             else
@@ -150,6 +158,14 @@ public class DirectedAgent : MonoBehaviour {
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(2.2f);
+        if(target)
+        {
+            if(bufferList.Contains(target))
+            {
+                // Eventually pull damage from Stats script
+                target.GetComponent<Stats>().TakeDamage(20);
+            }
+        }
         //Debug.Log("Attacked " + target.name);
         animationState=0;
         animator.SetInteger("state", animationState);

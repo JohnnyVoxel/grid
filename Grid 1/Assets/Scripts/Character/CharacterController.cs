@@ -6,7 +6,7 @@ using RTS_Cam;
 public class CharacterController : MonoBehaviour
 {
     public GameObject characterPrefab;
-    private DirectedAgent directedAgent;
+    private CharacterAgent characterAgent;
     public Vector3 destination;
     public char currentCommand = 'I';
     private RTS_Camera rtscamera;
@@ -27,13 +27,13 @@ public class CharacterController : MonoBehaviour
         character01 = Instantiate(characterPrefab, spawnPoint01, Quaternion.identity);
         character02 = Instantiate(characterPrefab, spawnPoint02, Quaternion.identity);
         character03 = Instantiate(characterPrefab, spawnPoint03, Quaternion.identity);
-        //character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
+        character04 = Instantiate(characterPrefab, spawnPoint04, Quaternion.identity);
         character01.name = "Player 1";
         character02.name = "Player 2";
         character03.name = "Player 3";
-        //character04.name = "Player 4";
+        character04.name = "Player 4";
         selectedCharacter = character01;
-        directedAgent = character01.GetComponent<DirectedAgent>();
+        characterAgent = character01.GetComponent<CharacterAgent>();
         rtscamera = Camera.main.GetComponent<RTS_Camera>();
     }
 
@@ -46,11 +46,11 @@ public class CharacterController : MonoBehaviour
     {
         if (Input.GetMouseButton(1)) {
             if (CameraCaster.Instance.SelectedTarget() != null) {
-                directedAgent.SetAttackTarget(CameraCaster.Instance.SelectedTarget());
+                characterAgent.SetAttackTarget(CameraCaster.Instance.SelectedTarget());
             }
             else if (CameraCaster.Instance.SelectedDestination() != null) {
-                directedAgent.CancelAttack();
-                directedAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
+                characterAgent.CancelAttack();
+                characterAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
@@ -74,25 +74,25 @@ public class CharacterController : MonoBehaviour
         if  (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)){
             rtscamera.SetTarget(character01.transform);
             selectedCharacter = character01;
-            directedAgent = character01.GetComponent<DirectedAgent>();
+            characterAgent = character01.GetComponent<CharacterAgent>();
             cameraJump = true;
         }
         if  (Input.GetKeyDown(KeyCode.Alpha2)||Input.GetKeyDown(KeyCode.Keypad2)){
             rtscamera.SetTarget(character02.transform);
             selectedCharacter = character02;
-            directedAgent = character02.GetComponent<DirectedAgent>();
+            characterAgent = character02.GetComponent<CharacterAgent>();
             cameraJump = true;
         }
         if  (Input.GetKeyDown(KeyCode.Alpha3)||Input.GetKeyDown(KeyCode.Keypad3)){
             rtscamera.SetTarget(character03.transform);
             selectedCharacter = character03;
-            directedAgent = character03.GetComponent<DirectedAgent>();
+            characterAgent = character03.GetComponent<CharacterAgent>();
             cameraJump = true;
         }
         if  (Input.GetKeyDown(KeyCode.Alpha4)||Input.GetKeyDown(KeyCode.Keypad4)){
             rtscamera.SetTarget(character04.transform);
             selectedCharacter = character04;
-            directedAgent = character04.GetComponent<DirectedAgent>();
+            characterAgent = character04.GetComponent<CharacterAgent>();
             cameraJump = true;
         }
 

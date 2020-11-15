@@ -232,5 +232,4 @@ public class EnemyAgent : MonoBehaviour
             bufferList.Remove(target);
         }
     }
-
 }
