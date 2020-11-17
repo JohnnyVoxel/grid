@@ -1386,7 +1386,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animationState: 0
-  rotSpeed: 5
+  rotSpeed: 10
   rangeList: []
   bufferList: []
   attackTarget: {fileID: 0}

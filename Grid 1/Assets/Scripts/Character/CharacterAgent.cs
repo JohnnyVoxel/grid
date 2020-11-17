@@ -9,7 +9,7 @@ public class CharacterAgent : MonoBehaviour {
     private NavMeshAgent agent;
     private Animator animator;
     public int animationState = 0;
-    public float rotSpeed = 0.1f;
+    public float rotSpeed = 10.0f;
 
     public List<GameObject> rangeList = new List<GameObject>();
     public List<GameObject> bufferList = new List<GameObject>();
@@ -152,9 +152,16 @@ public class CharacterAgent : MonoBehaviour {
         attacking = true;
         // Stop navigating
         agent.ResetPath();
-        // Turn towards target
+        // Turn towards enemy
         Vector3 targetDirection = target.transform.position - transform.position;
-        //transform.rotation = Quaternion.LookRotation(targetDirection);
+        while(Vector3.Angle(transform.forward, targetDirection) > 1.0f)
+        {
+            float singleStep = rotSpeed * Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+            yield return null;
+        }
+        // Beging attack sequence
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(0.87f);
@@ -178,10 +185,11 @@ public class CharacterAgent : MonoBehaviour {
     {
         //When on target -> dont rotate!
         if ((destination - transform.position).magnitude < 0.1f) return; 
-        
-        Vector3 direction = (destination - transform.position).normalized;
-        Quaternion  qDir= Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, qDir, Time.deltaTime * rotSpeed);
+
+        Vector3 targetDirection = destination - transform.position;
+        float singleStep = rotSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
     //// Attacking Logic ////

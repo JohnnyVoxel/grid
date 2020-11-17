@@ -15,7 +15,7 @@ public class EnemyAgent : MonoBehaviour
     public List<GameObject> rangeList = new List<GameObject>();
     public List<GameObject> bufferList = new List<GameObject>();
     public GameObject aggroAttackTarget;
-    public float rotSpeed = 0.1f;
+    public float rotSpeed = 10.0f;
     public bool attacking = false;
     
     public Vector3 BasePos
@@ -130,9 +130,10 @@ public class EnemyAgent : MonoBehaviour
         //When on target -> dont rotate!
         if ((destination - transform.position).magnitude < 0.1f) return; 
         
-        Vector3 direction = (destination - transform.position).normalized;
-        Quaternion  qDir= Quaternion.LookRotation(direction);
-        transform.rotation = Quaternion.Slerp(transform.rotation, qDir, Time.deltaTime * rotSpeed);
+        Vector3 targetDirection = destination - transform.position;
+        float singleStep = rotSpeed * Time.deltaTime;
+        Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+        transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
     //// Aggro Logic ////
@@ -187,16 +188,26 @@ public class EnemyAgent : MonoBehaviour
         attacking = true;
         // Stop navigating
         agent.ResetPath();
+        animationState=0;
+        animator.SetInteger("state", animationState);
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
-        //transform.rotation = Quaternion.LookRotation(targetDirection);
+        while(Vector3.Angle(transform.forward, targetDirection) > 20.0f)
+        {
+            //Debug.Log(Vector3.Angle(transform.forward, targetDirection));
+            float singleStep = rotSpeed * Time.deltaTime;
+            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+            yield return null;
+        }
+        // Begin attack sequence
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(1.75f);
-        Debug.Log("Attacked " + target.name);
+        //Debug.Log("Attacked " + target.name);
         animationState=0;
         animator.SetInteger("state", animationState);
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         attacking = false;
     }
 

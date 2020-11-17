@@ -396,7 +396,7 @@ MonoBehaviour:
   rangeList: []
   bufferList: []
   aggroAttackTarget: {fileID: 0}
-  rotSpeed: 5
+  rotSpeed: 10
   attacking: 0
 --- !u!54 &8008312802136002196
 Rigidbody:
