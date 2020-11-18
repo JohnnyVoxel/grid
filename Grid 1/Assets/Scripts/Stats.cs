@@ -16,7 +16,10 @@ public class Stats : MonoBehaviour
     // Update is called once per frame
     public void TakeDamage(int damage)
     {
+        HealthBar healthBar = transform.Find("Healthbar").GetComponent<HealthBar>();
         currentLife -= damage;
+        float percentLife = (float)currentLife/(float)maxLife;
+        healthBar.SetSize(percentLife);
         if (currentLife <= 0)
         {
             DestroyEnemy();
