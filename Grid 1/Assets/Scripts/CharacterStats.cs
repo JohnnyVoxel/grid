@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Stats : MonoBehaviour
+public class CharacterStats : MonoBehaviour
 {
     public int maxLife = 100;
     public int currentLife;
@@ -22,12 +22,9 @@ public class Stats : MonoBehaviour
         healthBar.SetSize(percentLife);
         if (currentLife <= 0)
         {
-            DestroyEnemy();
-        }
-    }
+            currentLife = 0;
+            //Character KO
 
-    private void DestroyEnemy()
-    {
-        Destroy(this.gameObject);
+        }
     }
 }

@@ -170,7 +170,7 @@ public class CharacterAgent : MonoBehaviour {
             if(bufferList.Contains(target))
             {
                 // Eventually pull damage from Stats script
-                target.GetComponent<Stats>().TakeDamage(20);
+                target.GetComponent<EnemyStats>().TakeDamage(20);
             }
         }
         //Debug.Log("Attacked " + target.name);
