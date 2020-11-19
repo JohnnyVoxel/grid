@@ -616,7 +616,7 @@ GameObject:
   - component: {fileID: 3199172455721953142}
   - component: {fileID: 722582749081952624}
   - component: {fileID: 1439369713344809648}
-  - component: {fileID: 1842653759182288630}
+  - component: {fileID: 1822783213441701668}
   m_Layer: 13
   m_Name: CharacterFemale1
   m_TagString: Player
@@ -721,7 +721,7 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
---- !u!114 &1842653759182288630
+--- !u!114 &1822783213441701668
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -730,7 +730,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 164898}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba11418fa2ac69046887e99353764467, type: 3}
+  m_Script: {fileID: 11500000, guid: 111712d2ff677d64482e0124843ecbc3, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   maxLife: 100

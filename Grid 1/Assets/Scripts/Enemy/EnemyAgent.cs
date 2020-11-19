@@ -229,6 +229,21 @@ public class EnemyAgent : MonoBehaviour
         animationState=2;
         animator.SetInteger("state", animationState);
         yield return new WaitForSeconds(1.75f);
+        if(target)
+        {
+            if(bufferList.Contains(target))
+            {
+                if(target.gameObject.tag == "Player")
+                {
+                    target.GetComponent<CharacterStats>().TakeDamage(5, this.gameObject);
+                }
+                else if(target.gameObject.tag == "Structure")
+                {
+                    // Add after implimenting health and status to structures. issue #13
+                    //target.GetComponent<CharacterStats>().TakeDamage(5, this.gameObject);
+                }
+            }
+        }
         //Debug.Log("Attacked " + target.name);
         animationState=0;
         animator.SetInteger("state", animationState);

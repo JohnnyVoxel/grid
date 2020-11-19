@@ -14,7 +14,7 @@ public class CharacterStats : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, GameObject caller)
     {
         HealthBar healthBar = transform.Find("Healthbar").GetComponent<HealthBar>();
         currentLife -= damage;
