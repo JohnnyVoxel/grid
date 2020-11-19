@@ -37,10 +37,28 @@ public class EnemyAgent : MonoBehaviour
 
     void Update()
     {        
+        // Target is selected. Check if target is in range.
         if(currentTarget)
         {
+            // If enemy is attacked by someone 
+            if(aggroAttackTarget)
+            {
+                // If they are currently attacking a structure and the attacker is in their aggro range
+                //if((currentTarget.gameObject.tag == "Structure")&&(aggroRangeList.Contains(aggroAttackTarget)))
+                if(currentTarget.gameObject.tag == "Structure")
+                {
+                    currentTarget = aggroAttackTarget;
+                    if(currentTarget.transform.position != lastTargetPosition)
+                    {
+                        MoveToLocation(currentTarget.transform.position);
+                        lastTargetPosition = currentTarget.transform.position;
+                    }
+                }
+            }
+            // Target is in aggro range.
             if(aggroRangeList.Contains(currentTarget))
             {
+                // Target is in attack range.
                 if(rangeList.Contains(currentTarget))
                 {
                     if(!attacking)
@@ -49,13 +67,16 @@ public class EnemyAgent : MonoBehaviour
                         StartCoroutine(methodName: "Attack",value: currentTarget);
                     }
                 }
+                // Target is outside of buffer or target is outside of attack range and not being attacked
                 else if ((!bufferList.Contains(currentTarget)) || (!attacking))
                 {
+                    // Target moves outside of buffer while attack routine is happening. Cancel the attack.
                     if(attacking)
                     {
                         StopCoroutine(methodName: "Attack");
                         attacking = false;
                     }
+                    // Check if the target has moved and move to the new location
                     else if(currentTarget.transform.position != lastTargetPosition)
                     {
                         MoveToLocation(currentTarget.transform.position);
@@ -63,11 +84,13 @@ public class EnemyAgent : MonoBehaviour
                     }
                 }
             }
-            else
+            // Target has left the aggro range. Forget as current target.
+            else if (!aggroAttackTarget)
             {
                 currentTarget = null;
             }
         }
+        // No target is selected, but there are targets within aggro range. Select new target.
         else if(aggroRangeList.Count > 0)
         {
             if(aggroRangeList[0])
@@ -79,6 +102,7 @@ public class EnemyAgent : MonoBehaviour
                 aggroRangeList.RemoveAt(0);
             }
         }
+        // Nothing is within aggro range, but aggro is drawn from an attack outside of aggro range.
         else if(aggroAttackTarget)
         {
             if(currentTarget != aggroAttackTarget)
@@ -87,11 +111,13 @@ public class EnemyAgent : MonoBehaviour
                 lastTargetPosition = aggroAttackTarget.transform.position;
             }
         }
+        // There are no targets. Move towards default location.
         else if(basePos != lastTargetPosition)
         {
             MoveToLocation();
             lastTargetPosition = basePos;
         }
+        // Enemy is at the target location and not attacking. Set to idle animation.
         else if ((!agent.pathPending)&&(!attacking))
         {
             if (agent.remainingDistance <= agent.stoppingDistance)
@@ -168,10 +194,10 @@ public class EnemyAgent : MonoBehaviour
                 aggroAttackTarget = target;
                 StartCoroutine("AggroForget");
             }
-            
         }
         else if(aggroRangeList.IndexOf(target) > 0)
         {
+            aggroAttackTarget = target;
             aggroRangeList.Remove(target);
             aggroRangeList.Insert(0, target);
         }
@@ -194,7 +220,6 @@ public class EnemyAgent : MonoBehaviour
         Vector3 targetDirection = target.transform.position - transform.position;
         while(Vector3.Angle(transform.forward, targetDirection) > 20.0f)
         {
-            //Debug.Log(Vector3.Angle(transform.forward, targetDirection));
             float singleStep = rotSpeed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
             transform.rotation = Quaternion.LookRotation(newDirection);

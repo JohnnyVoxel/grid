@@ -14,9 +14,11 @@ public class EnemyStats : MonoBehaviour
     }
 
     // Update is called once per frame
-    public void TakeDamage(int damage)
+    public void TakeDamage(int damage, GameObject caller)
     {
         HealthBar healthBar = transform.Find("Healthbar").GetComponent<HealthBar>();
+        EnemyAgent agent = this.transform.GetComponent<EnemyAgent>();
+        agent.AddAttackAggro(caller);
         currentLife -= damage;
         float percentLife = (float)currentLife/(float)maxLife;
         healthBar.SetSize(percentLife);
