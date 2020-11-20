@@ -35,8 +35,15 @@ public class CharacterAgent : MonoBehaviour {
         // Target is selected. Move to or attack target.
         if (attackTarget)
         {
+            // Check if target has been killed by seeing if its collider is disabled
+            if (!attackTarget.transform.Find("Body").GetComponent<BoxCollider>().enabled)
+            {
+                RemoveRangeBuffer(attackTarget);
+                RemoveRangeTarget(attackTarget);
+                attackTarget = null;
+            }
             // Target is in attacking range
-            if (rangeList.Contains(attackTarget))
+            else if (rangeList.Contains(attackTarget))
             {
                 //// Directed attack ////
                 if(!attacking)
