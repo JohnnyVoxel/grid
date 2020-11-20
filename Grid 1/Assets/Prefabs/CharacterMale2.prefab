@@ -1348,7 +1348,14 @@ Animator:
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
   m_LinearVelocityBlending: 0
-  m_WarningMessage: 
+  m_WarningMessage: "\nBinding warning: Some generic clip(s) animate transforms that
+    are already bound by a Humanoid avatar. These transforms can only be changed
+    by Humanoid clips.\n\tTransform 'basic_rig'\n\tTransform 'basic_rig R Hand'\n\tTransform
+    'basic_rig Spine'\n\tTransform 'basic_rig Neck'\n\tTransform 'basic_rig R Thigh'\n\tTransform
+    'basic_rig L UpperArm'\n\tTransform 'basic_rig L Thigh'\n\tTransform 'basic_rig
+    L Hand'\n\tTransform 'basic_rig Spine1'\n\tTransform 'basic_rig UpperArm'\n\tand
+    more ...\n\tFrom animation clip 'idle'\n\tFrom animation clip 'run'\n\tFrom animation
+    clip 'death2'"
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
@@ -1386,7 +1393,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b578a889236cf0a47b67a333a49e5e2b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  animationState: 0
   rotSpeed: 5
   rangeList: []
   bufferList: []

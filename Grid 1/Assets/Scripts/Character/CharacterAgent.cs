@@ -8,7 +8,6 @@ public class CharacterAgent : MonoBehaviour {
 
     private NavMeshAgent agent;
     private Animator animator;
-    public int animationState = 0;
     public float rotSpeed = 10.0f;
 
     public List<GameObject> rangeList = new List<GameObject>();
@@ -21,7 +20,6 @@ public class CharacterAgent : MonoBehaviour {
     void Start()
     {
         animator = GetComponent<Animator>();
-        animator.SetInteger("state", animationState);
     }
     // Use this for initialization
     void Awake () 
@@ -75,17 +73,15 @@ public class CharacterAgent : MonoBehaviour {
                 if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                 {
                     // Agent has reached destination. Set to false and set idle animation.
-                    animationState = 0;
-                    animator.SetInteger("state", animationState);
+                    animator.SetBool("Run", false);
                     destination = false;
                 }
             }
             //// Moving ////
-            else if(animationState != 1)
+            else if(!animator.GetBool("Run"))
             {
                 // A destination is set and agent is moving. Set animation to running.
-                animationState = 1;
-                animator.SetInteger("state", animationState);
+                animator.SetBool("Run", true);
             }
         }
 
@@ -115,11 +111,10 @@ public class CharacterAgent : MonoBehaviour {
             //// Idle ////
             else
             {
-                if(animationState != 0)
+                if(animator.GetBool("Run"))
                 {
                     // Not attacking or moving. Set animation to idle.
-                    animationState = 0;
-                    animator.SetInteger("state", animationState);
+                    animator.SetBool("Run", false);
                 }
             }
         }
@@ -130,14 +125,14 @@ public class CharacterAgent : MonoBehaviour {
 
     public void MoveToLocation(Vector3 targetPoint)
     {
+        animator = GetComponent<Animator>();
         if(attacking)
         {
             CancelAttack();
         }
-        if(animationState != 1)
+        if(!animator.GetBool("Run"))
         {
-            animationState=1;
-            animator.SetInteger("state", animationState);
+            animator.SetBool("Run", true);
         }
         agent.destination = targetPoint;
         agent.isStopped = false;
@@ -149,16 +144,16 @@ public class CharacterAgent : MonoBehaviour {
         StopCoroutine(methodName: "Attack");
         attackTarget = null;
         attacking = false;
-        //animationState=0;
-        //animator.SetInteger("state", animationState);
         //Debug.Log("Attack Cancelled");
     }
 
     IEnumerator Attack(GameObject target)
     {
+        animator = GetComponent<Animator>();
         attacking = true;
         // Stop navigating
         agent.ResetPath();
+        animator.SetBool("Run", false);
         // Turn towards enemy
         Vector3 targetDirection = target.transform.position - transform.position;
         while(Vector3.Angle(transform.forward, targetDirection) > 1.0f)
@@ -169,8 +164,7 @@ public class CharacterAgent : MonoBehaviour {
             yield return null;
         }
         // Beging attack sequence
-        animationState=2;
-        animator.SetInteger("state", animationState);
+        animator.SetTrigger("Attack");
         yield return new WaitForSeconds(0.87f);
         if(target)
         {
@@ -181,8 +175,6 @@ public class CharacterAgent : MonoBehaviour {
             }
         }
         //Debug.Log("Attacked " + target.name);
-        animationState=0;
-        animator.SetInteger("state", animationState);
         attacking = false;
     }
 
