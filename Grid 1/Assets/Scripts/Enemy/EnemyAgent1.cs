@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class EnemyAgent : MonoBehaviour
+public class EnemyAgent1 : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Animator animator;
+    public int animationState = 0;
     private Vector3 basePos;
     public GameObject currentTarget;
     public Vector3 lastTargetPosition;
@@ -25,6 +26,7 @@ public class EnemyAgent : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        animator.SetInteger("state", animationState);
     }
 
     void Awake () 
@@ -122,7 +124,8 @@ public class EnemyAgent : MonoBehaviour
             {
                 if (!agent.hasPath || agent.velocity.sqrMagnitude == 0f)
                 {
-                    animator.SetBool("Walk",false);
+                    animationState = 0;
+                    animator.SetInteger("state", animationState);
                 }
             }
         }
@@ -131,15 +134,17 @@ public class EnemyAgent : MonoBehaviour
 
     public void MoveToLocation(Vector3 targetPoint)
     {
+        animationState = 1;
         animator = GetComponent<Animator>();
-        animator.SetBool("Walk",true);
+        animator.SetInteger("state", animationState);
         agent.destination = targetPoint;
         agent.isStopped = false;
     }
     public void MoveToLocation()
     {
+        animationState = 1;
         animator = GetComponent<Animator>();
-        animator.SetBool("Walk",true);
+        animator.SetInteger("state", animationState);
         agent.destination = basePos;
         agent.isStopped = false;
     }
@@ -209,7 +214,8 @@ public class EnemyAgent : MonoBehaviour
         attacking = true;
         // Stop navigating
         agent.ResetPath();
-        animator.SetBool("Walk",false);
+        animationState=0;
+        animator.SetInteger("state", animationState);
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
         while(Vector3.Angle(transform.forward, targetDirection) > 20.0f)
@@ -220,8 +226,9 @@ public class EnemyAgent : MonoBehaviour
             yield return null;
         }
         // Begin attack sequence
-        animator.SetTrigger("Melee Attack");
-        yield return new WaitForSeconds(0.75f);
+        animationState=2;
+        animator.SetInteger("state", animationState);
+        yield return new WaitForSeconds(1.75f);
         if(target)
         {
             if(bufferList.Contains(target))
@@ -237,7 +244,10 @@ public class EnemyAgent : MonoBehaviour
                 }
             }
         }
-        yield return new WaitForSeconds(1.0f);
+        //Debug.Log("Attacked " + target.name);
+        animationState=0;
+        animator.SetInteger("state", animationState);
+        yield return new WaitForSeconds(0.5f);
         attacking = false;
     }
 
