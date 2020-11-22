@@ -7,6 +7,7 @@ public class EnemyAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Animator animator;
+    private BoardController board;
     private Vector3 basePos;
     public GameObject currentTarget;
     public Vector3 lastTargetPosition;
@@ -16,7 +17,12 @@ public class EnemyAgent : MonoBehaviour
     public GameObject aggroAttackTarget;
     public float rotSpeed = 10.0f;
     public bool attacking = false;
-    
+ 
+    private Vector3 currentPosition;
+    private Vector3 lastPosition;
+    private GameObject currentTile;
+    private GameObject lastTile;
+
     public Vector3 BasePos
     {
         get {return basePos;}
@@ -25,6 +31,7 @@ public class EnemyAgent : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        board = GameObject.Find("Board").GetComponent<BoardController>();
     }
 
     void Awake () 
@@ -127,6 +134,18 @@ public class EnemyAgent : MonoBehaviour
             }
         }
         InstantlyTurn(agent.steeringTarget);
+
+        // Calculate which tile the enemy is on
+        currentPosition = transform.position;
+        if (currentPosition != lastPosition)
+        {
+            currentTile = board.WorldSpaceToTile(currentPosition);
+            if(currentTile != lastTile)
+            {
+                lastTile = currentTile;
+            }
+            lastPosition = currentPosition;
+        }
     }
 
     public void MoveToLocation(Vector3 targetPoint)

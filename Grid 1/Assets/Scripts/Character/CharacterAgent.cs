@@ -8,6 +8,7 @@ public class CharacterAgent : MonoBehaviour {
 
     private NavMeshAgent agent;
     private Animator animator;
+    private BoardController board;
     public float rotSpeed = 10.0f;
 
     public List<GameObject> rangeList = new List<GameObject>();
@@ -17,9 +18,15 @@ public class CharacterAgent : MonoBehaviour {
     public bool attacking = false;
     private bool autoAttack = true;
 
+    private Vector3 currentPosition;
+    private Vector3 lastPosition;
+    private GameObject currentTile;
+    private GameObject lastTile;
+
     void Start()
     {
         animator = GetComponent<Animator>();
+        board = GameObject.Find("Board").GetComponent<BoardController>();
     }
     // Use this for initialization
     void Awake () 
@@ -119,6 +126,18 @@ public class CharacterAgent : MonoBehaviour {
             }
         }
         InstantlyTurn(agent.steeringTarget);
+
+        // Calculate which tile the character is on
+        currentPosition = transform.position;
+        if (currentPosition != lastPosition)
+        {
+            currentTile = board.WorldSpaceToTile(currentPosition);
+            if(currentTile != lastTile)
+            {
+                lastTile = currentTile;
+            }
+            lastPosition = currentPosition;
+        }
     }
 
     //// Control Commands ////
