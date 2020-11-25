@@ -20,6 +20,9 @@ public class Hex : MonoBehaviour
     public int Edge5 { get; set; } = 0;
     public int e5 = 0;
 
+    public List<GameObject> enemyList = new List<GameObject>();
+    public List<GameObject> playerList = new List<GameObject>();
+
     private void Start() 
     {
         BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
@@ -122,6 +125,35 @@ public class Hex : MonoBehaviour
         BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
         int[] availability = board.GetAdjacent(this.gameObject);
         return availability;
+    }
+
+    public void AddEnemy(GameObject target)
+    {
+        if(!enemyList.Contains(target))
+        {
+            enemyList.Add(target);
+        }
+    }
+    public void RemoveEnemy(GameObject target)
+    {
+        if(enemyList.Contains(target))
+        {
+            enemyList.Remove(target);
+        }
+    }
+    public void AddPlayer(GameObject target)
+    {
+        if(!playerList.Contains(target))
+        {
+            playerList.Add(target);
+        }
+    }
+    public void RemovePlayer(GameObject target)
+    {
+        if(playerList.Contains(target))
+        {
+            playerList.Remove(target);
+        }
     }
 
 }

@@ -134,6 +134,11 @@ public class CharacterAgent : MonoBehaviour {
             currentTile = board.WorldSpaceToTile(currentPosition);
             if(currentTile != lastTile)
             {
+                if(lastTile)
+                {
+                    lastTile.GetComponent<Hex>().RemovePlayer(this.gameObject);
+                }
+                currentTile.GetComponent<Hex>().AddPlayer(this.gameObject);
                 lastTile = currentTile;
             }
             lastPosition = currentPosition;

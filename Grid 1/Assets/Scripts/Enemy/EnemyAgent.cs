@@ -142,6 +142,11 @@ public class EnemyAgent : MonoBehaviour
             currentTile = board.WorldSpaceToTile(currentPosition);
             if(currentTile != lastTile)
             {
+                if(lastTile)
+                {
+                    lastTile.GetComponent<Hex>().RemoveEnemy(this.gameObject);
+                }
+                currentTile.GetComponent<Hex>().AddEnemy(this.gameObject);
                 lastTile = currentTile;
             }
             lastPosition = currentPosition;
