@@ -56,8 +56,19 @@ public class CharacterController : MonoBehaviour
                 characterAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }
+        if (Input.GetMouseButton(0) && currentCommand == 'A')
+        {
+            if(characterAgent.BasicAttackExecute())
+            {
+                currentCommand = 'I';
+            }
+        }
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
             currentCommand = 'B';
+        }
+        if (Input.GetKeyDown(KeyCode.A) && currentCommand == 'I'){
+            currentCommand = 'A';
+            characterAgent.BasicAttackInitiate();
         }
         if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
             Application.Quit();
@@ -67,6 +78,7 @@ public class CharacterController : MonoBehaviour
         if (currentCommand == 'B') {
             GameController.Instance.Build();
         }
+
         if (Input.GetKeyDown(KeyCode.Space)){
             rtscamera.SetTarget(selectedCharacter.transform);
         }
@@ -98,6 +110,5 @@ public class CharacterController : MonoBehaviour
             characterAgent = character04.GetComponent<CharacterAgent>();
             cameraJump = true;
         }
-
     }
 }

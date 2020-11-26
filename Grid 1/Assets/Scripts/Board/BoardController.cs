@@ -346,4 +346,83 @@ public class BoardController : MonoBehaviour
         GameObject tile = GetTile(axial);
         return tile;
     }
+
+    public void HighlightRangeOn(List <GameObject> tileList, string command)
+    {
+        foreach (GameObject tile in tileList)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightOn(command);
+            }
+        }
+    }
+
+    public void HighlightRangeOff(List <GameObject> tileList)
+    {
+        foreach (GameObject tile in tileList)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightOff();
+            }
+        }
+    }
+
+    public List <GameObject> Ring(int distance, GameObject startTile)
+    {
+        int[] startCoordinates = GetCoordinates(startTile);
+        int xStart = startCoordinates[0];
+        int zStart = startCoordinates[1];
+        int yStart = -xStart - zStart;
+        List <GameObject> tileList = new List <GameObject>();
+        for(int x = 0 - distance; x <= distance; x++)
+        {
+            for(int y = 0 - distance; y <= distance; y++)
+            {
+                for(int z = 0 - distance; z <= distance; z++)
+                {
+                    if(x + y + z == 0)
+                    {
+                        if((Mathf.Abs(x)==distance)||(Mathf.Abs(y)==distance)||(Mathf.Abs(z)==distance))
+                        {
+                            int [] newTileCoordinates = new int[] {x+xStart, z+zStart};
+                            if(GetTile(newTileCoordinates))
+                            {
+                                tileList.Add(GetTile(newTileCoordinates));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tileList;
+    }
+
+    public List <GameObject> Circle(int distance, GameObject startTile)
+    {
+        int[] startCoordinates = GetCoordinates(startTile);
+        int xStart = startCoordinates[0];
+        int zStart = startCoordinates[1];
+        int yStart = -xStart - zStart;
+        List <GameObject> tileList = new List <GameObject>();
+        for(int x = 0 - distance; x <= distance; x++)
+        {
+            for(int y = 0 - distance; y <= distance; y++)
+            {
+                for(int z = 0 - distance; z <= distance; z++)
+                {
+                    if(x + y + z == 0)
+                    {
+                        int [] newTileCoordinates = new int[] {x+xStart, z+zStart};
+                        if(GetTile(newTileCoordinates))
+                        {
+                            tileList.Add(GetTile(newTileCoordinates));
+                        }
+                    }
+                }
+            }
+        }
+        return tileList;
+    }
 }

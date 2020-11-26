@@ -126,7 +126,7 @@ public class Hex : MonoBehaviour
         int[] availability = board.GetAdjacent(this.gameObject);
         return availability;
     }
-
+    //// Agent lists ////
     public void AddEnemy(GameObject target)
     {
         if(!enemyList.Contains(target))
@@ -154,6 +154,31 @@ public class Hex : MonoBehaviour
         {
             playerList.Remove(target);
         }
+    }
+    //// Highlights ////
+    public void HighlightOn(string command)
+    {
+        Color color;
+        if (command == "red")
+        {
+            color = new Color(1, 0, 0, 0.2f);
+        }
+        else if (command == "cyan")
+        {
+            color = new Color(0, 1, 1, 0.2f);
+        }
+        else
+        {
+            color = new Color(0, 1, 0, 0.2f);
+        }
+        Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        highlight.enabled = true;
+        highlight.material.color = color;
+    }
+    public void HighlightOff()
+    {
+        Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        highlight.enabled = false;
     }
 
 }

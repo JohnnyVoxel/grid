@@ -23,6 +23,8 @@ public class CharacterAgent : MonoBehaviour {
     private GameObject currentTile;
     private GameObject lastTile;
 
+    private bool basicAttackEnabled = false;
+
     void Start()
     {
         animator = GetComponent<Animator>();
@@ -129,6 +131,7 @@ public class CharacterAgent : MonoBehaviour {
 
         // Calculate which tile the character is on
         currentPosition = transform.position;
+
         if (currentPosition != lastPosition)
         {
             currentTile = board.WorldSpaceToTile(currentPosition);
@@ -137,8 +140,22 @@ public class CharacterAgent : MonoBehaviour {
                 if(lastTile)
                 {
                     lastTile.GetComponent<Hex>().RemovePlayer(this.gameObject);
+                    //////////////////////////// hex based basic attack spaghetti //////////////////////////////
+                    if (basicAttackEnabled)
+                    {
+                        List <GameObject> selectableTiles = BoardController.Instance.Ring(1, lastTile);
+                        BoardController.Instance.HighlightRangeOff(selectableTiles);
+                    }
+                    ///////////////////////////////////////////////////////////////////////////////////////////
                 }
                 currentTile.GetComponent<Hex>().AddPlayer(this.gameObject);
+                //////////////////////////// hex based basic attack spaghetti //////////////////////////////
+                if (basicAttackEnabled)
+                {
+                    List <GameObject> selectableTiles = BoardController.Instance.Ring(1, currentTile);
+                    BoardController.Instance.HighlightRangeOn(selectableTiles, "red");
+                }
+                ///////////////////////////////////////////////////////////////////////////////////////////
                 lastTile = currentTile;
             }
             lastPosition = currentPosition;
@@ -256,6 +273,26 @@ public class CharacterAgent : MonoBehaviour {
             attackTarget = target;
         }
         
+    }
+
+    //// Basic Attack ////
+    public void BasicAttackInitiate()
+    {
+        if(!basicAttackEnabled)
+        {
+            basicAttackEnabled = true;
+            Debug.Log("Attack");
+            List <GameObject> selectableTiles = BoardController.Instance.Ring(1, currentTile);
+            BoardController.Instance.HighlightRangeOn(selectableTiles, "red");
+        }
+    }
+
+    public bool BasicAttackExecute()
+    {
+        List <GameObject> selectableTiles = BoardController.Instance.Ring(1, currentTile);
+        BoardController.Instance.HighlightRangeOff(selectableTiles);
+        basicAttackEnabled = false;
+        return true;
     }
 
 }
