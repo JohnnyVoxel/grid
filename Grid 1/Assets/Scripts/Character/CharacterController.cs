@@ -47,38 +47,55 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1)) {
-            if (CameraCaster.Instance.SelectedTarget() != null) {
-                characterAgent.SetAttackTarget(CameraCaster.Instance.SelectedTarget());
-            }
-            else if (CameraCaster.Instance.SelectedDestination() != null) {
-                characterAgent.CancelAttack();
+        if (Input.GetMouseButton(1)) 
+        {
+            if (CameraCaster.Instance.SelectedDestination() != null) 
+            {
                 characterAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }
-        if (Input.GetMouseButton(0) && currentCommand == 'A')
+        if (Input.GetMouseButton(0))
         {
-            if(characterAgent.BasicAttackExecute())
-            {
-                currentCommand = 'I';
-            }
+            characterAgent.Execute();
         }
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
             currentCommand = 'B';
         }
         if (Input.GetKeyDown(KeyCode.A) && currentCommand == 'I'){
-            currentCommand = 'A';
+            //currentCommand = 'A';
             characterAgent.BasicAttackInitiate();
         }
         if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
-            Application.Quit();
+            currentCommand = 'Q';
+            characterAgent.BasicAttackInitiate(currentCommand);
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+            currentCommand = 'W';
+            characterAgent.BasicAttackInitiate(currentCommand);
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+            currentCommand = 'E';
+            characterAgent.BasicAttackInitiate(currentCommand);
+        }
+        if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+            currentCommand = 'R';
+            characterAgent.BasicAttackInitiate(currentCommand);
         }
 
+        //// Cancel ////
+        if (Input.GetKeyDown(KeyCode.Escape) && currentCommand == 'I'){
+            Application.Quit();
+        }
+        else if(Input.GetKeyDown(KeyCode.Escape) && currentCommand != 'B'){
+            characterAgent.CancelCommand();
+        }
 
+        //// Build Command ////
         if (currentCommand == 'B') {
             GameController.Instance.Build();
         }
 
+        //// Camera Control ////
         if (Input.GetKeyDown(KeyCode.Space)){
             rtscamera.SetTarget(selectedCharacter.transform);
         }
@@ -86,6 +103,8 @@ public class CharacterController : MonoBehaviour
             rtscamera.ResetTarget();
             cameraJump = false;
         }
+
+        //// Character Selection ////
         if  (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)){
             rtscamera.SetTarget(character01.transform);
             selectedCharacter = character01;

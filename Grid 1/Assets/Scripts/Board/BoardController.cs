@@ -367,6 +367,17 @@ public class BoardController : MonoBehaviour
                 tile.GetComponent<Hex>().HighlightOff();
             }
         }
+    } 
+
+    public void HighlightAllOff()
+    {
+        foreach (GameObject tile in tileMap)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightOff();
+            }
+        }
     }
 
     public List <GameObject> Ring(int distance, GameObject startTile)
