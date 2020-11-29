@@ -236,7 +236,8 @@ public class EnemyAgent : MonoBehaviour
         animator.SetBool("Walk",false);
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
-        while(Vector3.Angle(transform.forward, targetDirection) > 20.0f)
+        targetDirection.y =  0;
+        while(Vector3.Angle(transform.forward, targetDirection) > 1.0f)
         {
             float singleStep = rotSpeed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);

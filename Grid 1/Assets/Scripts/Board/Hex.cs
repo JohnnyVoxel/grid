@@ -155,6 +155,14 @@ public class Hex : MonoBehaviour
             playerList.Remove(target);
         }
     }
+    public List<GameObject> GetEnemy()
+    {
+        return enemyList;
+    }
+    public List<GameObject> GetPlayer()
+    {
+        return playerList;
+    }
     //// Highlights ////
     public void HighlightOn(string command)
     {

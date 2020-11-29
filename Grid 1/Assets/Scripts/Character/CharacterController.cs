@@ -20,6 +20,19 @@ public class CharacterController : MonoBehaviour
     private GameObject selectedCharacter;
     private bool cameraJump = false;
     
+    static CharacterController _instance;
+    public static CharacterController Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<CharacterController>();
+            }
+            return _instance;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -54,7 +67,7 @@ public class CharacterController : MonoBehaviour
                 characterAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
         }
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButtonDown(0))
         {
             characterAgent.Execute();
         }
@@ -62,24 +75,24 @@ public class CharacterController : MonoBehaviour
             currentCommand = 'B';
         }
         if (Input.GetKeyDown(KeyCode.A) && currentCommand == 'I'){
-            //currentCommand = 'A';
+            currentCommand = 'A';
             characterAgent.BasicAttackInitiate();
         }
         if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
             currentCommand = 'Q';
-            characterAgent.BasicAttackInitiate(currentCommand);
+            characterAgent.ActionEnable(currentCommand);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+        if (Input.GetKeyDown(KeyCode.W) && currentCommand == 'I'){
             currentCommand = 'W';
-            characterAgent.BasicAttackInitiate(currentCommand);
+            characterAgent.ActionEnable(currentCommand);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+        if (Input.GetKeyDown(KeyCode.E) && currentCommand == 'I'){
             currentCommand = 'E';
-            characterAgent.BasicAttackInitiate(currentCommand);
+            characterAgent.ActionEnable(currentCommand);
         }
-        if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+        if (Input.GetKeyDown(KeyCode.R) && currentCommand == 'I'){
             currentCommand = 'R';
-            characterAgent.BasicAttackInitiate(currentCommand);
+            characterAgent.ActionEnable(currentCommand);
         }
 
         //// Cancel ////
@@ -88,6 +101,7 @@ public class CharacterController : MonoBehaviour
         }
         else if(Input.GetKeyDown(KeyCode.Escape) && currentCommand != 'B'){
             characterAgent.CancelCommand();
+            currentCommand = 'I';
         }
 
         //// Build Command ////

@@ -436,4 +436,9 @@ public class BoardController : MonoBehaviour
         }
         return tileList;
     }
+    //// change to recieve list of tiles and overload with single tile
+    public List<GameObject> GetEnemy(GameObject tile)
+    {
+        return tile.GetComponent<Hex>().GetEnemy();
+    }
 }

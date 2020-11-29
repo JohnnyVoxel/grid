@@ -9,17 +9,17 @@ public class CharacterAgent : MonoBehaviour {
     private NavMeshAgent agent;
     private Animator animator;
     private BoardController board;
-    private CharacterController controller;
+    private CharacterAction action;
     public float rotSpeed = 10.0f;
 
     private Vector3 destinationPosition;
     //private Vector3 currentPosition;
     //private Vector3 lastPosition;
-    private GameObject currentTile;
-    private GameObject lastTile;
+    public GameObject currentTile;
+    public GameObject lastTile;
 
     private bool actionEnabled = false;
-    private bool basicAttackEnabled = false;
+    public bool basicAttackEnabled = false;
     private bool destination = false;
     private List<GameObject> selectableTileList = new List <GameObject>();
     private char actionCommand;
@@ -28,17 +28,20 @@ public class CharacterAgent : MonoBehaviour {
     {
         animator = GetComponent<Animator>();
         board = GameObject.Find("Board").GetComponent<BoardController>();
-        controller = GetComponent<CharacterController>();
+        action = GetComponent<CharacterAction>();
+        currentTile = board.WorldSpaceToTile(transform.position);
+        lastTile = currentTile;
     }
     // Use this for initialization
     void Awake() 
     {
-        agent = GetComponent<NavMeshAgent> ();
-        agent.updateRotation = false;    
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
     }
 
     void Update()
     {
+        currentTile = board.WorldSpaceToTile(transform.position);
         if (actionEnabled)
         {
             /*
@@ -49,7 +52,8 @@ public class CharacterAgent : MonoBehaviour {
             }
             */
         }
-        else if (destination)
+        
+        if (destination)
         {
             // Move to destination
             //// Idle ////
@@ -69,14 +73,17 @@ public class CharacterAgent : MonoBehaviour {
                 animator.SetBool("Run", true);
             }
         }
-        else if (basicAttackEnabled)
+
+        if (basicAttackEnabled)
         {
-            Debug.Log("Attack logic");
+            //Debug.Log("Attack logic");
+            action.ActionBasicAttack();
         }
         else
         {
             //idle
-        } 
+        }
+        lastTile = currentTile;
     }
 
     void FixedUpdate()
@@ -95,7 +102,7 @@ public class CharacterAgent : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
-    void ActionEnable(char newActionCommand)
+    public void ActionEnable(char newActionCommand)
     {
         // Setup for the action routine
         if (newActionCommand != actionCommand)
@@ -109,8 +116,8 @@ public class CharacterAgent : MonoBehaviour {
         // If destination flag is true, cancel movement
         if(destination)
         {
-            agent.ResetPath();
-            destination = false;
+            //agent.ResetPath();
+            //destination = false;
             if(animator.GetBool("Run"))
             {
                 animator.SetBool("Run", false);
@@ -131,7 +138,7 @@ public class CharacterAgent : MonoBehaviour {
         if(basicAttackEnabled)
         {
             //CharacterAction.BasicAttackCancel();
-            basicAttackEnabled = false;
+            //basicAttackEnabled = false;
         }
         if(!animator.GetBool("Run"))
         {
@@ -144,11 +151,11 @@ public class CharacterAgent : MonoBehaviour {
 
     public void BasicAttackInitiate()
     {
-        BasicAttackEnabled = true;
+        basicAttackEnabled = true;
         if(destination)
         {
-            agent.ResetPath();
-            destination = false;
+            //agent.ResetPath();
+            //destination = false;
             if(animator.GetBool("Run"))
             {
                 animator.SetBool("Run", false);
@@ -168,7 +175,7 @@ public class CharacterAgent : MonoBehaviour {
         }
         if(basicAttackEnabled)
         {
-            // CharacterAction.BasicAttackCancel();
+            action.ActionBasicAttackCancel();
         }
     }
 
@@ -180,6 +187,7 @@ public class CharacterAgent : MonoBehaviour {
         }
         if(basicAttackEnabled)
         {
-            // CharacterAction.BasicAttackExecute();
+            action.ActionBasicAttackExecute();
         }
     }
+}
