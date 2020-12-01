@@ -180,12 +180,48 @@ public class Hex : MonoBehaviour
             color = new Color(0, 1, 0, 0.2f);
         }
         Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        Transform highlightGeometry = transform.Find("Highlight");
+        if(!highlight.enabled)
+        {
+            StopCoroutine("LerpOut");
+            StartCoroutine(methodName: "LerpIn",value: highlightGeometry);
+        }
         highlight.enabled = true;
         highlight.material.color = color;
     }
     public void HighlightOff()
     {
+        //Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        Transform highlightGeometry = transform.Find("Highlight");
+        StartCoroutine(methodName: "LerpOut",value: highlightGeometry);
+        //highlight.enabled = false;
+    }
+
+    IEnumerator LerpIn(Transform highlightGeometry){
+        float progress = 0;
+        float timeScale = 15.0f;
+        Vector3 startScale = new Vector3 (0.01f, 0.01f, 0.01f);
+        Vector3 endScale = new Vector3 (0.95f, 0.01f, 0.95f);
+        while(progress <= 1){
+            highlightGeometry.localScale = Vector3.Lerp(startScale, endScale, progress);
+            progress += Time.deltaTime * timeScale;
+            yield return null;
+        }
+        highlightGeometry.localScale = endScale;
+    }
+
+    IEnumerator LerpOut(Transform highlightGeometry){
         Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        float progress = 0;
+        float timeScale = 15.0f;
+        Vector3 startScale = new Vector3 (0.95f, 0.01f, 0.95f);
+        Vector3 endScale = new Vector3 (0.01f, 0.01f, 0.01f);
+        while(progress <= 1){
+            highlightGeometry.localScale = Vector3.Lerp(startScale, endScale, progress);
+            progress += Time.deltaTime * timeScale;
+            yield return null;
+        }
+        highlightGeometry.localScale = endScale;
         highlight.enabled = false;
     }
 

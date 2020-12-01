@@ -29,9 +29,9 @@ public class ActionPlayer1 : CharacterAction
         //// Highlight Available Tiles ////
         if((characterAgent.currentTile != characterAgent.lastTile) || (selectableTileList.Count == 0))
         {
-            selectableTileList = BoardController.Instance.Circle(1, characterAgent.lastTile);
+            selectableTileList = BoardController.Instance.Ring(1, characterAgent.lastTile);
             BoardController.Instance.HighlightRangeOff(selectableTileList);
-            selectableTileList = BoardController.Instance.Circle(1, characterAgent.currentTile);
+            selectableTileList = BoardController.Instance.Ring(1, characterAgent.currentTile);
             BoardController.Instance.HighlightRangeOn(selectableTileList, "cyan");
         }
         //// Highlight Selected Tile ////

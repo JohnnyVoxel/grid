@@ -28,6 +28,10 @@ public class EnemyStats : MonoBehaviour
         {
             StartCoroutine("DestroyEnemy");
         }
+        else
+        {
+            StartCoroutine("Stun");
+        }
     }
 
     IEnumerator DestroyEnemy()
@@ -38,5 +42,17 @@ public class EnemyStats : MonoBehaviour
         GetComponent<Animator>().SetTrigger("Die");
         yield return new WaitForSeconds(1.5f);
         Destroy(this.gameObject);
+    }
+
+    IEnumerator Stun()
+    {
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent.isStopped = true;
+        Animator animator = GetComponent<Animator>();
+        animator.SetBool("Walk", false);
+        //animator.SetTrigger("Take Damage");
+        animator.Play("Base Layer.Take Damage", -1, 0);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length); //+animator.GetCurrentAnimatorStateInfo(0).normalizedTime
+        agent.isStopped = false;
     }
 }

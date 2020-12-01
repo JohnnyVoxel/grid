@@ -10,11 +10,9 @@ public class CharacterAgent : MonoBehaviour {
     private Animator animator;
     private BoardController board;
     private CharacterAction action;
-    public float rotSpeed = 10.0f;
+    public float rotSpeed = 20.0f;
 
     private Vector3 destinationPosition;
-    //private Vector3 currentPosition;
-    //private Vector3 lastPosition;
     public GameObject currentTile;
     public GameObject lastTile;
 
@@ -116,8 +114,8 @@ public class CharacterAgent : MonoBehaviour {
         // If destination flag is true, cancel movement
         if(destination)
         {
-            //agent.ResetPath();
-            //destination = false;
+            agent.ResetPath();
+            destination = false;
             if(animator.GetBool("Run"))
             {
                 animator.SetBool("Run", false);
@@ -137,8 +135,8 @@ public class CharacterAgent : MonoBehaviour {
         animator = GetComponent<Animator>();
         if(basicAttackEnabled)
         {
-            //CharacterAction.BasicAttackCancel();
-            //basicAttackEnabled = false;
+            action.ActionBasicAttackCancel();
+            basicAttackEnabled = false;
         }
         if(!animator.GetBool("Run"))
         {
@@ -154,8 +152,8 @@ public class CharacterAgent : MonoBehaviour {
         basicAttackEnabled = true;
         if(destination)
         {
-            //agent.ResetPath();
-            //destination = false;
+            agent.ResetPath();
+            destination = false;
             if(animator.GetBool("Run"))
             {
                 animator.SetBool("Run", false);

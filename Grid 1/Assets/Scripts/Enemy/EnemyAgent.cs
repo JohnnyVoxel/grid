@@ -156,16 +156,22 @@ public class EnemyAgent : MonoBehaviour
     public void MoveToLocation(Vector3 targetPoint)
     {
         animator = GetComponent<Animator>();
-        animator.SetBool("Walk",true);
+        if(!animator.GetBool("Walk"))
+        {
+            animator.SetBool("Walk",true);
+        }
         agent.destination = targetPoint;
-        agent.isStopped = false;
+        //agent.isStopped = false;
     }
     public void MoveToLocation()
     {
         animator = GetComponent<Animator>();
-        animator.SetBool("Walk",true);
+        if(!animator.GetBool("Walk"))
+        {
+            animator.SetBool("Walk",true);
+        }
         agent.destination = basePos;
-        agent.isStopped = false;
+        //agent.isStopped = false;
     }
 
     //// Rotation ////
