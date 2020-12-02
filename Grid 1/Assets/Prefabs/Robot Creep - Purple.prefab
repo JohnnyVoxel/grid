@@ -10792,9 +10792,9 @@ GameObject:
   - component: {fileID: 415502}
   - component: {fileID: 9544462}
   - component: {fileID: 9201864046473711187}
-  - component: {fileID: 3652803572133937635}
   - component: {fileID: 5364516185292535574}
   - component: {fileID: -2827490567593731430}
+  - component: {fileID: 340481225658354444}
   m_Layer: 11
   m_Name: Robot Creep - Purple
   m_TagString: Enemy
@@ -10874,20 +10874,6 @@ MonoBehaviour:
   aggroAttackTarget: {fileID: 0}
   rotSpeed: 10
   attacking: 0
---- !u!114 &3652803572133937635
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 198036}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ba11418fa2ac69046887e99353764467, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxLife: 100
-  currentLife: 0
 --- !u!195 &5364516185292535574
 NavMeshAgent:
   m_ObjectHideFlags: 0
@@ -10926,6 +10912,21 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &340481225658354444
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 198036}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0e3e0f45777db3740840b6085bc815cd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  maxLife: 100
+  damage: 50
+  currentLife: 0
 --- !u!1 &224646292979368749
 GameObject:
   m_ObjectHideFlags: 0

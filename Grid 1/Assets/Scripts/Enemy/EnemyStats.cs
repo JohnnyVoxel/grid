@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyStats : MonoBehaviour
 {
     public int maxLife = 100;
+    public int damage = 50;
     public int currentLife;
     
     // Start is called before the first frame update

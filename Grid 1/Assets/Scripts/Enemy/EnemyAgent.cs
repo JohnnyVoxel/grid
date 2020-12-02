@@ -8,6 +8,7 @@ public class EnemyAgent : MonoBehaviour
     private NavMeshAgent agent;
     private Animator animator;
     private BoardController board;
+    private EnemyStats stats;
     private Vector3 basePos;
     public GameObject currentTarget;
     public Vector3 lastTargetPosition;
@@ -32,6 +33,7 @@ public class EnemyAgent : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         board = GameObject.Find("Board").GetComponent<BoardController>();
+        stats = GetComponent<EnemyStats>();
     }
 
     void Awake () 
@@ -259,12 +261,12 @@ public class EnemyAgent : MonoBehaviour
             {
                 if(target.gameObject.tag == "Player")
                 {
-                    target.GetComponent<CharacterStats>().TakeDamage(5, this.gameObject);
+                    target.GetComponent<CharacterStats>().TakeDamage(stats.damage, this.gameObject);
                 }
                 else if(target.gameObject.tag == "Structure")
                 {
                     // Add after implimenting health and status to structures. issue #13
-                    //target.GetComponent<CharacterStats>().TakeDamage(5, this.gameObject);
+                    //target.GetComponent<CharacterStats>().TakeDamage(stats.damage, this.gameObject);
                 }
             }
         }
