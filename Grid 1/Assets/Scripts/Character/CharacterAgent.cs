@@ -81,6 +81,17 @@ public class CharacterAgent : MonoBehaviour {
         {
             //idle
         }
+
+        if(currentTile != lastTile)
+        {
+            if(lastTile)
+            {
+                lastTile.GetComponent<Hex>().RemovePlayer(this.gameObject);
+            }
+            currentTile.GetComponent<Hex>().AddPlayer(this.gameObject);
+            lastTile = currentTile;
+        }
+
         lastTile = currentTile;
     }
 

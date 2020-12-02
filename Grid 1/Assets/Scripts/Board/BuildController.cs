@@ -120,6 +120,11 @@ public class BuildController : MonoBehaviour
                     }
                 }
             }
+            if ((selectedHex.GetEnemy().Count > 0)||(selectedHex.GetPlayer().Count > 0))
+            {
+                SetHighlight(structure.transform, Color.red);
+                available = false;
+            }
 
             //Rotate
             if (Input.GetMouseButtonDown(1))
