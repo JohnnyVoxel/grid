@@ -41,6 +41,7 @@ public class EnemyStats : MonoBehaviour
         GetComponent<EnemyAgent>().enabled = false;
         this.transform.Find("Body").GetComponent<BoxCollider>().enabled = false;
         GetComponent<Animator>().SetTrigger("Die");
+        yield return new WaitForSeconds(0.1f); // Prevents error in character attack coroutine
         GameObject currentTile = BoardController.Instance.WorldSpaceToTile(this.transform.position);
         currentTile.GetComponent<Hex>().RemoveEnemy(this.gameObject);
         yield return new WaitForSeconds(1.5f);

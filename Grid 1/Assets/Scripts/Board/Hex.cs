@@ -23,6 +23,8 @@ public class Hex : MonoBehaviour
     public List<GameObject> enemyList = new List<GameObject>();
     public List<GameObject> playerList = new List<GameObject>();
 
+    public bool selected = false;
+
     private void Start() 
     {
         BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
@@ -170,14 +172,17 @@ public class Hex : MonoBehaviour
         if (command == "red")
         {
             color = new Color(1, 0, 0, 0.2f);
+            selected = true;
         }
         else if (command == "cyan")
         {
             color = new Color(0, 1, 1, 0.2f);
+            selected = false;
         }
         else
         {
             color = new Color(0, 1, 0, 0.2f);
+            selected = false;
         }
         Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
         Transform highlightGeometry = transform.Find("Highlight");
@@ -191,10 +196,9 @@ public class Hex : MonoBehaviour
     }
     public void HighlightOff()
     {
-        //Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        selected = false;
         Transform highlightGeometry = transform.Find("Highlight");
         StartCoroutine(methodName: "LerpOut",value: highlightGeometry);
-        //highlight.enabled = false;
     }
 
     IEnumerator LerpIn(Transform highlightGeometry){

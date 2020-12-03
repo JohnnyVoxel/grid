@@ -74,7 +74,6 @@ public class CharacterAgent : MonoBehaviour {
 
         if (basicAttackEnabled)
         {
-            //Debug.Log("Attack logic");
             action.ActionBasicAttack();
         }
         else

@@ -9,6 +9,7 @@ public class EnemyAgent : MonoBehaviour
     private Animator animator;
     private BoardController board;
     private EnemyStats stats;
+    private HealthBar healthbar;
     private Vector3 basePos;
     public GameObject currentTarget;
     public Vector3 lastTargetPosition;
@@ -34,6 +35,7 @@ public class EnemyAgent : MonoBehaviour
         animator = GetComponent<Animator>();
         board = GameObject.Find("Board").GetComponent<BoardController>();
         stats = GetComponent<EnemyStats>();
+        healthbar = transform.Find("Healthbar").GetComponent<HealthBar>();
     }
 
     void Awake () 
@@ -152,6 +154,20 @@ public class EnemyAgent : MonoBehaviour
                 lastTile = currentTile;
             }
             lastPosition = currentPosition;
+        }
+        if(currentTile.GetComponent<Hex>().selected)
+        {
+            if(!healthbar.GetTarget())
+            {
+                healthbar.TargetOn();
+            }
+        }
+        else
+        {
+            if(healthbar.GetTarget())
+            {
+                healthbar.TargetOff();
+            }
         }
     }
 

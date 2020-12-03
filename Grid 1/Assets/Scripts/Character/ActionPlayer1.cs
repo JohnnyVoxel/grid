@@ -35,7 +35,10 @@ public class ActionPlayer1 : CharacterAction
             BoardController.Instance.HighlightRangeOn(selectableTileList, "cyan");
         }
         //// Highlight Selected Tile ////
-        currentSelectedTile = CameraCaster.Instance.SelectedTile().gameObject;
+        if(CameraCaster.Instance.SelectedTile().gameObject)
+        {
+            currentSelectedTile = CameraCaster.Instance.SelectedTile().gameObject;
+        }
         if((currentSelectedTile != previousSelectedTile) || (characterAgent.currentTile != characterAgent.lastTile))
         {
             if(selectableTileList.Contains(currentSelectedTile))
@@ -52,7 +55,6 @@ public class ActionPlayer1 : CharacterAction
 
     protected override void CharacterBasicAttackExecute()
     {
-        Debug.Log("Basic Attack Execute");
         if(selectableTileList.Contains(currentSelectedTile))
         {
             attackSelectedTile = currentSelectedTile;
@@ -94,16 +96,16 @@ public class ActionPlayer1 : CharacterAction
         enemyList = BoardController.Instance.GetEnemy(attackSelectedTile);
         if(enemyList.Count > 0)
         {
+            Debug.Log(enemyList.Count);
             foreach(GameObject enemy in enemyList)
             {
                 if(enemy)
                 {
-                    enemy.GetComponent<EnemyStats>().TakeDamage(20, this.gameObject);
+                    enemy.GetComponent<EnemyStats>().TakeDamage(50, this.gameObject);
                 }
             }
         }
         CharacterBasicAttackCancel();
-        //Debug.Log("Attacked " + target.name);
         //attacking = false;
     }
 }
