@@ -18,6 +18,7 @@ public class CharacterAgent : MonoBehaviour {
 
     private bool actionEnabled = false;
     public bool basicAttackEnabled = false;
+    private bool autoAttackEnabled = false;
     private bool destination = false;
     private List<GameObject> selectableTileList = new List <GameObject>();
     private char actionCommand;
@@ -76,7 +77,7 @@ public class CharacterAgent : MonoBehaviour {
         {
             action.ActionBasicAttack();
         }
-        else
+        else if (autoAttackEnabled)
         {
             //idle
         }

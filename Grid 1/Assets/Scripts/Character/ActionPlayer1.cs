@@ -13,6 +13,7 @@ public class ActionPlayer1 : CharacterAction
     private GameObject currentSelectedTile;
     private GameObject previousSelectedTile;
     private GameObject attackSelectedTile;
+    private bool attacking = false;
 
     private List<GameObject> enemyList = new List<GameObject>();
 
@@ -52,6 +53,11 @@ public class ActionPlayer1 : CharacterAction
         }
         previousSelectedTile = currentSelectedTile;
     }
+///////////////////////////////////////////////////////////////
+  /*  protected override void CharacterAutoAttack()
+    {
+        if(currentSelectedTile)
+    }*/
 
     protected override void CharacterBasicAttackExecute()
     {
@@ -71,12 +77,14 @@ public class ActionPlayer1 : CharacterAction
         CharacterController.Instance.currentCommand = 'I';
         previousSelectedTile = null;
         attackSelectedTile = null;
+        attacking = false;
+        StopCoroutine("BasicAttackCoroutine");
     }
 
     IEnumerator BasicAttackCoroutine()
     {
+        attacking = true;
         animator = GetComponent<Animator>();
-        //attacking = true;
         // Stop navigating
         agent.ResetPath();
         animator.SetBool("Run", false);
@@ -96,16 +104,14 @@ public class ActionPlayer1 : CharacterAction
         enemyList = BoardController.Instance.GetEnemy(attackSelectedTile);
         if(enemyList.Count > 0)
         {
-            Debug.Log(enemyList.Count);
             foreach(GameObject enemy in enemyList)
             {
                 if(enemy)
                 {
-                    enemy.GetComponent<EnemyStats>().TakeDamage(50, this.gameObject);
+                    enemy.GetComponent<EnemyStats>().TakeDamage(25, this.gameObject);
                 }
             }
         }
         CharacterBasicAttackCancel();
-        //attacking = false;
     }
 }

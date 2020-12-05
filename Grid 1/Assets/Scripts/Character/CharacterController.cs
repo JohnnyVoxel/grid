@@ -78,6 +78,7 @@ public class CharacterController : MonoBehaviour
             currentCommand = 'A';
             characterAgent.BasicAttackInitiate();
         }
+        /* Future action implementation
         if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
             currentCommand = 'Q';
             characterAgent.ActionEnable(currentCommand);
@@ -94,7 +95,7 @@ public class CharacterController : MonoBehaviour
             currentCommand = 'R';
             characterAgent.ActionEnable(currentCommand);
         }
-
+        */
         //// Cancel ////
         if (Input.GetKeyDown(KeyCode.Escape) && currentCommand == 'I'){
             Application.Quit();

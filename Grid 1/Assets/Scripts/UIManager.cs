@@ -34,7 +34,7 @@ public class UIManager : MonoBehaviour
         }
         if(game.currentMode == character.gameObject)
         {
-            menu.text = "12/1/2020\nPLAY:\n R-click) Move\n 1-4) Switch character\n A) Attack\n B) Build\n Esc) Quit\n Space) Camera follow";
+            menu.text = "12/2/2020\nPLAY:\n R-click) Move\n 1-4) Switch character\n A) Attack\n B) Build\n Esc) Quit\n Space) Camera follow";
         }
     }
 }

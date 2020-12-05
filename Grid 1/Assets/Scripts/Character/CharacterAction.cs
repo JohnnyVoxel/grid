@@ -21,4 +21,10 @@ public abstract class CharacterAction : MonoBehaviour
         this.CharacterBasicAttackCancel();
     }
     protected abstract void CharacterBasicAttackCancel();
+/*
+    public void ActionAutoAttack()
+    {
+        this.CharacterAutoAttack();
+    }
+    protected abstract void CharacterAutoAttack();*/
 }
