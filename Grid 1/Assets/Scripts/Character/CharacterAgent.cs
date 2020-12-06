@@ -5,68 +5,57 @@ using UnityEngine.AI;
 
 
 public class CharacterAgent : MonoBehaviour {
-
+    
     private NavMeshAgent agent;
     private Animator animator;
-    public float rotSpeed = 10.0f;
+    private BoardController board;
+    private CharacterAction action;
+    public float rotSpeed = 20.0f;
 
-    public List<GameObject> rangeList = new List<GameObject>();
-    public List<GameObject> bufferList = new List<GameObject>();
-    public GameObject attackTarget = null;
-    public bool destination = false;
-    public bool attacking = false;
-    private bool autoAttack = true;
+    private Vector3 destinationPosition;
+    public GameObject currentTile;
+    public GameObject lastTile;
+
+    private bool actionEnabled = false;
+    public bool basicAttackEnabled = false;
+    private bool autoAttackEnabled = true;
+    private bool destination = false;
+    private List<GameObject> selectableTileList = new List <GameObject>();
+    private char actionCommand;
+    public bool autoAttackTestFlag = false;
 
     void Start()
     {
         animator = GetComponent<Animator>();
+        board = GameObject.Find("Board").GetComponent<BoardController>();
+        action = GetComponent<CharacterAction>();
+        currentTile = board.WorldSpaceToTile(transform.position);
+        lastTile = currentTile;
     }
     // Use this for initialization
-    void Awake () 
+    void Awake() 
     {
-        agent = GetComponent<NavMeshAgent> ();
-        agent.updateRotation = false;    
+        agent = GetComponent<NavMeshAgent>();
+        agent.updateRotation = false;
     }
 
-    void Update() 
+    void Update()
     {
-        // Target is selected. Move to or attack target.
-        if (attackTarget)
+        currentTile = board.WorldSpaceToTile(transform.position);
+        if (actionEnabled)
         {
-            // Check if target has been killed by seeing if its collider is disabled
-            if (!attackTarget.transform.Find("Body").GetComponent<BoxCollider>().enabled)
+            /*
+            if(CharacterAction.Action(actionCommand));
             {
-                RemoveRangeBuffer(attackTarget);
-                RemoveRangeTarget(attackTarget);
-                attackTarget = null;
+                actionEnabled = false;
+                controller.currentCommand = 'I';
             }
-            // Target is in attacking range
-            else if (rangeList.Contains(attackTarget))
-            {
-                //// Directed attack ////
-                if(!attacking)
-                {
-                    StopCoroutine(methodName: "Attack");
-                    StartCoroutine(methodName: "Attack",value: attackTarget);
-                }
-            }
-            // Target has left the buffer or the attack has ended
-            else if ((!bufferList.Contains(attackTarget)) || (!attacking))
-            {
-                //// Move to attackTarget ////
-                if(attacking)
-                {
-                    StopCoroutine(methodName: "Attack");
-                    attacking = false;
-                }
-                MoveToLocation(attackTarget.transform.position);
-            }
+            */
         }
         
-        // Target is not selected, but destinon is set.
         else if (destination)
         {
-            // Check if destination is reached.
+            // Move to destination
             //// Idle ////
             if (agent.remainingDistance <= agent.stoppingDistance)
             {
@@ -85,100 +74,37 @@ public class CharacterAgent : MonoBehaviour {
             }
         }
 
-        // There is no attackTarget or destination set
-        else
+        else if (basicAttackEnabled && action.BasicAttackAvailable)
         {
-            //// Auto Attack ////
-            if((rangeList.Count>0) && (autoAttack))
+            action.ActionBasicAttack();
+        }
+        
+        else if (autoAttackEnabled)
+        {
+            if(!destination && !action.Attacking && action.BasicAttackAvailable)
             {
-                if(rangeList[0])
-                {
-                    attackTarget = rangeList[0];
-                }
-                else
-                {
-                    rangeList.RemoveAt(0);
-                }
-
-                if(bufferList.Count>0)
-                {
-                    if(!bufferList[0])
-                    {
-                        bufferList.RemoveAt(0);
-                    }
-                }
-            }
-            //// Idle ////
-            else
-            {
-                if(animator.GetBool("Run"))
-                {
-                    // Not attacking or moving. Set animation to idle.
-                    animator.SetBool("Run", false);
-                }
+                action.ActionAutoAttack();
             }
         }
+
+
+        if(currentTile != lastTile)
+        {
+            if(lastTile)
+            {
+                lastTile.GetComponent<Hex>().RemovePlayer(this.gameObject);
+            }
+            currentTile.GetComponent<Hex>().AddPlayer(this.gameObject);
+            lastTile = currentTile;
+        }
+
+        lastTile = currentTile;
+    }
+
+    void FixedUpdate()
+    {
         InstantlyTurn(agent.steeringTarget);
     }
-
-    //// Control Commands ////
-
-    public void MoveToLocation(Vector3 targetPoint)
-    {
-        animator = GetComponent<Animator>();
-        if(attacking)
-        {
-            CancelAttack();
-        }
-        if(!animator.GetBool("Run"))
-        {
-            animator.SetBool("Run", true);
-        }
-        agent.destination = targetPoint;
-        agent.isStopped = false;
-        destination = true;
-    }
-
-    public void CancelAttack()
-    {
-        StopCoroutine(methodName: "Attack");
-        attackTarget = null;
-        attacking = false;
-        //Debug.Log("Attack Cancelled");
-    }
-
-    IEnumerator Attack(GameObject target)
-    {
-        animator = GetComponent<Animator>();
-        attacking = true;
-        // Stop navigating
-        agent.ResetPath();
-        animator.SetBool("Run", false);
-        // Turn towards enemy
-        Vector3 targetDirection = target.transform.position - transform.position;
-        while(Vector3.Angle(transform.forward, targetDirection) > 1.0f)
-        {
-            float singleStep = rotSpeed * Time.deltaTime;
-            Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
-            transform.rotation = Quaternion.LookRotation(newDirection);
-            yield return null;
-        }
-        // Beging attack sequence
-        animator.SetTrigger("Attack");
-        yield return new WaitForSeconds(0.87f);
-        if(target)
-        {
-            if(bufferList.Contains(target))
-            {
-                // Eventually pull damage from Stats script
-                target.GetComponent<EnemyStats>().TakeDamage(20, this.gameObject);
-            }
-        }
-        //Debug.Log("Attacked " + target.name);
-        attacking = false;
-    }
-
-    //// Rotation ////
 
     private void InstantlyTurn(Vector3 destination) 
     {
@@ -191,47 +117,92 @@ public class CharacterAgent : MonoBehaviour {
         transform.rotation = Quaternion.LookRotation(newDirection);
     }
 
-    //// Attacking Logic ////
-
-    public void AddRangeTarget(GameObject target)
+    public void ActionEnable(char newActionCommand)
     {
-        if(!rangeList.Contains(target))
+        // Setup for the action routine
+        if (newActionCommand != actionCommand)
         {
-            rangeList.Add(target);
+            Debug.Log("Cancel " + actionCommand);
+            Debug.Log("Initiate " + newActionCommand);
+            // if CharacterAction.CancelCommand returns true
+                actionCommand = newActionCommand;
+        }
+        animator = GetComponent<Animator>();
+        // If destination flag is true, cancel movement
+        if(destination)
+        {
+            agent.ResetPath();
+            destination = false;
+            if(animator.GetBool("Run"))
+            {
+                animator.SetBool("Run", false);
+            }
+        }
+        // If basic attack flag is true, cancel attacking
+        if(basicAttackEnabled)
+        {
+            // basic attack cancel method
+            basicAttackEnabled = false;
+        }
+        actionEnabled = true;
+    }
+
+    public void MoveToLocation(Vector3 targetPoint)
+    {
+        animator = GetComponent<Animator>();
+        if(basicAttackEnabled)
+        {
+            action.ActionBasicAttackCancel();
+            basicAttackEnabled = false;
+        }
+        if(!animator.GetBool("Run"))
+        {
+            animator.SetBool("Run", true);
+        }
+        agent.destination = targetPoint;
+        agent.isStopped = false;
+        destination = true;
+    }
+
+    public void BasicAttackInitiate()
+    {
+        basicAttackEnabled = true;
+        if(destination)
+        {
+            agent.ResetPath();
+            destination = false;
+            if(animator.GetBool("Run"))
+            {
+                animator.SetBool("Run", false);
+            }
         }
     }
 
-    public void RemoveRangeTarget(GameObject target)
+    public void CancelCommand()
     {
-        if(rangeList.Contains(target))
+        if(actionEnabled)
         {
-            rangeList.Remove(target);
+            /*
+            if(CharacterAction.ActionCancel())
+            {
+                actionEnabled = false;
+            }*/
+        }
+        if(basicAttackEnabled)
+        {
+            action.ActionBasicAttackCancel();
         }
     }
 
-    public void AddRangeBuffer(GameObject target)
+    public void Execute()
     {
-        if(!bufferList.Contains(target))
+        if(actionEnabled)
         {
-            bufferList.Add(target);
+            // CharacterAction.ActionExecute()
+        }
+        if(basicAttackEnabled)
+        {
+            action.ActionBasicAttackExecute();
         }
     }
-
-    public void RemoveRangeBuffer(GameObject target)
-    {
-        if(bufferList.Contains(target))
-        {
-            bufferList.Remove(target);
-        }
-    }
-
-    public void SetAttackTarget(GameObject target)
-    {
-        if(target)
-        {
-            attackTarget = target;
-        }
-        
-    }
-
 }

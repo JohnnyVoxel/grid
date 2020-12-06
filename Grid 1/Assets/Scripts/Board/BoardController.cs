@@ -67,7 +67,8 @@ public class BoardController : MonoBehaviour
             return _instance;
         }
     }
-    // Start is called before the first frame update
+
+    // Build the board
     public void Awake()
     {
         tileMap = new GameObject[map.GetLength(0),map.GetLength(1)];
@@ -138,6 +139,8 @@ public class BoardController : MonoBehaviour
         }
         RebuildNavMesh();
     }
+
+    // Return the availability for structures of all adjacent tile edges for the passed tile.
     public int[] GetAdjacent(GameObject tile)
     {
         int[] tilePosition = GetCoordinates(tile);
@@ -192,6 +195,7 @@ public class BoardController : MonoBehaviour
         return adjacent;
     }
 
+    // Return the board position (Q, R) of a reference to a tile
     public int[] GetCoordinates(GameObject tile)
     {
         int[] position = new int[2];
@@ -210,6 +214,7 @@ public class BoardController : MonoBehaviour
         return position;
     }
 
+    // Return the reference to the tile at the board position (Q, R)
     public GameObject GetTile(int[] position)
     {
         if((position[0] >= 0) && (position[0] < tileMap.GetLength(0)) && (position[1] >=0) && (position[1] < tileMap.GetLength(1)))
@@ -293,6 +298,7 @@ public class BoardController : MonoBehaviour
         return position;
     }
 
+    // Find and return the worldspace position of the enemy spawn points as a list.
     public List <Vector3> GetEnemySpawnPoints()
     {
         List <Vector3> spawns = new List <Vector3>(); 
@@ -309,5 +315,130 @@ public class BoardController : MonoBehaviour
             }
         }
         return spawns;
+    }
+
+    // Return the reference to the tile that encompases the current worldspace
+    // Players and enemies check to see which tile to report to
+    public GameObject WorldSpaceToTile (Vector3 position)
+    {
+        float x = (Mathf.Sqrt(3)/3*position.x - 1f/3*position.z)/size;
+        float z = (2f/3*position.z)/size;
+        float y = -x-z;
+        float rx = Mathf.Round(x);
+        float ry = Mathf.Round(y);
+        float rz = Mathf.Round(z);
+        float xDiff = Mathf.Abs(rx-x);
+        float yDiff = Mathf.Abs(ry-y);
+        float zDiff = Mathf.Abs(rz-z);
+        if (xDiff > yDiff && xDiff > zDiff)
+        {
+            rx = -ry-rz;
+        }
+        else if (yDiff > zDiff)
+        {
+            ry = -rx-rz;
+        }
+        else
+        {
+            rz = -rx-ry;
+        }
+        int[] axial = new int[] {(int)rx, (int)rz};
+        GameObject tile = GetTile(axial);
+        return tile;
+    }
+
+    public void HighlightRangeOn(List <GameObject> tileList, string command)
+    {
+        foreach (GameObject tile in tileList)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightOn(command);
+            }
+        }
+    }
+
+    public void HighlightRangeOff(List <GameObject> tileList)
+    {
+        foreach (GameObject tile in tileList)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightOff();
+            }
+        }
+    } 
+
+    public void HighlightAllOff()
+    {
+        foreach (GameObject tile in tileMap)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightOff();
+            }
+        }
+    }
+
+    public List <GameObject> Ring(int distance, GameObject startTile)
+    {
+        int[] startCoordinates = GetCoordinates(startTile);
+        int xStart = startCoordinates[0];
+        int zStart = startCoordinates[1];
+        int yStart = -xStart - zStart;
+        List <GameObject> tileList = new List <GameObject>();
+        for(int x = 0 - distance; x <= distance; x++)
+        {
+            for(int y = 0 - distance; y <= distance; y++)
+            {
+                for(int z = 0 - distance; z <= distance; z++)
+                {
+                    if(x + y + z == 0)
+                    {
+                        if((Mathf.Abs(x)==distance)||(Mathf.Abs(y)==distance)||(Mathf.Abs(z)==distance))
+                        {
+                            int [] newTileCoordinates = new int[] {x+xStart, z+zStart};
+                            if(GetTile(newTileCoordinates))
+                            {
+                                tileList.Add(GetTile(newTileCoordinates));
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return tileList;
+    }
+
+    public List <GameObject> Circle(int distance, GameObject startTile)
+    {
+        int[] startCoordinates = GetCoordinates(startTile);
+        int xStart = startCoordinates[0];
+        int zStart = startCoordinates[1];
+        int yStart = -xStart - zStart;
+        List <GameObject> tileList = new List <GameObject>();
+        for(int x = 0 - distance; x <= distance; x++)
+        {
+            for(int y = 0 - distance; y <= distance; y++)
+            {
+                for(int z = 0 - distance; z <= distance; z++)
+                {
+                    if(x + y + z == 0)
+                    {
+                        int [] newTileCoordinates = new int[] {x+xStart, z+zStart};
+                        if(GetTile(newTileCoordinates))
+                        {
+                            tileList.Add(GetTile(newTileCoordinates));
+                        }
+                    }
+                }
+            }
+        }
+        return tileList;
+    }
+    //// change to recieve list of tiles and overload with single tile
+    public List<GameObject> GetEnemy(GameObject tile)
+    {
+        return tile.GetComponent<Hex>().GetEnemy();
     }
 }

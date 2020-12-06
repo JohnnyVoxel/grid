@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class EnemyStats : MonoBehaviour
 {
     public int maxLife = 100;
+    public int damage = 50;
     public int currentLife;
     
     // Start is called before the first frame update
@@ -28,6 +29,10 @@ public class EnemyStats : MonoBehaviour
         {
             StartCoroutine("DestroyEnemy");
         }
+        else
+        {
+            StartCoroutine("Stun");
+        }
     }
 
     IEnumerator DestroyEnemy()
@@ -36,7 +41,25 @@ public class EnemyStats : MonoBehaviour
         GetComponent<EnemyAgent>().enabled = false;
         this.transform.Find("Body").GetComponent<BoxCollider>().enabled = false;
         GetComponent<Animator>().SetTrigger("Die");
+        yield return new WaitForSeconds(0.1f); // Prevents error in character attack coroutine
+        GameObject currentTile = BoardController.Instance.WorldSpaceToTile(this.transform.position);
+        currentTile.GetComponent<Hex>().RemoveEnemy(this.gameObject);
         yield return new WaitForSeconds(1.5f);
         Destroy(this.gameObject);
+    }
+
+    IEnumerator Stun()
+    {
+        NavMeshAgent agent = GetComponent<NavMeshAgent>();
+        agent.isStopped = true;
+        Animator animator = GetComponent<Animator>();
+        animator.SetBool("Walk", false);
+        //animator.SetTrigger("Take Damage");
+        animator.Play("Base Layer.Take Damage", -1, 0);
+        yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length); //+animator.GetCurrentAnimatorStateInfo(0).normalizedTime
+        if(agent.enabled)
+        {
+            agent.isStopped = false;
+        }
     }
 }

@@ -7,6 +7,9 @@ public class EnemyAgent : MonoBehaviour
 {
     private NavMeshAgent agent;
     private Animator animator;
+    private BoardController board;
+    private EnemyStats stats;
+    private HealthBar healthbar;
     private Vector3 basePos;
     public GameObject currentTarget;
     public Vector3 lastTargetPosition;
@@ -16,7 +19,12 @@ public class EnemyAgent : MonoBehaviour
     public GameObject aggroAttackTarget;
     public float rotSpeed = 10.0f;
     public bool attacking = false;
-    
+ 
+    private Vector3 currentPosition;
+    private Vector3 lastPosition;
+    private GameObject currentTile;
+    private GameObject lastTile;
+
     public Vector3 BasePos
     {
         get {return basePos;}
@@ -25,6 +33,9 @@ public class EnemyAgent : MonoBehaviour
     void Start()
     {
         animator = GetComponent<Animator>();
+        board = GameObject.Find("Board").GetComponent<BoardController>();
+        stats = GetComponent<EnemyStats>();
+        healthbar = transform.Find("Healthbar").GetComponent<HealthBar>();
     }
 
     void Awake () 
@@ -127,21 +138,58 @@ public class EnemyAgent : MonoBehaviour
             }
         }
         InstantlyTurn(agent.steeringTarget);
+
+        // Calculate which tile the enemy is on
+        currentPosition = transform.position;
+        if (currentPosition != lastPosition)
+        {
+            currentTile = board.WorldSpaceToTile(currentPosition);
+            if(currentTile != lastTile)
+            {
+                if(lastTile)
+                {
+                    lastTile.GetComponent<Hex>().RemoveEnemy(this.gameObject);
+                }
+                currentTile.GetComponent<Hex>().AddEnemy(this.gameObject);
+                lastTile = currentTile;
+            }
+            lastPosition = currentPosition;
+        }
+        if(currentTile.GetComponent<Hex>().selected)
+        {
+            if(!healthbar.GetTarget())
+            {
+                healthbar.TargetOn();
+            }
+        }
+        else
+        {
+            if(healthbar.GetTarget())
+            {
+                healthbar.TargetOff();
+            }
+        }
     }
 
     public void MoveToLocation(Vector3 targetPoint)
     {
         animator = GetComponent<Animator>();
-        animator.SetBool("Walk",true);
+        if(!animator.GetBool("Walk"))
+        {
+            animator.SetBool("Walk",true);
+        }
         agent.destination = targetPoint;
-        agent.isStopped = false;
+        //agent.isStopped = false;
     }
     public void MoveToLocation()
     {
         animator = GetComponent<Animator>();
-        animator.SetBool("Walk",true);
+        if(!animator.GetBool("Walk"))
+        {
+            animator.SetBool("Walk",true);
+        }
         agent.destination = basePos;
-        agent.isStopped = false;
+        //agent.isStopped = false;
     }
 
     //// Rotation ////
@@ -212,7 +260,8 @@ public class EnemyAgent : MonoBehaviour
         animator.SetBool("Walk",false);
         // Turn towards target
         Vector3 targetDirection = target.transform.position - transform.position;
-        while(Vector3.Angle(transform.forward, targetDirection) > 20.0f)
+        targetDirection.y =  0;
+        while(Vector3.Angle(transform.forward, targetDirection) > 1.0f)
         {
             float singleStep = rotSpeed * Time.deltaTime;
             Vector3 newDirection = Vector3.RotateTowards(transform.forward, targetDirection, singleStep, 0.0f);
@@ -228,12 +277,12 @@ public class EnemyAgent : MonoBehaviour
             {
                 if(target.gameObject.tag == "Player")
                 {
-                    target.GetComponent<CharacterStats>().TakeDamage(5, this.gameObject);
+                    target.GetComponent<CharacterStats>().TakeDamage(stats.damage, this.gameObject);
                 }
                 else if(target.gameObject.tag == "Structure")
                 {
                     // Add after implimenting health and status to structures. issue #13
-                    //target.GetComponent<CharacterStats>().TakeDamage(5, this.gameObject);
+                    //target.GetComponent<CharacterStats>().TakeDamage(stats.damage, this.gameObject);
                 }
             }
         }

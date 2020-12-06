@@ -20,6 +20,19 @@ public class CharacterController : MonoBehaviour
     private GameObject selectedCharacter;
     private bool cameraJump = false;
     
+    static CharacterController _instance;
+    public static CharacterController Instance
+    {
+        get
+        {
+            if(_instance == null)
+            {
+                _instance = FindObjectOfType<CharacterController>();
+            }
+            return _instance;
+        }
+    }
+
     // Start is called before the first frame update
     void Start()
     {
@@ -47,26 +60,57 @@ public class CharacterController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetMouseButton(1)) {
-            if (CameraCaster.Instance.SelectedTarget() != null) {
-                characterAgent.SetAttackTarget(CameraCaster.Instance.SelectedTarget());
-            }
-            else if (CameraCaster.Instance.SelectedDestination() != null) {
-                characterAgent.CancelAttack();
+        if (Input.GetMouseButton(1)) 
+        {
+            if (CameraCaster.Instance.SelectedDestination() != null) 
+            {
                 characterAgent.MoveToLocation((Vector3)CameraCaster.Instance.SelectedDestination());
             }
+        }
+        if (Input.GetMouseButtonDown(0))
+        {
+            characterAgent.Execute();
         }
         if (Input.GetKeyDown(KeyCode.B) && currentCommand == 'I'){
             currentCommand = 'B';
         }
+        if (Input.GetKeyDown(KeyCode.A) && currentCommand == 'I'){
+            currentCommand = 'A';
+            characterAgent.BasicAttackInitiate();
+        }
+        /* Future action implementation
         if (Input.GetKeyDown(KeyCode.Q) && currentCommand == 'I'){
+            currentCommand = 'Q';
+            characterAgent.ActionEnable(currentCommand);
+        }
+        if (Input.GetKeyDown(KeyCode.W) && currentCommand == 'I'){
+            currentCommand = 'W';
+            characterAgent.ActionEnable(currentCommand);
+        }
+        if (Input.GetKeyDown(KeyCode.E) && currentCommand == 'I'){
+            currentCommand = 'E';
+            characterAgent.ActionEnable(currentCommand);
+        }
+        if (Input.GetKeyDown(KeyCode.R) && currentCommand == 'I'){
+            currentCommand = 'R';
+            characterAgent.ActionEnable(currentCommand);
+        }
+        */
+        //// Cancel ////
+        if (Input.GetKeyDown(KeyCode.Escape) && currentCommand == 'I'){
             Application.Quit();
         }
+        else if(Input.GetKeyDown(KeyCode.Escape) && currentCommand != 'B'){
+            characterAgent.CancelCommand();
+            currentCommand = 'I';
+        }
 
-
+        //// Build Command ////
         if (currentCommand == 'B') {
             GameController.Instance.Build();
         }
+
+        //// Camera Control ////
         if (Input.GetKeyDown(KeyCode.Space)){
             rtscamera.SetTarget(selectedCharacter.transform);
         }
@@ -74,6 +118,8 @@ public class CharacterController : MonoBehaviour
             rtscamera.ResetTarget();
             cameraJump = false;
         }
+
+        //// Character Selection ////
         if  (Input.GetKeyDown(KeyCode.Alpha1)||Input.GetKeyDown(KeyCode.Keypad1)){
             rtscamera.SetTarget(character01.transform);
             selectedCharacter = character01;
@@ -98,6 +144,5 @@ public class CharacterController : MonoBehaviour
             characterAgent = character04.GetComponent<CharacterAgent>();
             cameraJump = true;
         }
-
     }
 }

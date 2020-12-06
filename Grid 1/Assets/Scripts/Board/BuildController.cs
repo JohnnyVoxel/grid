@@ -38,7 +38,7 @@ public class BuildController : MonoBehaviour
         if(selectedTile){
             selectedHex = selectedTile.GetComponent<Hex>();
         }
-        if (Input.GetKeyDown(KeyCode.Q)){
+        if (Input.GetKeyDown(KeyCode.Escape)){
                 GameController.Instance.Play();
         }
         if (structureType==0)
@@ -120,6 +120,11 @@ public class BuildController : MonoBehaviour
                     }
                 }
             }
+            if ((selectedHex.GetEnemy().Count > 0)||(selectedHex.GetPlayer().Count > 0))
+            {
+                SetHighlight(structure.transform, Color.red);
+                available = false;
+            }
 
             //Rotate
             if (Input.GetMouseButtonDown(1))
@@ -154,7 +159,7 @@ public class BuildController : MonoBehaviour
                 GameController.Instance.Return();
             }
             //Escape
-            if (Input.GetKeyDown(KeyCode.Q))
+            if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Destroy(structure.gameObject);
                 structureType = 0;
@@ -190,7 +195,7 @@ public class BuildController : MonoBehaviour
             BoardController.Instance.RebuildNavMesh();
             GameController.Instance.Play();
         }
-        if (Input.GetKeyDown(KeyCode.Q))
+        if (Input.GetKeyDown(KeyCode.Escape))
         {
             if(selectedHex.Structure != 0) {
                 SetHighlight(selectedHex.transform.GetChild(0).transform, Color.white);
