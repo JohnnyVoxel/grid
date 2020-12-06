@@ -18,10 +18,11 @@ public class CharacterAgent : MonoBehaviour {
 
     private bool actionEnabled = false;
     public bool basicAttackEnabled = false;
-    private bool autoAttackEnabled = false;
+    private bool autoAttackEnabled = true;
     private bool destination = false;
     private List<GameObject> selectableTileList = new List <GameObject>();
     private char actionCommand;
+    public bool autoAttackTestFlag = false;
 
     void Start()
     {
@@ -52,7 +53,7 @@ public class CharacterAgent : MonoBehaviour {
             */
         }
         
-        if (destination)
+        else if (destination)
         {
             // Move to destination
             //// Idle ////
@@ -73,14 +74,19 @@ public class CharacterAgent : MonoBehaviour {
             }
         }
 
-        if (basicAttackEnabled)
+        else if (basicAttackEnabled && action.BasicAttackAvailable)
         {
             action.ActionBasicAttack();
         }
+        
         else if (autoAttackEnabled)
         {
-            //idle
+            if(!destination && !action.Attacking && action.BasicAttackAvailable)
+            {
+                action.ActionAutoAttack();
+            }
         }
+
 
         if(currentTile != lastTile)
         {

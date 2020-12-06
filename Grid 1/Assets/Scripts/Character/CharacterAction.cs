@@ -4,6 +4,9 @@ using UnityEngine;
 
 public abstract class CharacterAction : MonoBehaviour
 {
+    abstract public bool Attacking {get; set;}
+    abstract public bool BasicAttackAvailable {get; set;}
+    
     public void ActionBasicAttack()
     {
         this.CharacterBasicAttack();
@@ -21,10 +24,10 @@ public abstract class CharacterAction : MonoBehaviour
         this.CharacterBasicAttackCancel();
     }
     protected abstract void CharacterBasicAttackCancel();
-/*
+
     public void ActionAutoAttack()
     {
         this.CharacterAutoAttack();
     }
-    protected abstract void CharacterAutoAttack();*/
+    protected abstract void CharacterAutoAttack();
 }

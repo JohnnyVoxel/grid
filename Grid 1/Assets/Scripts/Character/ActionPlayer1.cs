@@ -6,6 +6,7 @@ using UnityEngine.AI;
 public class ActionPlayer1 : CharacterAction
 {
     private CharacterAgent characterAgent;
+    private CharacterStats characterStats;
     private NavMeshAgent agent;
     private Animator animator;
 
@@ -14,12 +15,24 @@ public class ActionPlayer1 : CharacterAction
     private GameObject previousSelectedTile;
     private GameObject attackSelectedTile;
     private bool attacking = false;
+    private bool basicAttackAvailable = true;
+    public override bool Attacking
+    {
+        get { return attacking;}
+        set{}
+    }
+    public override bool BasicAttackAvailable
+    {
+        get { return basicAttackAvailable;}
+        set{}
+    }
 
     private List<GameObject> enemyList = new List<GameObject>();
 
     void Start()
     {
         characterAgent = GetComponent<CharacterAgent>();
+        characterStats = GetComponent<CharacterStats>();
         agent = GetComponent<NavMeshAgent>();
         animator = GetComponent<Animator>();
     }
@@ -53,11 +66,41 @@ public class ActionPlayer1 : CharacterAction
         }
         previousSelectedTile = currentSelectedTile;
     }
-///////////////////////////////////////////////////////////////
-  /*  protected override void CharacterAutoAttack()
+
+    protected override void CharacterAutoAttack()
     {
-        if(currentSelectedTile)
-    }*/
+        int enemyCount = 0;
+        attackSelectedTile = null;
+        // Check if enemies are on the same tile the character is on
+        enemyCount = BoardController.Instance.GetEnemy(characterAgent.currentTile).Count;
+        if (enemyCount > 0)
+        {
+            attackSelectedTile = characterAgent.currentTile;
+            StopCoroutine("BasicAttackCoroutine");
+            StartCoroutine("BasicAttackCoroutine");
+        }
+        else
+        {
+            selectableTileList = BoardController.Instance.Ring(1, characterAgent.currentTile);
+            foreach (GameObject tile in selectableTileList)
+            {
+                enemyCount = BoardController.Instance.GetEnemy(tile).Count;
+                if (enemyCount > 0)
+                {
+                    attackSelectedTile = tile;
+                    break;
+                }
+            }
+            if(attackSelectedTile)
+            {
+                StopCoroutine("BasicAttackCoroutine");
+                StartCoroutine("BasicAttackCoroutine");
+            }
+
+        }
+        // Check all tiles in a ring around the character
+        // Decide to attack or not
+    }
 
     protected override void CharacterBasicAttackExecute()
     {
@@ -79,11 +122,13 @@ public class ActionPlayer1 : CharacterAction
         attackSelectedTile = null;
         attacking = false;
         StopCoroutine("BasicAttackCoroutine");
+        StartCoroutine("BasicAttackCooldown");
     }
 
     IEnumerator BasicAttackCoroutine()
     {
         attacking = true;
+        basicAttackAvailable = false;
         animator = GetComponent<Animator>();
         // Stop navigating
         agent.ResetPath();
@@ -108,10 +153,16 @@ public class ActionPlayer1 : CharacterAction
             {
                 if(enemy)
                 {
-                    enemy.GetComponent<EnemyStats>().TakeDamage(25, this.gameObject);
+                    enemy.GetComponent<EnemyStats>().TakeDamage(characterStats.attackDamage, this.gameObject);
                 }
             }
         }
         CharacterBasicAttackCancel();
+    }
+
+    IEnumerator BasicAttackCooldown()
+    {
+        yield return new WaitForSeconds(characterStats.cooldownBasicAttack);
+        basicAttackAvailable = true;
     }
 }

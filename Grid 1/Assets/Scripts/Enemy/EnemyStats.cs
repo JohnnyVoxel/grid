@@ -57,6 +57,9 @@ public class EnemyStats : MonoBehaviour
         //animator.SetTrigger("Take Damage");
         animator.Play("Base Layer.Take Damage", -1, 0);
         yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length); //+animator.GetCurrentAnimatorStateInfo(0).normalizedTime
-        agent.isStopped = false;
+        if(agent.enabled)
+        {
+            agent.isStopped = false;
+        }
     }
 }

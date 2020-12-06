@@ -6,6 +6,8 @@ public class CharacterStats : MonoBehaviour
 {
     public int maxLife = 100;
     public int currentLife;
+    public float cooldownBasicAttack = 1.0f;
+    public int attackDamage = 15;
     
     // Start is called before the first frame update
     void Start()
