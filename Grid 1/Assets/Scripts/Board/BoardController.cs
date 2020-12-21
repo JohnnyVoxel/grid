@@ -358,6 +358,17 @@ public class BoardController : MonoBehaviour
         }
     }
 
+    public void HighlightInstantRangeOn(List <GameObject> tileList, string command)
+    {
+        foreach (GameObject tile in tileList)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightInstantOn(command);
+            }
+        }
+    }
+
     public void HighlightRangeOff(List <GameObject> tileList)
     {
         foreach (GameObject tile in tileList)
@@ -365,6 +376,17 @@ public class BoardController : MonoBehaviour
             if(tile)
             {
                 tile.GetComponent<Hex>().HighlightOff();
+            }
+        }
+    }
+
+    public void HighlightInstantRangeOff(List <GameObject> tileList)
+    {
+        foreach (GameObject tile in tileList)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightInstantOff();
             }
         }
     } 
@@ -376,6 +398,17 @@ public class BoardController : MonoBehaviour
             if(tile)
             {
                 tile.GetComponent<Hex>().HighlightOff();
+            }
+        }
+    }
+
+    public void HighlightInstantAllOff()
+    {
+        foreach (GameObject tile in tileMap)
+        {
+            if(tile)
+            {
+                tile.GetComponent<Hex>().HighlightInstantOff();
             }
         }
     }
@@ -440,5 +473,30 @@ public class BoardController : MonoBehaviour
     public List<GameObject> GetEnemy(GameObject tile)
     {
         return tile.GetComponent<Hex>().GetEnemy();
+    }
+
+    //// Find a list of whitelisted tiles from the given tile and array
+    public List<GameObject> WhitelistArrayToList(int[,] whitelistArray, GameObject selectedTile)
+    {
+        int [] selectedCoordinate =  GetCoordinates(selectedTile);
+        int [] evaluatedTile = new  int[2];
+        List <GameObject> whitelistList = new List <GameObject>();
+        for(int x = 0; x < whitelistArray.GetLength(0); x++)
+        {
+            int q = selectedCoordinate[0] + (x - 4); // Figure q dynamically from the array sized in the future if needed
+            for(int y = 0; y < whitelistArray.GetLength(1); y++)
+            {
+                int r = selectedCoordinate[1] + (y - 4); // Figure r dynamically from the array sized in the future if needed
+                if(whitelistArray[x,y]==1)
+                {
+                    evaluatedTile = new int[] {q,r};
+                    if(GetTile(evaluatedTile))
+                    {
+                        whitelistList.Add(GetTile(evaluatedTile));
+                    }
+                }
+            }
+        }
+        return whitelistList;
     }
 }

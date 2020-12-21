@@ -25,6 +25,13 @@ public class Hex : MonoBehaviour
 
     public bool selected = false;
 
+    private List<GameObject> whitelist = new List<GameObject>();
+    public List<GameObject> Whitelist
+    {
+        get { return whitelist; }
+        set { whitelist = value; }
+    }
+
     private void Start() 
     {
         BoardController board = GameObject.Find("Board").GetComponent<BoardController>();
@@ -193,6 +200,39 @@ public class Hex : MonoBehaviour
         }
         highlight.enabled = true;
         highlight.material.color = color;
+    }
+    public void HighlightInstantOn(string command)
+    {
+        Color color;
+        if (command == "red")
+        {
+            color = new Color(1, 0, 0, 0.2f);
+            selected = true;
+        }
+        else if (command == "cyan")
+        {
+            color = new Color(0, 1, 1, 0.2f);
+            selected = false;
+        }
+        else
+        {
+            color = new Color(0, 1, 0, 0.2f);
+            selected = false;
+        }
+        Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        Transform highlightGeometry = transform.Find("Highlight");
+        if(!highlight.enabled)
+        {
+            StopCoroutine("LerpOut");
+        }
+        highlight.enabled = true;
+        highlight.material.color = color;
+    }
+    public void HighlightInstantOff()
+    {
+        selected = false;
+        Renderer highlight = transform.Find("Highlight").GetComponent<Renderer>();
+        highlight.enabled = false;
     }
     public void HighlightOff()
     {

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Bridge : Structure
+public class Bridge2 : Structure
 {
     // Start is called before the first frame update
     void Start()
@@ -15,15 +15,15 @@ public class Bridge : Structure
         edge[5] = 0;
 
         whitelist = new int[,] {
-            {0,0,0,0,2,2,2,2,1},
-            {0,0,0,2,2,2,2,1,1},
-            {0,0,2,2,2,2,1,1,1},
-            {0,2,2,2,2,1,1,1,1},
-            {1,1,1,1,3,1,1,1,1},
-            {1,1,1,1,2,2,2,2,0},
-            {1,1,1,2,2,2,2,0,0},
-            {1,1,2,2,2,2,0,0,0},
-            {1,2,2,2,2,0,0,0,0}
+            {0,0,0,0,2,2,2,2,2},
+            {0,0,0,2,2,2,2,2,2},
+            {0,0,2,2,2,2,2,2,2},
+            {0,2,2,2,2,2,2,2,2},
+            {2,2,2,2,3,2,2,2,2},
+            {2,2,2,2,2,2,2,2,0},
+            {2,2,2,2,2,2,2,0,0},
+            {2,2,2,2,2,2,0,0,0},
+            {2,2,2,2,2,0,0,0,0}
         };
     }
 }

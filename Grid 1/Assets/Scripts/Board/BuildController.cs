@@ -24,6 +24,9 @@ public class BuildController : MonoBehaviour
     private bool available = false;         // Holder for the availability of the tile returned from the board controller
     private bool newTile = false;           // Indicates that a new tile has been selected by the caster
 
+    private int[,] structureWhitelistArray;
+    private List<GameObject> structureWhitelistList = new List<GameObject>();
+
     void OnEnable() {
         structureType = 0;
     }
@@ -118,6 +121,21 @@ public class BuildController : MonoBehaviour
                     else {
                         SetHighlight(structure.transform, Color.red);
                     }
+                    // Get the whitelist array for the structure type if not already done
+                    if(structureWhitelistArray == null)
+                    {
+                        // Get the whitelist from the structure
+                        structureWhitelistArray = structure.GetComponent<Structure>().whitelist;
+                    }
+                    // Since a valid tile is selected, find the list of whitelisted tiles
+                    if(previousTile && structureWhitelistList.Count > 0)
+                    {
+                        //BoardController.Instance.HighlightRangeOff(structureWhitelistList);
+                        BoardController.Instance.HighlightInstantAllOff();
+                    }
+                    structureWhitelistList = BoardController.Instance.WhitelistArrayToList(structureWhitelistArray, selectedTile.gameObject);
+                    // Highlight
+                    BoardController.Instance.HighlightInstantRangeOn(structureWhitelistList, "cyan");
                 }
             }
             if ((selectedHex.GetEnemy().Count > 0)||(selectedHex.GetPlayer().Count > 0))
@@ -129,7 +147,13 @@ public class BuildController : MonoBehaviour
             //Rotate
             if (Input.GetMouseButtonDown(1))
             {
+                structureWhitelistList.Clear();
                 structure.GetComponent<Structure>().Rotate();
+                structureWhitelistArray = structure.GetComponent<Structure>().whitelist;
+                structureWhitelistList = BoardController.Instance.WhitelistArrayToList(structureWhitelistArray, selectedTile.gameObject);
+                BoardController.Instance.HighlightInstantAllOff();
+                BoardController.Instance.HighlightInstantRangeOn(structureWhitelistList, "cyan");
+
                 available = BoardController.Instance.GetAvailability(structure.GetComponent<Structure>().GetEdges(), selectedTile.gameObject);
                 if (available){
                     SetHighlight(structure.transform, Color.cyan);
@@ -142,6 +166,8 @@ public class BuildController : MonoBehaviour
             if (Input.GetMouseButtonDown(0) && selectedHex.Structure == 0 && available)
             {
                 SetHighlight(structure.transform, Color.white);
+                BoardController.Instance.HighlightInstantAllOff();
+                selectedTile.GetComponent<Hex>().Whitelist = structureWhitelistList;
                 structure.transform.parent = selectedTile;
                 structure.GetComponent<Structure>().SetEdges();
                 structure.tag = "Structure";
@@ -155,6 +181,8 @@ public class BuildController : MonoBehaviour
                 }
                 structure = null;
                 structureType = 0;
+                structureWhitelistList.Clear();
+                structureWhitelistArray = null;
                 BoardController.Instance.RebuildNavMesh();
                 GameController.Instance.Return();
             }
@@ -162,6 +190,9 @@ public class BuildController : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.Escape))
             {
                 Destroy(structure.gameObject);
+                BoardController.Instance.HighlightInstantAllOff();
+                structureWhitelistList.Clear();
+                structureWhitelistArray = null;
                 structureType = 0;
                 GameController.Instance.Return();
             } 
